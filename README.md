@@ -4,7 +4,7 @@
 BAI (Bundle APKs Installer) is an Android app that lets you install split APKs (such as ones distributed as Android App Bundle). It has both rooted and rootless installation methods.
 
 ## State of BAI
-BAI is a fork of SAI. The OG project is dead since 2021. If you're looking for an actual backup solution, you can try [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) or [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
+BAI is a fork of (SAI) [https://github.com/Aefyr/SAI]. The OG project is dead since 2021. If you're looking for an actual backup solution, you can try [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) or [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
 
 ## Contributing
 Please read [Contributing guide](/CONTRIBUTING.md)
