@@ -1,4 +1,5 @@
 # BAI (Bundle APKs Installer)
+
 Copyright (C) 2020 Aefyr
 Copyright (C) 2026 Sumon Kayal (modifications)
 
