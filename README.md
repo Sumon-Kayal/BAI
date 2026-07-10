@@ -13,4 +13,4 @@ Please read [Contributing guide](/CONTRIBUTING.md)
 BAI adds some meta information to .apks files it exports, you can find the description of the format it uses in the [Meta format description](/META-FORMAT.md)
 
 ## License
-SAI is licensed under [GPLv3](/LICENSE)
+BAI is licensed under [GPLv3](/LICENSE)
