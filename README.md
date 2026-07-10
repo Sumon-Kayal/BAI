@@ -12,5 +12,8 @@ Please read [Contributing guide](/CONTRIBUTING.md)
 ## Exported .apks files meta
 BAI adds some meta information to .apks files it exports, you can find the description of the format it uses in the [Meta format description](/META-FORMAT.md)
 
+## EULA
+By using Bundle APKs Installer (BAI), you agree to the terms outlined in the [End-User License Agreement](/EULA.md). Please ensure you read and understand it before installing or distributing split APKs.
+
 ## License
 BAI is licensed under [GPLv3](/LICENSE)
