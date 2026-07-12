@@ -1,4 +1,5 @@
-BAI (Bundle APKs Installer)
+# BAI (Bundle APKs Installer)
+
 Copyright (C) 2020 Aefyr
 Copyright (C) 2026 Sumon Kayal (modifications)
 
@@ -8,11 +9,11 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 
-Distribution
+## Distribution
 
 This program is officially distributed only as release APKs published at https://github.com/Sumon-Kayal/BAI/releases. It is not published on Google Play, F-Droid, or any other app store, and has no affiliation with them. Copies obtained from any other source are unofficial and their integrity cannot be verified by the developer.
 
-Additional permissions under GNU GPL version 3 section 7
+## Additional permissions under GNU GPL version 3 section 7
 
 If you modify this Program, or any covered work, by linking or combining it with Google Play Billing Library (or a modified version of that library), containing parts covered by the terms of Android Software Development Kit License Agreement, the licensors of this Program grant you additional permission to convey the resulting work.
 
