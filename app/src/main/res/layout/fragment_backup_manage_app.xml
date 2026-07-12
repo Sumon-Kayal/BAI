@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.sumon.bundleapp.installer.ui.activities.BackupManageAppActivity">
+
+    <com.sumon.bundleapp.installer.view.coolbar.Coolbar
+        android:id="@+id/coolbar_backup_manage_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/ib_close"
+            style="@style/SAICoolbarImageButton"
+            app:coolbar_gravity="start"
+            app:srcCompat="@drawable/ic_go_back"
+            tools:ignore="MissingPrefix" />
+
+        <ImageButton
+            android:id="@+id/ib_app_details_menu"
+            style="@style/SAICoolbarImageButton"
+            app:coolbar_gravity="end"
+            app:srcCompat="@drawable/ic_more"
+            tools:ignore="MissingPrefix" />
+    </com.sumon.bundleapp.installer.view.coolbar.Coolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_backup_app_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+</LinearLayout>

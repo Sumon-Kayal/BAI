@@ -1,0 +1,72 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build APK and publish GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+          verify-signature: true
+
+      # Only runs when the SAI_KEYSTORE_BASE64 secret is set. Without it, the
+      # build still produces an unsigned app-release-unsigned.apk (see below),
+      # so the workflow doesn't hard-fail just because signing isn't set up yet.
+      - name: Decode signing keystore
+        if: ${{ env.HAS_KEYSTORE == 'true' }}
+        env:
+          HAS_KEYSTORE: ${{ secrets.SAI_KEYSTORE_BASE64 != '' }}
+          SAI_KEYSTORE_BASE64: ${{ secrets.SAI_KEYSTORE_BASE64 }}
+          SAI_KEYSTORE_PASSWORD: ${{ secrets.SAI_KEYSTORE_PASSWORD }}
+          SAI_KEY_ALIAS: ${{ secrets.SAI_KEY_ALIAS }}
+          SAI_KEY_PASSWORD: ${{ secrets.SAI_KEY_PASSWORD }}
+        run: |
+          echo "$SAI_KEYSTORE_BASE64" | base64 -d > release.keystore
+          cat > keystore.properties <<EOF
+          storeFile=${{ github.workspace }}/release.keystore
+          storePassword=$SAI_KEYSTORE_PASSWORD
+          keyAlias=$SAI_KEY_ALIAS
+          keyPassword=$SAI_KEY_PASSWORD
+          EOF
+
+      - name: Build release APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --stacktrace --no-daemon
+
+      - name: Locate APK
+        id: apk
+        run: |
+          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
+          echo "path=$APK_PATH" >> "$GITHUB_OUTPUT"
+          echo "name=SAI-${{ github.ref_name }}.apk" >> "$GITHUB_OUTPUT"
+
+      - name: Rename APK for release
+        run: cp "${{ steps.apk.outputs.path }}" "${{ steps.apk.outputs.name }}"
+
+      # NOTE: not SHA-pinned - couldn't confirm the full commit hash for the
+      # latest release (v3.0.1) via search, only the short form. Verify and
+      # pin this yourself once you can browse the repo directly.
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: ${{ steps.apk.outputs.name }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
