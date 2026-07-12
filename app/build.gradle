@@ -11,6 +11,12 @@ android {
     namespace 'com.sumon.bundleapp.installer'
     compileSdk 36
 
+    // AGP 8.0+ disabled BuildConfig generation by default; defaultConfig below
+    // uses buildConfigField, so this must be explicitly re-enabled.
+    buildFeatures {
+        buildConfig true
+    }
+
     defaultConfig {
         applicationId "com.sumon.bundleapp.installer"
         // Bumped 21 -> 23: material/lifecycle libs assume this floor now.
