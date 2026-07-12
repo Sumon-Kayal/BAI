@@ -6,4 +6,6 @@
 /build
 /captures
 .externalNativeBuild
-crowdin.properties
+keystore.properties
+*.jks
+*.keystore
