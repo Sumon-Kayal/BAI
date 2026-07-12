@@ -1,0 +1,62 @@
+name: "Debug Release"
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-debug:
+    name: Build and publish debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+          verify-signature: true
+
+      - name: Build debug APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --stacktrace --no-daemon
+
+      - name: Locate APK
+        id: apk
+        run: |
+          APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
+          echo "path=$APK_PATH" >> "$GITHUB_OUTPUT"
+          echo "name=BAI-debug-${GITHUB_SHA::7}.apk" >> "$GITHUB_OUTPUT"
+
+      - name: Rename APK
+        run: cp "${{ steps.apk.outputs.path }}" "${{ steps.apk.outputs.name }}"
+
+      # Uploads to the Actions run itself - always works, no extra setup.
+      - name: Upload as workflow artifact
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: ${{ steps.apk.outputs.name }}
+          path: ${{ steps.apk.outputs.name }}
+          retention-days: 14
+
+      # Also publishes a single rolling "debug-latest" pre-release so the most
+      # recent debug build always has a stable, direct download link. Each run
+      # overwrites the previous one rather than piling up tags/releases.
+      # NOTE: not SHA-pinned, same as release.yml - see that file's note on why.
+      - name: Publish rolling debug pre-release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: debug-latest
+          name: "Debug build (${{ github.ref_name }} @ ${{ github.sha }})"
+          files: ${{ steps.apk.outputs.name }}
+          prerelease: true
+          generate_release_notes: false
+          fail_on_unmatched_files: true
