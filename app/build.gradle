@@ -37,7 +37,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // Only wire up signing if keystore.properties exists (local devs and PR
             // builds without the secret still get a normal, just-unsigned APK).
             if (hasSigningConfig) {
