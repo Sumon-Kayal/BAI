@@ -147,11 +147,6 @@
             android:defaultValue="true" />
 
         <Preference
-            android:icon="@drawable/ic_pref_donate"
-            android:key="donate"
-            android:title="@string/settings_main_donate" />
-
-        <Preference
             android:icon="@drawable/ic_pref_info"
             android:key="about"
             android:title="@string/settings_main_about" />
