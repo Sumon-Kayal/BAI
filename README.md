@@ -15,13 +15,13 @@ BAI is a fork of [SAI](https://github.com/Aefyr/SAI). The OG project is dead sin
 ## What's different from upstream SAI
 - **No Google Play Billing, no Firebase/Analytics, no F-Droid build flavor.** BAI ships as a single build variant with no telemetry and no in-app purchases; the donate screen links out to an external donation page instead.
 - **Distributed only through GitHub Releases**, built by this repo's own CI — not affiliated with Play Store or F-Droid.
-- **Modernized build:** AGP 4.1.2, Gradle 6.5, compileSdk/targetSdk 29, minSdk 21. Dependencies pinned to stable versions: AndroidX AppCompat 1.2.0, Room 2.2.6, Glide 4.11.0, Material 1.3.0-rc01, Shizuku 11.0.1.
+- **Modernized build:** targets Android 15 (API 35) while maintaining support for Android 5.0 (API 21) and later. The project uses AGP 4.1.2 and Gradle 6.5, with dependencies pinned to stable, tested versions (including AndroidX AppCompat 1.2.0, Room 2.2.6, Glide 4.11.0, Material 1.3.0-rc01, and Shizuku 11.0.1).
 - **CodeQL security scanning** runs on every push/PR via `.github/workflows/codeql.yml`.
 - Package name changed to `com.sumon.bundleapp.installer` so it can install side-by-side with the original SAI if you still have it.
 
 ## Requirements
 
-Android 6.0 (API 23) or newer.
+Android 5.0 (API 21) or newer.
 
 ## Building from source
 
@@ -31,7 +31,7 @@ cd BAI
 ./gradlew assembleRelease
 ```
 
-The unsigned APKs will be at `app/build/outputs/apk/<flavor>/release/` (where `<flavor>` is `normal` or `fdroid`).
+The unsigned APKs will be at `app/build/outputs/apk/normal/release/` (there is no `playstore` or `fdroid`). flavour 
 
 ## Contributing
 
