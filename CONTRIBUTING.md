@@ -18,7 +18,7 @@ Use Discussions for:
 
 Please **do not** submit translation pull requests to the main branch.
 
-Instead, contribute translations through the dedicated **Translations** branch:
+Instead, contribute translations through the dedicated **Translations** branch. Open your pull request with `Translations` as the base branch:
 
 https://github.com/Sumon-Kayal/BAI/tree/Translations
 
