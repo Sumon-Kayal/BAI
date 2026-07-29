@@ -12,6 +12,10 @@ on:
 
   pull_request:
 
+concurrency:
+  group: dead-code-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dead-code:
     runs-on: ubuntu-latest
