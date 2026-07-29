@@ -1,0 +1,43 @@
+name: Dead Code Check
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - ".gitignore"
+
+  pull_request:
+
+jobs:
+  dead-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Find TODO/FIXME markers
+        run: |
+          echo "Searching for TODO and FIXME comments..."
+          grep -RInE "TODO|FIXME" . \
+            --exclude-dir=.git \
+            --exclude-dir=node_modules \
+            || true
+
+      - name: List empty directories
+        run: |
+          echo "Empty directories:"
+          find . -type d -empty
+
+      - name: List large files (>10 MB)
+        run: |
+          echo "Large files:"
+          find . -type f -size +10M
+
+      - name: Check Git status
+        run: |
+          git status --short
