@@ -30,16 +30,15 @@ on:
  
        - name: Find TODO/FIXME markers
          run: |
-           echo "Searching for TODO and FIXME comments..."
-           output=$(grep -RInE "TODO|FIXME" . \
-             --exclude-dir=.git \
-             --exclude-dir=node_modules \
-             || true)
-           if [ -n "$output" ]; then
-             echo "$output"
-             exit 1
-           fi
-           echo "No TODO/FIXME markers found."
+          echo "Searching for TODO and FIXME comments..."
+          output=$(git grep -nI -E "TODO|FIXME" -- . \
+            ':(exclude).github/workflows/Dead code check.yml' \
+            || true)
+          if [ -n "$output" ]; then
+            echo "$output"
+            exit 1
+          fi
+          echo "No TODO/FIXME markers found."
  
        - name: List empty directories
          run: |
