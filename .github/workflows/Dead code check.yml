@@ -10,40 +10,81 @@ on:
       - "LICENSE"
       - ".gitignore"
 
-  pull_request:
-
-concurrency:
-  group: dead-code-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
-jobs:
-  dead-code:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Find TODO/FIXME markers
-        run: |
-          echo "Searching for TODO and FIXME comments..."
-          grep -RInE "TODO|FIXME" . \
-            --exclude-dir=.git \
-            --exclude-dir=node_modules \
-            || true
-
-      - name: List empty directories
-        run: |
-          echo "Empty directories:"
-          find . -type d -empty
-
-      - name: List large files (>10 MB)
-        run: |
-          echo "Large files:"
-          find . -type f -size +10M
-
-      - name: Check Git status
-        run: |
-          git status --short
+   
+   pull_request:
+ 
++concurrency:
+   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+   cancel-in-progress: true
+ 
+ permissions:
+   contents: read
+ 
+ jobs:
+   dead-code:
+     runs-on: ubuntu-latest
+ 
+     steps:
+       - name: Checkout repository
+         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+         with:
+           persist-credentials: false
+ 
+       - name: Find TODO/FIXME markers
+         run: |
+           echo "Searching for TODO and FIXME comments..."
+           output=$(grep -RInE "TODO|FIXME" . \
+             --exclude-dir=.git \
+             --exclude-dir=node_modules \
+             || true)
+           if [ -n "$output" ]; then
+             echo "$output"
+             exit 1
+           fi
+           echo "No TODO/FIXME markers found."
+ 
+       - name: List empty directories
+         run: |
+           echo "Empty directories:"
+           output=$(git ls-files --others --directory --exclude-standard | while read dir; do
+             if [ -d "$dir" ] && [ -z "$(ls -A "$dir" 2>/dev/null)" ]; then
+               echo "$dir"
+             fi
+           done)
+           tracked_dirs=$(git ls-files | xargs -r dirname | sort -u | while read dir; do
+             if [ -d "$dir" ] && [ -z "$(ls -A "$dir" 2>/dev/null)" ]; then
+               echo "$dir"
+             fi
+           done)
+           all_empty="$output$tracked_dirs"
+           if [ -n "$all_empty" ]; then
+             echo "$all_empty"
+             exit 1
+           fi
+           echo "No empty directories found."
+ 
+       - name: List large files (>10 MB)
+         run: |
+           echo "Large files:"
+           output=$(git ls-files | while read file; do
+             if [ -f "$file" ]; then
+               size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo 0)
+               if [ "$size" -gt 10485760 ]; then
+                 echo "$file"
+               fi
+             fi
+           done)
+           if [ -n "$output" ]; then
+             echo "$output"
+             exit 1
+           fi
+           echo "No large files found."
+ 
+       - name: Check Git status
+         run: |
+           output=$(git status --short)
+           if [ -n "$output" ]; then
+             echo "$output"
+             exit 1
+           fi
+           echo "Git working tree is clean."
