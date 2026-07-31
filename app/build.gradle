@@ -1,81 +1,101 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+def hasSigningConfig = keystorePropertiesFile.exists()
+if (hasSigningConfig) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
-    compileSdkVersion 29
+    namespace 'com.sumon.bundleapp.installer'
+    compileSdk 35
+
+    buildFeatures {
+        buildConfig true
+    }
+
     defaultConfig {
-        applicationId "com.aefyr.sai"
+        applicationId "com.sumon.bundleapp.installer"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 60
-        versionName "4.5"
+        targetSdkVersion 35
+        versionCode 61
+        versionName "4.6"
+
+        buildConfigField "int", "DEFAULT_THEME", "6"
+        buildConfigField "int", "DEFAULT_DARK_THEME", "11"
+        buildConfigField "boolean", "HIDE_DONATE_BUTTON", "false"
+    }
+
+    signingConfigs {
+        release {
+            if (hasSigningConfig) {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
 
-    flavorDimensions "version"
-    productFlavors {
-        normal {
-            dimension "version"
-            buildConfigField "int", "DEFAULT_THEME", "0"
-            buildConfigField "int", "DEFAULT_DARK_THEME", "1"
-            buildConfigField "boolean", "HIDE_DONATE_BUTTON", "false"
-        }
-
-        fdroid {
-            dimension "version"
-            applicationId "com.aefyr.sai.fdroid"
-            buildConfigField "int", "DEFAULT_THEME", "6"
-            buildConfigField "int", "DEFAULT_DARK_THEME", "11"
-            buildConfigField "boolean", "HIDE_DONATE_BUTTON", "false"
+            if (hasSigningConfig) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.documentfile:documentfile:1.0.1'
+    // AndroidX
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.documentfile:documentfile:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
-    implementation 'androidx.preference:preference:1.1.1'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.android.material:material:1.3.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.8.7'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
 
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'com.google.android:flexbox:2.0.1'
+    // Material Design
+    implementation 'com.google.android.material:material:1.13.0'
+
+    // UI / Utilities
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
+    implementation 'com.google.android:flexbox:3.0.0'
     implementation 'com.tomergoldst.android:tooltips:1.0.11'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.13.1'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation 'com.github.aefyr.flexfilter:flexfilter:0.9-alpha'
-    implementation 'com.github.aefyr:pseudoapksigner:1.6'
 
-    def room_version = "2.2.6"
+    // flexfilter: vendored at com/aefyr/flexfilter/
+    // pseudoapksigner: vendored at com/aefyr/pseudoapksigner/
+
+    // Room
+    def room_version = "2.7.2"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-    //Google services
+    // Shizuku / Sui
+    def shizuku_version = "13.1.5"
+    implementation "dev.rikka.shizuku:api:$shizuku_version"
+    implementation "dev.rikka.shizuku:provider:$shizuku_version"
+    implementation "dev.rikka.shizuku:shared:$shizuku_version"
+    implementation "dev.rikka.shizuku:aidl:$shizuku_version"
 
-    //Shizuku/Sui
-    def shizuku_version = '11.0.1'
-    implementation "rikka.shizuku:api:$shizuku_version"
-    implementation "rikka.shizuku:provider:$shizuku_version"
-
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
-}
-
-if (getGradle().getStartParameter().getTaskRequests().toString().contains("Normal")){
-    println "Google Play build detected, applying Google Services and Crashlytics plugins"
+    // Memory leak detection
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
+}anary-android:2.3'
 }
 
 
