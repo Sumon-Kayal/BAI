@@ -1,4 +1,6 @@
-package com.aefyr.sai.adapters;
+package com.sumon.bundleapp.installer.adapters;
+
+import com.sumon.bundleapp.installer.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,10 +10,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aefyr.sai.R;
-import com.aefyr.sai.billing.DonationStatus;
-import com.aefyr.sai.utils.Theme;
-import com.aefyr.sai.view.ThemeView;
+import com.sumon.bundleapp.installer.billing.DonationStatus;
+import com.sumon.bundleapp.installer.utils.Theme;
+import com.sumon.bundleapp.installer.view.ThemeView;
 
 import java.util.List;
 

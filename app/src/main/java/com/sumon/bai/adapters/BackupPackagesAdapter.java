@@ -1,4 +1,6 @@
-package com.aefyr.sai.adapters;
+package com.sumon.bundleapp.installer.adapters;
+
+import com.sumon.bundleapp.installer.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,15 +18,14 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aefyr.sai.R;
-import com.aefyr.sai.adapters.selection.SelectableAdapter;
-import com.aefyr.sai.adapters.selection.Selection;
-import com.aefyr.sai.backup2.BackupApp;
-import com.aefyr.sai.backup2.BackupStatus;
-import com.aefyr.sai.model.backup.BackupPackagesFilterConfig;
-import com.aefyr.sai.model.backup.SimpleAppFeature;
-import com.aefyr.sai.model.common.AppFeature;
-import com.aefyr.sai.model.common.PackageMeta;
+import com.sumon.bundleapp.installer.adapters.selection.SelectableAdapter;
+import com.sumon.bundleapp.installer.adapters.selection.Selection;
+import com.sumon.bundleapp.installer.backup2.BackupApp;
+import com.sumon.bundleapp.installer.backup2.BackupStatus;
+import com.sumon.bundleapp.installer.model.backup.BackupPackagesFilterConfig;
+import com.sumon.bundleapp.installer.model.backup.SimpleAppFeature;
+import com.sumon.bundleapp.installer.model.common.AppFeature;
+import com.sumon.bundleapp.installer.model.common.PackageMeta;
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
