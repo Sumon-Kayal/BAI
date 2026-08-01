@@ -12,6 +12,7 @@ BAI is not published on Google Play or F-Droid — grab the APK directly from [R
 BAI is a fork of [SAI](https://github.com/Aefyr/SAI) by polychromaticfox, maintained by Sumon Kayal. If you're looking for an actual backup solution, you can try [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) or [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
 
 ## What's different from upstream SAI
+
 - **Distributed only through GitHub Releases**, built by this repo's own CI — not affiliated with Play Store or F-Droid.
 - **Single build variant.** Based on SAI's F-Droid flavor (no Google Play Billing to begin with); the `normal`/Play Store flavor has been removed entirely rather than kept alongside it.
 - **Modernized build:** AGP 8.8.0, Gradle 8.11.1, JDK 17, compileSdk/targetSdk 35 (Android 15) while keeping minSdk 21 (Android 5.0). Two dependencies that no longer resolve on JitPack (`pseudoapksigner`, `flexfilter`) were vendored as plain Java source rather than replaced with alternatives, so behavior is unchanged.
@@ -19,14 +20,17 @@ BAI is a fork of [SAI](https://github.com/Aefyr/SAI) by polychromaticfox, mainta
 - Package name changed to `com.sumon.bundleapp.installer` so it can install side-by-side with the original SAI if you still have it.
 
 ## Requirements
+
 Android 5.0 (API 21) or newer.
 
 ## Building from source
-```
+
+```sh
 git clone https://github.com/Sumon-Kayal/BAI.git
 cd BAI
 ./gradlew assembleRelease
 ```
+
 The unsigned APK will be at `app/build/outputs/apk/release/`. See `.github/workflows/release.yml` for how releases are built and published on tag push.
 
 ## Contributing

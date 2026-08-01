@@ -328,12 +328,6 @@
             android:authorities="${applicationId}.shizuku.sui.init"
             android:enabled="true"
             android:exported="false" />
-
-        <provider
-            android:name="com.sumon.bundleapp.installer.flavor.FlavorInitProvider"
-            android:authorities="${applicationId}.flavor.init"
-            android:enabled="true"
-            android:exported="false" />
     </application>
 
 </manifest>
