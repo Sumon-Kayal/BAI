@@ -1,4 +1,4 @@
-package com.aefyr.sai.viewmodels.factory;
+package com.sumon.bundleapp.installer.viewmodels.factory;
 
 import android.content.Context;
 
@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.aefyr.sai.installerx.resolver.urimess.UriHost;
-import com.aefyr.sai.installerx.resolver.urimess.UriHostFactory;
+import com.sumon.bundleapp.installer.installerx.resolver.urimess.UriHost;
+import com.sumon.bundleapp.installer.installerx.resolver.urimess.UriHostFactory;
 
 public class InstallerXDialogViewModelFactory implements ViewModelProvider.Factory {
 
