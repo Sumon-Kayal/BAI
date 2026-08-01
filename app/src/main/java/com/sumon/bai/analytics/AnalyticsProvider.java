@@ -1,4 +1,4 @@
-package com.aefyr.sai.analytics;
+package com.sumon.bundleapp.installer.analytics;
 
 public interface AnalyticsProvider {
 
