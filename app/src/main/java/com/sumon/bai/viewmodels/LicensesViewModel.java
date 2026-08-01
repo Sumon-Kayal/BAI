@@ -1,4 +1,4 @@
-package com.aefyr.sai.viewmodels;
+package com.sumon.bundleapp.installer.viewmodels;
 
 import android.app.Application;
 import android.content.res.AssetManager;
@@ -9,9 +9,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.aefyr.sai.BuildConfig;
-import com.aefyr.sai.model.licenses.License;
-import com.aefyr.sai.utils.IOUtils;
+import com.sumon.bundleapp.installer.model.licenses.License;
+import com.sumon.bundleapp.installer.utils.IOUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -53,7 +52,6 @@ public class LicensesViewModel extends AndroidViewModel {
                 ArrayList<License> licenses = new ArrayList<>();
 
                 addLicensesForFlavor(assetManager, licenses, "common");
-                addLicensesForFlavor(assetManager, licenses, BuildConfig.FLAVOR);
 
                 Collections.sort(licenses, (license1, license2) -> license1.subject.compareToIgnoreCase(license2.subject));
 

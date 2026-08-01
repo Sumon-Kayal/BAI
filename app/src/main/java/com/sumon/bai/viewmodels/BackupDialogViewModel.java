@@ -1,4 +1,4 @@
-package com.aefyr.sai.viewmodels;
+package com.sumon.bundleapp.installer.viewmodels;
 
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
@@ -11,24 +11,24 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.aefyr.sai.adapters.selection.Selection;
-import com.aefyr.sai.adapters.selection.SimpleKeyStorage;
-import com.aefyr.sai.backup2.BackupManager;
-import com.aefyr.sai.backup2.backuptask.config.SingleBackupTaskConfig;
-import com.aefyr.sai.backup2.impl.DefaultBackupManager;
-import com.aefyr.sai.installerx.common.Category;
-import com.aefyr.sai.installerx.common.MutableSplitCategory;
-import com.aefyr.sai.installerx.common.SplitApkSourceMeta;
-import com.aefyr.sai.installerx.common.SplitPart;
-import com.aefyr.sai.installerx.postprocessing.SortPostprocessor;
-import com.aefyr.sai.installerx.resolver.appmeta.installedapp.InstalledAppAppMetaExtractor;
-import com.aefyr.sai.installerx.resolver.meta.ApkSourceMetaResolutionResult;
-import com.aefyr.sai.installerx.resolver.meta.impl.DefaultSplitApkSourceMetaResolver;
-import com.aefyr.sai.installerx.resolver.meta.impl.InstalledAppApkSourceFile;
-import com.aefyr.sai.model.backup.SplitApkPart;
-import com.aefyr.sai.model.common.PackageMeta;
-import com.aefyr.sai.utils.PreferencesHelper;
-import com.aefyr.sai.utils.SimpleAsyncTask;
+import com.sumon.bundleapp.installer.adapters.selection.Selection;
+import com.sumon.bundleapp.installer.adapters.selection.SimpleKeyStorage;
+import com.sumon.bundleapp.installer.backup2.BackupManager;
+import com.sumon.bundleapp.installer.backup2.backuptask.config.SingleBackupTaskConfig;
+import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
+import com.sumon.bundleapp.installer.installerx.common.Category;
+import com.sumon.bundleapp.installer.installerx.common.MutableSplitCategory;
+import com.sumon.bundleapp.installer.installerx.common.SplitApkSourceMeta;
+import com.sumon.bundleapp.installer.installerx.common.SplitPart;
+import com.sumon.bundleapp.installer.installerx.postprocessing.SortPostprocessor;
+import com.sumon.bundleapp.installer.installerx.resolver.appmeta.installedapp.InstalledAppAppMetaExtractor;
+import com.sumon.bundleapp.installer.installerx.resolver.meta.ApkSourceMetaResolutionResult;
+import com.sumon.bundleapp.installer.installerx.resolver.meta.impl.DefaultSplitApkSourceMetaResolver;
+import com.sumon.bundleapp.installer.installerx.resolver.meta.impl.InstalledAppApkSourceFile;
+import com.sumon.bundleapp.installer.model.backup.SplitApkPart;
+import com.sumon.bundleapp.installer.model.common.PackageMeta;
+import com.sumon.bundleapp.installer.utils.PreferencesHelper;
+import com.sumon.bundleapp.installer.utils.SimpleAsyncTask;
 
 import java.io.File;
 import java.util.ArrayList;
