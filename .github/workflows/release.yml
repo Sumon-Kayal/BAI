@@ -60,7 +60,10 @@ jobs:
           echo "path=$APK_PATH" >> "$GITHUB_OUTPUT"
           echo "name=BAI-${REF_NAME}.apk" >> "$GITHUB_OUTPUT"
       - name: Rename APK for release
-        run: cp "${{ steps.apk.outputs.path }}" "${{ steps.apk.outputs.name }}"
+        env:
+          APK_PATH: ${{ steps.apk.outputs.path }}
+          APK_NAME: ${{ steps.apk.outputs.name }}
+        run: cp "$APK_PATH" "$APK_NAME"
 
       # NOTE: not SHA-pinned - could not confirm the full commit hash for the
       # latest release via search in a prior session. Verify and pin this
