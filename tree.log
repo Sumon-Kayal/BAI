@@ -1,0 +1,630 @@
+.
+├── .github
+│   └── workflows
+│       ├── codeql.yml
+│       ├── debug-release.yml
+│       ├── release.yml
+│       └── stale.yml
+├── .gitignore
+├── CONTRIBUTING.md
+├── EULA.md
+├── LICENSE
+├── META-FORMAT.md
+├── README.md
+├── app
+│   ├── .gitignore
+│   ├── build.gradle
+│   ├── libs
+│   ├── local.properties
+│   ├── proguard-rules.pro
+│   └── src
+│       └── main
+│           ├── AndroidManifest.xml
+│           ├── assets
+│           │   ├── licenses
+│           │   │   └── common
+│           │   │       ├── Android AppCompat Library V7
+│           │   │       ├── Android Lifecycle Extensions
+│           │   │       ├── Android Support Library Document File
+│           │   │       ├── Android Support Preference V7
+│           │   │       ├── FlexFilter
+│           │   │       ├── FlexboxLayout
+│           │   │       ├── Glide
+│           │   │       ├── Gson
+│           │   │       ├── Material Components for Android
+│           │   │       ├── Material Design icons
+│           │   │       ├── PseudoApkSigner
+│           │   │       ├── Roboto Font
+│           │   │       ├── Shimmer for Android
+│           │   │       ├── Shizuku
+│           │   │       ├── android-filepicker
+│           │   │       ├── apksig
+│           │   │       └── tooltips
+│           │   ├── placeholder_app_icon.png
+│           │   ├── testkey.past
+│           │   └── testkey.pk8
+│           ├── java
+│           │   └── com
+│           │       ├── aefyr
+│           │       │   ├── flexfilter
+│           │       │   │   ├── applier
+│           │       │   │   │   ├── ComplexCustomFilter.java
+│           │       │   │   │   ├── CustomFilter.java
+│           │       │   │   │   └── LiveFilterApplier.java
+│           │       │   │   ├── builtin
+│           │       │   │   │   ├── DefaultCustomFilterFactory.java
+│           │       │   │   │   ├── DefaultFilterConfigViewHolderFactory.java
+│           │       │   │   │   └── filter
+│           │       │   │   │       ├── singlechoice
+│           │       │   │   │       │   ├── SingleChoiceFilterConfig.java
+│           │       │   │   │       │   └── SingleChoiceFilterConfigOption.java
+│           │       │   │   │       └── sort
+│           │       │   │   │           ├── SortFilterConfig.java
+│           │       │   │   │           └── SortFilterConfigOption.java
+│           │       │   │   ├── config
+│           │       │   │   │   └── core
+│           │       │   │   │       ├── ComplexFilterConfig.java
+│           │       │   │   │       └── FilterConfig.java
+│           │       │   │   └── ui
+│           │       │   │       └── FilterDialog.java
+│           │       │   └── pseudoapksigner
+│           │       │       └── PseudoApkSigner.java
+│           │       └── sumon
+│           │           └── bundleapp
+│           │               └── installer
+│           │                   ├── adapters
+│           │                   │   ├── BackupAppDetailsAdapter.java
+│           │                   │   ├── BackupAppFeatureAdapter.java
+│           │                   │   ├── BackupComponentsAdapter.java
+│           │                   │   ├── BackupNameFormatBuilderPartsAdapter.java
+│           │                   │   ├── BackupPackagesAdapter.java
+│           │                   │   ├── BackupSplitPartsAdapter.java
+│           │                   │   ├── DonateAdapter.java
+│           │                   │   ├── LicensesAdapter.java
+│           │                   │   ├── SaiPiSessionsAdapter.java
+│           │                   │   ├── SplitApkSourceMetaAdapter.java
+│           │                   │   ├── ThemeAdapter.java
+│           │                   │   └── selection
+│           │                   │       ├── SelectableAdapter.java
+│           │                   │       ├── Selection.java
+│           │                   │       └── SimpleKeyStorage.java
+│           │                   ├── analytics
+│           │                   │   ├── AnalyticsProvider.java
+│           │                   │   └── DefaultAnalyticsProvider.java
+│           │                   ├── backup2
+│           │                   │   ├── Backup.java
+│           │                   │   ├── BackupApp.java
+│           │                   │   ├── BackupAppDetails.java
+│           │                   │   ├── BackupComponent.java
+│           │                   │   ├── BackupIndex.java
+│           │                   │   ├── BackupManager.java
+│           │                   │   ├── BackupStatus.java
+│           │                   │   ├── BackupStorage.java
+│           │                   │   ├── BackupStorageProvider.java
+│           │                   │   ├── backuptask
+│           │                   │   │   ├── config
+│           │                   │   │   │   ├── BackupTaskConfig.java
+│           │                   │   │   │   ├── BatchBackupTaskConfig.java
+│           │                   │   │   │   └── SingleBackupTaskConfig.java
+│           │                   │   │   └── executor
+│           │                   │   │       ├── BatchBackupTaskExecutor.java
+│           │                   │   │       ├── CancellableBackupTaskExecutor.java
+│           │                   │   │       └── SingleBackupTaskExecutor.java
+│           │                   │   └── impl
+│           │                   │       ├── BackupService2.java
+│           │                   │       ├── DefaultBackupManager.java
+│           │                   │       ├── MutableBackup.java
+│           │                   │       ├── components
+│           │                   │       │   ├── SimpleBackupComponent.java
+│           │                   │       │   └── StandardComponentTypes.java
+│           │                   │       ├── db
+│           │                   │       │   ├── BackupComponentEntity.java
+│           │                   │       │   ├── BackupDao.java
+│           │                   │       │   ├── BackupEntity.java
+│           │                   │       │   ├── BackupWithComponents.java
+│           │                   │       │   └── DaoBackedBackupIndex.java
+│           │                   │       ├── local
+│           │                   │       │   ├── LocalBackupStorage.java
+│           │                   │       │   ├── LocalBackupStorageProvider.java
+│           │                   │       │   ├── LocalBackupUtils.java
+│           │                   │       │   ├── prefs
+│           │                   │       │   │   └── LocalBackupStoragePrefConstants.java
+│           │                   │       │   └── ui
+│           │                   │       │       ├── fragments
+│           │                   │       │       │   ├── LocalBackupStorageSettingsFragment.java
+│           │                   │       │       │   └── LocalBackupStorageSetupFragment.java
+│           │                   │       │       └── viewmodels
+│           │                   │       │           └── LocalBackupStorageSetupViewModel.java
+│           │                   │       └── storage
+│           │                   │           ├── ApksBackupStorage.java
+│           │                   │           ├── ApksSingleBackupTaskExecutor.java
+│           │                   │           └── BaseBackupStorage.java
+│           │                   ├── billing
+│           │                   │   ├── BillingManager.java
+│           │                   │   ├── BillingManagerStatus.java
+│           │                   │   ├── BillingProduct.java
+│           │                   │   ├── DefaultBillingManager.java
+│           │                   │   ├── DonationStatus.java
+│           │                   │   ├── DonationStatusRenderer.java
+│           │                   │   └── ExternalDonationServiceBillingProduct.java
+│           │                   ├── common
+│           │                   │   └── AppDatabase.java
+│           │                   ├── flavor
+│           │                   │   └── FlavorInitProvider.java
+│           │                   ├── installer
+│           │                   │   ├── ApkSourceBuilder.java
+│           │                   │   ├── PackageInstallerProvider.java
+│           │                   │   ├── QueuedInstallation.java
+│           │                   │   ├── SAIPackageInstaller.java
+│           │                   │   ├── ShellSAIPackageInstaller.java
+│           │                   │   ├── rooted
+│           │                   │   │   └── RootedSAIPackageInstaller.java
+│           │                   │   ├── rootless
+│           │                   │   │   ├── RootlessSAIPIService.java
+│           │                   │   │   └── RootlessSAIPackageInstaller.java
+│           │                   │   └── shizuku
+│           │                   │       └── ShizukuSAIPackageInstaller.java
+│           │                   ├── installer2
+│           │                   │   ├── base
+│           │                   │   │   ├── SaiPackageInstaller.java
+│           │                   │   │   ├── SaiPiSessionObserver.java
+│           │                   │   │   └── model
+│           │                   │   │       ├── AndroidPackageInstallerError.java
+│           │                   │   │       ├── SaiPiSessionParams.java
+│           │                   │   │       ├── SaiPiSessionState.java
+│           │                   │   │       └── SaiPiSessionStatus.java
+│           │                   │   └── impl
+│           │                   │       ├── BaseSaiPackageInstaller.java
+│           │                   │       ├── FlexSaiPackageInstaller.java
+│           │                   │       ├── rootless
+│           │                   │       │   ├── ConfirmationIntentWrapperActivity2.java
+│           │                   │       │   ├── RootlessSaiPackageInstaller.java
+│           │                   │       │   └── RootlessSaiPiBroadcastReceiver.java
+│           │                   │       └── shell
+│           │                   │           ├── RootedSaiPackageInstaller.java
+│           │                   │           ├── ShellSaiPackageInstaller.java
+│           │                   │           └── ShizukuSaiPackageInstaller.java
+│           │                   ├── installerx
+│           │                   │   ├── common
+│           │                   │   │   ├── Category.java
+│           │                   │   │   ├── MutableSplitCategory.java
+│           │                   │   │   ├── MutableSplitPart.java
+│           │                   │   │   ├── ParserContext.java
+│           │                   │   │   ├── SealedSplitCategory.java
+│           │                   │   │   ├── SealedSplitPart.java
+│           │                   │   │   ├── SplitApkSourceMeta.java
+│           │                   │   │   ├── SplitCategory.java
+│           │                   │   │   └── SplitPart.java
+│           │                   │   ├── postprocessing
+│           │                   │   │   ├── DeviceInfoAwarePostprocessor.java
+│           │                   │   │   ├── HugeAppWarningPostprocessor.java
+│           │                   │   │   ├── Postprocessor.java
+│           │                   │   │   └── SortPostprocessor.java
+│           │                   │   ├── resolver
+│           │                   │   │   ├── appmeta
+│           │                   │   │   │   ├── AppMeta.java
+│           │                   │   │   │   ├── AppMetaExtractor.java
+│           │                   │   │   │   ├── DefaultAppMetaExtractor.java
+│           │                   │   │   │   ├── apkm
+│           │                   │   │   │   │   └── ApkmAppMetaExtractor.java
+│           │                   │   │   │   ├── apks
+│           │                   │   │   │   │   └── SaiAppMetaExtractor.java
+│           │                   │   │   │   ├── brute
+│           │                   │   │   │   │   └── BruteAppMetaExtractor.java
+│           │                   │   │   │   ├── installedapp
+│           │                   │   │   │   │   └── InstalledAppAppMetaExtractor.java
+│           │                   │   │   │   └── xapk
+│           │                   │   │   │       └── XapkAppMetaExtractor.java
+│           │                   │   │   ├── meta
+│           │                   │   │   │   ├── ApkSourceFile.java
+│           │                   │   │   │   ├── ApkSourceMetaResolutionError.java
+│           │                   │   │   │   ├── ApkSourceMetaResolutionResult.java
+│           │                   │   │   │   ├── Notice.java
+│           │                   │   │   │   ├── SplitApkSourceMetaResolver.java
+│           │                   │   │   │   └── impl
+│           │                   │   │   │       ├── DefaultSplitApkSourceMetaResolver.java
+│           │                   │   │   │       ├── InstalledAppApkSourceFile.java
+│           │                   │   │   │       └── ZipFileApkSourceFile.java
+│           │                   │   │   └── urimess
+│           │                   │   │       ├── SourceType.java
+│           │                   │   │       ├── UriHost.java
+│           │                   │   │       ├── UriHostFactory.java
+│           │                   │   │       ├── UriMessResolutionError.java
+│           │                   │   │       ├── UriMessResolutionResult.java
+│           │                   │   │       ├── UriMessResolver.java
+│           │                   │   │       └── impl
+│           │                   │   │           ├── AndroidUriHost.java
+│           │                   │   │           └── DefaultUriMessResolver.java
+│           │                   │   ├── splitmeta
+│           │                   │   │   ├── BaseSplitMeta.java
+│           │                   │   │   ├── FeatureSplitMeta.java
+│           │                   │   │   ├── SplitMeta.java
+│           │                   │   │   ├── UnknownSplitMeta.java
+│           │                   │   │   └── config
+│           │                   │   │       ├── AbiConfigSplitMeta.java
+│           │                   │   │       ├── ConfigSplitMeta.java
+│           │                   │   │       ├── LocaleConfigSplitMeta.java
+│           │                   │   │       ├── ScreenDestinyConfigSplitMeta.java
+│           │                   │   │       └── UnknownConfigSplitMeta.java
+│           │                   │   └── util
+│           │                   │       └── AndroidBinXmlParser.java
+│           │                   ├── legal
+│           │                   │   ├── DefaultLegalStuffProvider.java
+│           │                   │   └── LegalStuffProvider.java
+│           │                   ├── model
+│           │                   │   ├── apksource
+│           │                   │   │   ├── ApkSource.java
+│           │                   │   │   ├── CopyToFileApkSource.java
+│           │                   │   │   ├── DefaultApkSource.java
+│           │                   │   │   ├── FilterApkSource.java
+│           │                   │   │   ├── SignerApkSource.java
+│           │                   │   │   ├── ZipApkSource.java
+│           │                   │   │   ├── ZipBackedApkSource.java
+│           │                   │   │   ├── ZipExtractorApkSource.java
+│           │                   │   │   └── ZipFileApkSource.java
+│           │                   │   ├── backup
+│           │                   │   │   ├── BackupNameFormatBuilder.java
+│           │                   │   │   ├── BackupPackagesFilterConfig.java
+│           │                   │   │   ├── SaiExportedAppMeta.java
+│           │                   │   │   ├── SaiExportedAppMeta2.java
+│           │                   │   │   ├── SimpleAppFeature.java
+│           │                   │   │   └── SplitApkPart.java
+│           │                   │   ├── common
+│           │                   │   │   ├── AppFeature.java
+│           │                   │   │   └── PackageMeta.java
+│           │                   │   ├── filedescriptor
+│           │                   │   │   ├── ContentUriFileDescriptor.java
+│           │                   │   │   ├── FileDescriptor.java
+│           │                   │   │   └── NormalFileDescriptor.java
+│           │                   │   └── licenses
+│           │                   │       └── License.java
+│           │                   ├── shell
+│           │                   │   ├── Shell.java
+│           │                   │   ├── ShizukuShell.java
+│           │                   │   └── SuShell.java
+│           │                   ├── shizuku
+│           │                   │   └── SuiInitProvider.java
+│           │                   ├── ui
+│           │                   │   ├── activities
+│           │                   │   │   ├── AboutActivity.java
+│           │                   │   │   ├── ApkActionViewProxyActivity.java
+│           │                   │   │   ├── BackupManageAppActivity.java
+│           │                   │   │   ├── BackupSettingsActivity.java
+│           │                   │   │   ├── ConfirmationIntentWrapperActivity.java
+│           │                   │   │   ├── DonateActivity.java
+│           │                   │   │   ├── LicensesActivity.java
+│           │                   │   │   ├── MainActivity.java
+│           │                   │   │   ├── MiActivity.java
+│           │                   │   │   ├── PreferencesActivity.java
+│           │                   │   │   └── ThemedActivity.java
+│           │                   │   ├── dialogs
+│           │                   │   │   ├── AppInstalledDialogFragment.java
+│           │                   │   │   ├── BackupDialogFragment.java
+│           │                   │   │   ├── BatchBackupDialogFragment.java
+│           │                   │   │   ├── DarkLightThemeSelectionDialogFragment.java
+│           │                   │   │   ├── DeleteBackupConfirmationDialog.java
+│           │                   │   │   ├── DonationSuggestionDialogFragment.java
+│           │                   │   │   ├── ErrorLogDialogFragment.java
+│           │                   │   │   ├── ErrorLogDialogFragment2.java
+│           │                   │   │   ├── FilePickerDialogFragment.java
+│           │                   │   │   ├── InstallationConfirmationDialogFragment.java
+│           │                   │   │   ├── InstallerXDialogFragment.java
+│           │                   │   │   ├── MiuiWarningDialogFragment.java
+│           │                   │   │   ├── NameFormatBuilderDialogFragment.java
+│           │                   │   │   ├── OneTimeWarningDialogFragment.java
+│           │                   │   │   ├── RestoreBackupDialogFragment.java
+│           │                   │   │   ├── SimpleAlertDialogFragment.java
+│           │                   │   │   ├── SingleChoiceListDialogFragment.java
+│           │                   │   │   ├── ThemeSelectionDialogFragment.java
+│           │                   │   │   ├── UriDirectoryPickerDialogFragment.java
+│           │                   │   │   └── base
+│           │                   │   │       └── BaseBottomSheetDialogFragment.java
+│           │                   │   ├── fragments
+│           │                   │   │   ├── BackupFragment.java
+│           │                   │   │   ├── BackupManageAppFragment.java
+│           │                   │   │   ├── DonateFragment.java
+│           │                   │   │   ├── Installer2Fragment.java
+│           │                   │   │   ├── InstallerFragment.java
+│           │                   │   │   ├── LegacyInstallerFragment.java
+│           │                   │   │   ├── PreferencesFragment.java
+│           │                   │   │   ├── SaiBaseFragment.java
+│           │                   │   │   ├── SuperSecretPreferencesFragment.java
+│           │                   │   │   └── miui
+│           │                   │   │       └── MiEntryFragment.java
+│           │                   │   └── recycler
+│           │                   │       ├── InstallerXAdapterDividerItemDecoration.java
+│           │                   │       └── RecyclerPaddingDecoration.java
+│           │                   ├── utils
+│           │                   │   ├── AlertsUtils.java
+│           │                   │   ├── BackupNameFormat.java
+│           │                   │   ├── BiConsumer.java
+│           │                   │   ├── DbgPreferencesHelper.java
+│           │                   │   ├── DbgPreferencesKeys.java
+│           │                   │   ├── Event.java
+│           │                   │   ├── Event2.java
+│           │                   │   ├── FragmentNavigator.java
+│           │                   │   ├── IOUtils.java
+│           │                   │   ├── Locker.java
+│           │                   │   ├── Logs.java
+│           │                   │   ├── MapBackedLocker.java
+│           │                   │   ├── MathUtils.java
+│           │                   │   ├── MiuiUtils.java
+│           │                   │   ├── NotificationHelper.java
+│           │                   │   ├── PermissionsUtils.java
+│           │                   │   ├── PreferencesHelper.java
+│           │                   │   ├── PreferencesKeys.java
+│           │                   │   ├── PreferencesValues.java
+│           │                   │   ├── RwLock.java
+│           │                   │   ├── SimpleAsyncTask.java
+│           │                   │   ├── Stopwatch.java
+│           │                   │   ├── TextUtils.java
+│           │                   │   ├── Theme.java
+│           │                   │   ├── TriConsumer.java
+│           │                   │   ├── Utils.java
+│           │                   │   └── saf
+│           │                   │       ├── FileUtils.java
+│           │                   │       └── SafUtils.java
+│           │                   ├── view
+│           │                   │   ├── NonInteractiveRecyclerView.java
+│           │                   │   ├── ThemeView.java
+│           │                   │   ├── ViewSwitcherLayout.java
+│           │                   │   └── coolbar
+│           │                   │       └── Coolbar.java
+│           │                   └── viewmodels
+│           │                       ├── BackupDialogViewModel.java
+│           │                       ├── BackupManageAppViewModel.java
+│           │                       ├── BackupViewModel.java
+│           │                       ├── BatchBackupDialogViewModel.java
+│           │                       ├── DarkLightThemeSelectionViewModel.java
+│           │                       ├── InstallerViewModel.java
+│           │                       ├── InstallerXDialogViewModel.java
+│           │                       ├── LegacyInstallerViewModel.java
+│           │                       ├── LicensesViewModel.java
+│           │                       ├── MiEntryViewModel.java
+│           │                       ├── NameFormatBuilderViewModel.java
+│           │                       └── factory
+│           │                           ├── BackupManageAppViewModelFactory.java
+│           │                           ├── BatchBackupDialogViewModelFactory.java
+│           │                           └── InstallerXDialogViewModelFactory.java
+│           └── res
+│               ├── anim
+│               │   ├── alpha_in.xml
+│               │   └── alpha_out.xml
+│               ├── color
+│               │   ├── selector_bottom_navigation.xml
+│               │   ├── selector_chip_background_color_filter.xml
+│               │   ├── selector_chip_background_color_selection.xml
+│               │   ├── selector_chip_text_color_selection.xml
+│               │   ├── selector_fastscroll_thumb_color.xml
+│               │   ├── selector_outlined_button_outline_color.xml
+│               │   ├── selector_outlined_button_text_color.xml
+│               │   ├── selector_radio_button.xml
+│               │   ├── selector_theme_card_ripple.xml
+│               │   └── textinputlayout_outline_color.xml
+│               ├── drawable
+│               │   ├── bg_outline_button.xml
+│               │   ├── bg_rounded_alert_dialog.xml
+│               │   ├── bg_rounded_popup.xml
+│               │   ├── fastscroll_thumb.xml
+│               │   ├── fastscroll_thumb_shape.xml
+│               │   ├── ic_backup_enqueue.xml
+│               │   ├── ic_backup_status_higher_version.xml
+│               │   ├── ic_backup_status_lower_version.xml
+│               │   ├── ic_backup_status_no_backup.xml
+│               │   ├── ic_backup_status_not_installed.xml
+│               │   ├── ic_backup_status_same_version.xml
+│               │   ├── ic_chip_checked.xml
+│               │   ├── ic_clear_selection.xml
+│               │   ├── ic_dark_theme_2.xml
+│               │   ├── ic_delete.xml
+│               │   ├── ic_donation_status_donated.xml
+│               │   ├── ic_donation_status_floss.xml
+│               │   ├── ic_donation_status_not_donated.xml
+│               │   ├── ic_donation_status_pending.xml
+│               │   ├── ic_donation_status_unknown.xml
+│               │   ├── ic_error.xml
+│               │   ├── ic_filter.xml
+│               │   ├── ic_go_back.xml
+│               │   ├── ic_help.xml
+│               │   ├── ic_install_full.xml
+│               │   ├── ic_launch.xml
+│               │   ├── ic_light_theme.xml
+│               │   ├── ic_more.xml
+│               │   ├── ic_pref_analytics.xml
+│               │   ├── ic_pref_auto_theme.xml
+│               │   ├── ic_pref_backup_dir.xml
+│               │   ├── ic_pref_backup_name_format.xml
+│               │   ├── ic_pref_backup_settings.xml
+│               │   ├── ic_pref_donate.xml
+│               │   ├── ic_pref_enable_apk_action_view.xml
+│               │   ├── ic_pref_feature.xml
+│               │   ├── ic_pref_home.xml
+│               │   ├── ic_pref_info.xml
+│               │   ├── ic_pref_install_location.xml
+│               │   ├── ic_pref_key.xml
+│               │   ├── ic_pref_old_installer.xml
+│               │   ├── ic_pref_pro_mode.xml
+│               │   ├── ic_pref_root.xml
+│               │   ├── ic_pref_show_dialogs.xml
+│               │   ├── ic_pref_sort.xml
+│               │   ├── ic_pref_theme.xml
+│               │   ├── ic_pref_unarchive.xml
+│               │   ├── ic_restore.xml
+│               │   ├── ic_search.xml
+│               │   ├── ic_select_all.xml
+│               │   ├── ic_warning.xml
+│               │   └── placeholder_donate_product.xml
+│               ├── drawable-v26
+│               │   └── icon_b.xml
+│               ├── drawable-xhdpi
+│               │   └── tv_banner.png
+│               ├── drawable-xxhdpi
+│               │   └── tv_banner.png
+│               ├── drawable-xxxhdpi
+│               │   ├── ic_alert.png
+│               │   ├── ic_analytics.png
+│               │   ├── ic_auto_theme.png
+│               │   ├── ic_backup.png
+│               │   ├── ic_backup_dir.png
+│               │   ├── ic_backup_name_format.png
+│               │   ├── ic_dark_theme.png
+│               │   ├── ic_donate.png
+│               │   ├── ic_feature.png
+│               │   ├── ic_history.png
+│               │   ├── ic_home.png
+│               │   ├── ic_info.png
+│               │   ├── ic_install.png
+│               │   ├── ic_install_location.png
+│               │   ├── ic_key.png
+│               │   ├── ic_open_via.png
+│               │   ├── ic_pro_mode.png
+│               │   ├── ic_root.png
+│               │   ├── ic_settings.png
+│               │   ├── ic_sort.png
+│               │   ├── ic_unarchive.png
+│               │   ├── logo.png
+│               │   ├── placeholder_app_icon.png
+│               │   └── tv_banner.png
+│               ├── drawable-xxxhdpi-v26
+│               │   └── icon_f.png
+│               ├── layout
+│               │   ├── activity_about.xml
+│               │   ├── activity_backup_manage_app.xml
+│               │   ├── activity_backup_settings.xml
+│               │   ├── activity_donate.xml
+│               │   ├── activity_licenses.xml
+│               │   ├── activity_main.xml
+│               │   ├── activity_mi.xml
+│               │   ├── activity_preferences.xml
+│               │   ├── dialog_backup.xml
+│               │   ├── dialog_bottom_sheet_base.xml
+│               │   ├── dialog_dark_light_theme_selection.xml
+│               │   ├── dialog_donation_suggestion.xml
+│               │   ├── dialog_filter.xml
+│               │   ├── dialog_installerx.xml
+│               │   ├── dialog_name_format_builder.xml
+│               │   ├── fragment_backup.xml
+│               │   ├── fragment_backup_manage_app.xml
+│               │   ├── fragment_donate.xml
+│               │   ├── fragment_installer.xml
+│               │   ├── fragment_installer2.xml
+│               │   ├── fragment_local_backup_storage_setup.xml
+│               │   ├── fragment_mi_entry.xml
+│               │   ├── item_backup_app_details_backup.xml
+│               │   ├── item_backup_app_details_header.xml
+│               │   ├── item_backup_app_feature.xml
+│               │   ├── item_backup_component.xml
+│               │   ├── item_backup_dialog_split_part.xml
+│               │   ├── item_backup_package.xml
+│               │   ├── item_donate_header.xml
+│               │   ├── item_donate_product.xml
+│               │   ├── item_installer_session.xml
+│               │   ├── item_installerx_header.xml
+│               │   ├── item_installerx_notice.xml
+│               │   ├── item_installerx_split_category.xml
+│               │   ├── item_installerx_split_part.xml
+│               │   ├── item_license.xml
+│               │   ├── item_name_format_builder_chip.xml
+│               │   ├── item_single_choice_dialog.xml
+│               │   └── item_theme.xml
+│               ├── menu
+│               │   ├── app_details.xml
+│               │   ├── backup_fragment.xml
+│               │   └── bottom_navigation.xml
+│               ├── mipmap-anydpi-v26
+│               │   └── icon.xml
+│               ├── mipmap-xxxhdpi
+│               │   └── icon.png
+│               ├── values
+│               │   ├── arrays.xml
+│               │   ├── attrs.xml
+│               │   ├── colors.xml
+│               │   ├── dimens.xml
+│               │   ├── strings.xml
+│               │   └── styles.xml
+│               ├── values-ar
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-az
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-bg
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-de
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-el
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-es
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-fr
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-it
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-ja
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-ko
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-pl
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-pt-rBR
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-ru
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-sv-rSE
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-tr
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-uk
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-v23
+│               │   └── styles.xml
+│               ├── values-v27
+│               │   └── styles.xml
+│               ├── values-vi
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-zh-rCN
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               ├── values-zh-rTW
+│               │   ├── arrays.xml
+│               │   └── strings.xml
+│               └── xml
+│                   ├── preferences_lbs.xml
+│                   ├── preferences_main.xml
+│                   └── preferences_super_secret.xml
+├── assets
+│   └── icon
+│       ├── ic_install_full.svg
+│       ├── sai_banner.psd
+│       ├── sai_icon_xxxhdpi.psd
+│       ├── sai_icon_xxxhdpi_adaptive.psd
+│       └── sai_logo.psd
+├── build.gradle
+├── gradle
+│   ├── gradle-daemon-jvm.properties
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradle.properties
+├── gradlew
+├── gradlew.bat
+├── local.properties
+├── settings.gradle
+└── tree.log
+
+134 directories, 494 files
