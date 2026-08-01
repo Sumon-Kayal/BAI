@@ -14,7 +14,7 @@
 
     </FrameLayout>
 
-    <com.aefyr.sai.view.coolbar.Coolbar
+    <com.sumon.bundleapp.installer.view.coolbar.Coolbar
         android:id="@+id/coolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

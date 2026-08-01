@@ -46,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_about_app"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center"
                     android:text="@string/about_author"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
