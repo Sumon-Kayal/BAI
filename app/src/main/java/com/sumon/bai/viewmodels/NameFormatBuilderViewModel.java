@@ -1,4 +1,4 @@
-package com.aefyr.sai.viewmodels;
+package com.sumon.bundleapp.installer.viewmodels;
 
 import android.content.Context;
 
@@ -8,10 +8,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.aefyr.sai.adapters.selection.Selection;
-import com.aefyr.sai.adapters.selection.SimpleKeyStorage;
-import com.aefyr.sai.model.backup.BackupNameFormatBuilder;
-import com.aefyr.sai.model.common.PackageMeta;
+import com.sumon.bundleapp.installer.adapters.selection.Selection;
+import com.sumon.bundleapp.installer.adapters.selection.SimpleKeyStorage;
+import com.sumon.bundleapp.installer.model.backup.BackupNameFormatBuilder;
+import com.sumon.bundleapp.installer.model.common.PackageMeta;
 
 import java.util.Collection;
 import java.util.Objects;

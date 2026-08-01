@@ -1,4 +1,6 @@
-package com.aefyr.sai.adapters;
+package com.sumon.bundleapp.installer.adapters;
+
+import com.sumon.bundleapp.installer.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,10 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aefyr.sai.R;
-import com.aefyr.sai.adapters.selection.SelectableAdapter;
-import com.aefyr.sai.adapters.selection.Selection;
-import com.aefyr.sai.model.backup.BackupNameFormatBuilder;
+import com.sumon.bundleapp.installer.adapters.selection.SelectableAdapter;
+import com.sumon.bundleapp.installer.adapters.selection.Selection;
+import com.sumon.bundleapp.installer.model.backup.BackupNameFormatBuilder;
 import com.google.android.material.chip.Chip;
 
 import java.util.List;

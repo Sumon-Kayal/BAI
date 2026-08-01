@@ -1,4 +1,4 @@
-package com.aefyr.sai.analytics;
+package com.sumon.bundleapp.installer.analytics;
 
 import android.content.Context;
 

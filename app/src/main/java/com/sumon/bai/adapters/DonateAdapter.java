@@ -1,4 +1,6 @@
-package com.aefyr.sai.adapters;
+package com.sumon.bundleapp.installer.adapters;
+
+import com.sumon.bundleapp.installer.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -13,10 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aefyr.sai.R;
-import com.aefyr.sai.billing.BillingProduct;
-import com.aefyr.sai.billing.DonationStatus;
-import com.aefyr.sai.billing.DonationStatusRenderer;
+import com.sumon.bundleapp.installer.billing.BillingProduct;
+import com.sumon.bundleapp.installer.billing.DonationStatus;
+import com.sumon.bundleapp.installer.billing.DonationStatusRenderer;
 import com.bumptech.glide.Glide;
 
 import java.util.List;

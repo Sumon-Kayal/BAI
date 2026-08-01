@@ -1,4 +1,4 @@
-package com.aefyr.sai.viewmodels;
+package com.sumon.bundleapp.installer.viewmodels;
 
 import android.app.Application;
 import android.net.Uri;
@@ -8,14 +8,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.aefyr.sai.installer.ApkSourceBuilder;
-import com.aefyr.sai.installer2.base.SaiPiSessionObserver;
-import com.aefyr.sai.installer2.base.model.SaiPiSessionParams;
-import com.aefyr.sai.installer2.base.model.SaiPiSessionState;
-import com.aefyr.sai.installer2.impl.FlexSaiPackageInstaller;
-import com.aefyr.sai.model.apksource.ApkSource;
-import com.aefyr.sai.utils.Event2;
-import com.aefyr.sai.utils.PreferencesHelper;
+import com.sumon.bundleapp.installer.installer.ApkSourceBuilder;
+import com.sumon.bundleapp.installer.installer2.base.SaiPiSessionObserver;
+import com.sumon.bundleapp.installer.installer2.base.model.SaiPiSessionParams;
+import com.sumon.bundleapp.installer.installer2.base.model.SaiPiSessionState;
+import com.sumon.bundleapp.installer.installer2.impl.FlexSaiPackageInstaller;
+import com.sumon.bundleapp.installer.model.apksource.ApkSource;
+import com.sumon.bundleapp.installer.utils.Event2;
+import com.sumon.bundleapp.installer.utils.PreferencesHelper;
 
 import java.io.File;
 import java.util.List;

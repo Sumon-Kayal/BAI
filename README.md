@@ -9,13 +9,13 @@ BAI (Bundle APKs Installer) is an Android app that lets you install split APKs (
 BAI is not published on Google Play or F-Droid — grab the APK directly from [Releases](../../releases/latest).
 
 ## State of BAI
-
-BAI is a fork of [SAI](https://github.com/Aefyr/SAI). The OG project is dead since 2021. If you're looking for an actual backup solution, you can try [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) or [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
+BAI is a fork of [SAI](https://github.com/Aefyr/SAI) by polychromaticfox, maintained by Sumon Kayal. If you're looking for an actual backup solution, you can try [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) or [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
 
 ## What's different from upstream SAI
-- **No Google Play Billing, no Firebase/Analytics, no F-Droid build flavor.** BAI ships as a single build variant with no telemetry and no in-app purchases; the donate screen links out to an external donation page instead.
+
 - **Distributed only through GitHub Releases**, built by this repo's own CI — not affiliated with Play Store or F-Droid.
-- **Modernized build:** targets Android 15 (API 35) while maintaining support for Android 5.0 (API 21) and later. The project uses AGP 4.1.2 and Gradle 6.5, with dependencies pinned to stable, tested versions (including AndroidX AppCompat 1.2.0, Room 2.2.6, Glide 4.11.0, Material 1.3.0-rc01, and Shizuku 11.0.1).
+- **Single build variant.** Based on SAI's F-Droid flavor (no Google Play Billing to begin with); the `normal`/Play Store flavor has been removed entirely rather than kept alongside it.
+- **Modernized build:** AGP 8.8.0, Gradle 8.11.1, JDK 17, compileSdk/targetSdk 35 (Android 15) while keeping minSdk 21 (Android 5.0). Two dependencies that no longer resolve on JitPack (`pseudoapksigner`, `flexfilter`) were vendored as plain Java source rather than replaced with alternatives, so behavior is unchanged.
 - **CodeQL security scanning** runs on every push/PR via `.github/workflows/codeql.yml`.
 - Package name changed to `com.sumon.bundleapp.installer` so it can install side-by-side with the original SAI if you still have it.
 
@@ -31,18 +31,15 @@ cd BAI
 ./gradlew assembleRelease
 ```
 
-The unsigned APKs will be at `app/build/outputs/apk/normal/release/` (there is no `playstore` or `fdroid`). flavour 
+The APK will be at `app/build/outputs/apk/release/`. It is unsigned unless release signing is configured. See `.github/workflows/release.yml` for how releases are built and published on tag push.
 
 ## Contributing
-
 Please read [Contributing guide](/CONTRIBUTING.md)
 
 ## Exported .apks files meta
-
 BAI adds some meta information to .apks files it exports, you can find the description of the format it uses in the [Meta format description](/META-FORMAT.md)
 
 ## EULA
-
 By using Bundle APKs Installer (BAI), you agree to the terms outlined in the [End-User License Agreement](/EULA.md). Please ensure you read and understand it before installing or distributing split APKs.
 
 ## License

@@ -1,4 +1,4 @@
-package com.aefyr.sai.viewmodels;
+package com.sumon.bundleapp.installer.viewmodels;
 
 import android.app.Application;
 
@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.aefyr.sai.utils.MiuiUtils;
+import com.sumon.bundleapp.installer.utils.MiuiUtils;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

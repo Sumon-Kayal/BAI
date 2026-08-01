@@ -1,4 +1,6 @@
-package com.aefyr.sai.adapters;
+package com.sumon.bundleapp.installer.adapters;
+
+import com.sumon.bundleapp.installer.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,10 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aefyr.sai.R;
-import com.aefyr.sai.backup2.BackupComponent;
-import com.aefyr.sai.backup2.impl.components.StandardComponentTypes;
-import com.aefyr.sai.utils.Utils;
+import com.sumon.bundleapp.installer.backup2.BackupComponent;
+import com.sumon.bundleapp.installer.backup2.impl.components.StandardComponentTypes;
+import com.sumon.bundleapp.installer.utils.Utils;
 import com.google.android.material.chip.Chip;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.aefyr.sai">
+    package="com.sumon.bundleapp.installer">
 
     <uses-sdk tools:overrideLibrary="rikka.shizuku.provider, rikka.shizuku.api, rikka.shizuku.shared, rikka.shizuku.aidl" />
 
@@ -17,6 +17,14 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <!-- Required from API 33+: without this, backup-progress notifications
+         silently never show. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Required from API 30+: without this, the app's own purpose (listing
+         every installed app for backup) silently returns almost nothing. -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
     <uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
 
     <application
@@ -28,12 +36,13 @@
         android:roundIcon="@mipmap/icon"
         android:theme="@style/AppTheme.Light"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.activities.BackupSettingsActivity" />
-        <activity android:name=".ui.activities.BackupManageAppActivity" />
-        <activity android:name=".ui.activities.DonateActivity" />
-        <activity android:name=".ui.activities.MiActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.BackupManageAppActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.DonateActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.MiActivity" />
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name="com.sumon.bundleapp.installer.ui.activities.MainActivity"
+            android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -276,7 +285,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.ApkActionViewProxyActivity">
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.ApkActionViewProxyActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -295,16 +304,16 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".installer.rootless.RootlessSAIPIService" />
+        <service android:name="com.sumon.bundleapp.installer.installer.rootless.RootlessSAIPIService" />
 
-        <activity android:name=".ui.activities.PreferencesActivity" />
-        <activity android:name=".ui.activities.AboutActivity" />
-        <activity android:name=".ui.activities.ConfirmationIntentWrapperActivity" />
-        <activity android:name=".ui.activities.LicensesActivity" />
-        <activity android:name=".installer2.impl.rootless.ConfirmationIntentWrapperActivity2" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.PreferencesActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.AboutActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.ConfirmationIntentWrapperActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.LicensesActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.installer2.impl.rootless.ConfirmationIntentWrapperActivity2" />
 
 
-        <service android:name=".backup2.impl.BackupService2" />
+        <service android:name="com.sumon.bundleapp.installer.backup2.impl.BackupService2" android:foregroundServiceType="dataSync" />
 
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
@@ -315,14 +324,8 @@
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
         <provider
-            android:name=".shizuku.SuiInitProvider"
+            android:name="com.sumon.bundleapp.installer.shizuku.SuiInitProvider"
             android:authorities="${applicationId}.shizuku.sui.init"
-            android:enabled="true"
-            android:exported="false" />
-
-        <provider
-            android:name=".flavor.FlavorInitProvider"
-            android:authorities="${applicationId}.flavor.init"
             android:enabled="true"
             android:exported="false" />
     </application>

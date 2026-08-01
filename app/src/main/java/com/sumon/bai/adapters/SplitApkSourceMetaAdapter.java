@@ -1,4 +1,6 @@
-package com.aefyr.sai.adapters;
+package com.sumon.bundleapp.installer.adapters;
+
+import com.sumon.bundleapp.installer.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,14 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aefyr.sai.R;
-import com.aefyr.sai.adapters.selection.SelectableAdapter;
-import com.aefyr.sai.adapters.selection.Selection;
-import com.aefyr.sai.installerx.common.SplitApkSourceMeta;
-import com.aefyr.sai.installerx.common.SplitCategory;
-import com.aefyr.sai.installerx.common.SplitPart;
-import com.aefyr.sai.installerx.resolver.appmeta.AppMeta;
-import com.aefyr.sai.installerx.resolver.meta.Notice;
+import com.sumon.bundleapp.installer.adapters.selection.SelectableAdapter;
+import com.sumon.bundleapp.installer.adapters.selection.Selection;
+import com.sumon.bundleapp.installer.installerx.common.SplitApkSourceMeta;
+import com.sumon.bundleapp.installer.installerx.common.SplitCategory;
+import com.sumon.bundleapp.installer.installerx.common.SplitPart;
+import com.sumon.bundleapp.installer.installerx.resolver.appmeta.AppMeta;
+import com.sumon.bundleapp.installer.installerx.resolver.meta.Notice;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

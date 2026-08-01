@@ -1,4 +1,6 @@
-package com.aefyr.sai.adapters;
+package com.sumon.bundleapp.installer.adapters;
+
+import com.sumon.bundleapp.installer.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,9 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.aefyr.sai.R;
-import com.aefyr.sai.installer2.base.model.SaiPiSessionState;
-import com.aefyr.sai.model.common.PackageMeta;
+import com.sumon.bundleapp.installer.installer2.base.model.SaiPiSessionState;
+import com.sumon.bundleapp.installer.model.common.PackageMeta;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
