@@ -1,4 +1,4 @@
-package com.aefyr.sai.adapters.selection;
+package com.sumon.bundleapp.installer.adapters.selection;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
