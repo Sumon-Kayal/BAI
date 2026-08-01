@@ -31,7 +31,7 @@ cd BAI
 ./gradlew assembleRelease
 ```
 
-The unsigned APK will be at `app/build/outputs/apk/release/`. See `.github/workflows/release.yml` for how releases are built and published on tag push.
+The APK will be at `app/build/outputs/apk/release/`. It is unsigned unless release signing is configured. See `.github/workflows/release.yml` for how releases are built and published on tag push.
 
 ## Contributing
 Please read [Contributing guide](/CONTRIBUTING.md)
