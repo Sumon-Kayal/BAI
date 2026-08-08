@@ -64,12 +64,18 @@ public class Theme {
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-        mMode = Mode.valueOf(
-                mPrefs.getString(
-                        PreferencesKeys.THEME_MODE,
-                        Utils.apiIsAtLeast(Build.VERSION_CODES.Q)
-                                ? Mode.AUTO_LIGHT_DARK.name()
-                                : Mode.CONCRETE.name()));
+        String defaultMode = Utils.apiIsAtLeast(Build.VERSION_CODES.Q)
+                ? Mode.AUTO_LIGHT_DARK.name()
+                : Mode.CONCRETE.name();
+
+        try {
+            mMode = Mode.valueOf(
+                    mPrefs.getString(
+                            PreferencesKeys.THEME_MODE,
+                            defaultMode));
+        } catch (IllegalArgumentException e) {
+            mMode = Mode.valueOf(defaultMode);
+        }
 
         mThemes = new ArrayList<>();
         mThemes.add(new ThemeDescriptor(0, R.style.AppTheme_Light, false, R.string.theme_sai));

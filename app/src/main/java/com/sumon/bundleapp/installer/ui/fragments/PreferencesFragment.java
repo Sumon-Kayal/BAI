@@ -43,7 +43,10 @@ import com.github.angads25.filepicker.model.DialogProperties;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import rikka.shizuku.Shizuku;
 
@@ -69,6 +72,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     private Preference mAutoThemePicker;
 
     private FilePickerDialogFragment mPendingFilePicker;
+
+    private final ExecutorService mBackgroundExecutor = Executors.newCachedThreadPool();
+    private Boolean mShizukuAvailableCache = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -274,14 +280,20 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
 
         findPreference(PreferencesKeys.USE_ROOT)
                 .setOnPreferenceChangeListener((preference, newValue) -> {
-                    if ((boolean) newValue && !SuShell.isRootAvailable()) {
-                        SimpleAlertDialogFragment.newInstance(
-                                requireContext(),
-                                R.string.error,
-                                R.string.settings_main_root_unavailable
-                        ).show(getChildFragmentManager(), null);
-
-                        return false;
+                    if ((boolean) newValue) {
+                        mBackgroundExecutor.execute(() -> {
+                            boolean rootAvailable = SuShell.isRootAvailable();
+                            requireActivity().runOnUiThread(() -> {
+                                if (!rootAvailable) {
+                                    SimpleAlertDialogFragment.newInstance(
+                                            requireContext(),
+                                            R.string.error,
+                                            R.string.settings_main_root_unavailable
+                                    ).show(getChildFragmentManager(), null);
+                                    ((SwitchPreference) preference).setChecked(false);
+                                }
+                            });
+                        });
                     }
 
                     return true;
@@ -359,23 +371,41 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     }
 
     private void updateFilePickerSortSummary() {
+        String[] sortVariants = getResources().getStringArray(
+                R.array.file_picker_sort_variants
+        );
+        int sortIndex = mHelper.getFilePickerRawSort();
+
+        // Clamp index to valid range
+        if (sortIndex < 0 || sortIndex >= sortVariants.length) {
+            sortIndex = 0;
+            mHelper.setFilePickerRawSort(sortIndex);
+        }
+
         mFilePickerSortPref.setSummary(
                 getString(
                         R.string.settings_main_file_picker_sort_summary,
-                        getResources().getStringArray(
-                                R.array.file_picker_sort_variants
-                        )[mHelper.getFilePickerRawSort()]
+                        sortVariants[sortIndex]
                 )
         );
     }
 
     private void updateInstallerSummary() {
+        String[] installers = getResources().getStringArray(
+                R.array.installers
+        );
+        int installerIndex = mHelper.getInstaller();
+
+        // Clamp index to valid range
+        if (installerIndex < 0 || installerIndex >= installers.length) {
+            installerIndex = PreferencesValues.INSTALLER_ROOTLESS;
+            mHelper.setInstaller(installerIndex);
+        }
+
         mInstallerPref.setSummary(
                 getString(
                         R.string.settings_main_installer_summary,
-                        getResources().getStringArray(
-                                R.array.installers
-                        )[mHelper.getInstaller()]
+                        installers[installerIndex]
                 )
         );
     }
@@ -423,11 +453,22 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             return 0;
         }
 
-        String languageTag = locales.toLanguageTags();
+        Locale currentLocale = locales.get(0);
+        if (currentLocale == null) {
+            return 0;
+        }
 
         for (int i = 1; i < APP_LANGUAGE_TAGS.length; i++) {
-            if (APP_LANGUAGE_TAGS[i].equalsIgnoreCase(languageTag)) {
-                return i;
+            LocaleListCompat tagLocales = LocaleListCompat.forLanguageTags(APP_LANGUAGE_TAGS[i]);
+            if (!tagLocales.isEmpty()) {
+                Locale tagLocale = tagLocales.get(0);
+                if (tagLocale != null
+                        && currentLocale.getLanguage().equals(tagLocale.getLanguage())
+                        && (currentLocale.getCountry().isEmpty()
+                            || tagLocale.getCountry().isEmpty()
+                            || currentLocale.getCountry().equals(tagLocale.getCountry()))) {
+                    return i;
+                }
             }
         }
 
@@ -454,10 +495,19 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             ).show(getChildFragmentManager(), "file_picker");
 
         } else {
-            mPendingFilePicker = new FilePickerDialogFragment(
+            DialogProperties properties = new DialogProperties();
+            properties.selection_mode = DialogConfigs.SINGLE_MODE;
+            properties.selection_type = DialogConfigs.DIR_SELECT;
+            properties.root = new File(
+                    mHelper.getHomeDirectory() != null
+                            ? mHelper.getHomeDirectory()
+                            : Environment.getExternalStorageDirectory().getAbsolutePath()
+            );
+
+            mPendingFilePicker = FilePickerDialogFragment.newInstance(
                     "home",
                     getString(R.string.settings_main_home_directory),
-                    null
+                    properties
             );
 
             PermissionsUtils.requestStoragePermission(
@@ -471,28 +521,50 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         Preference useRootPref =
                 findPreference(PreferencesKeys.USE_ROOT);
 
-        useRootPref.setSummary(
-                getString(
-                        R.string.settings_main_use_root_summary,
-                        Utils.apiIsAtLeast(Build.VERSION_CODES.M)
-                                ? SuShell.getSuVersion()
-                                : getString(R.string.not_available)
-                )
-        );
+        if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
+            mBackgroundExecutor.execute(() -> {
+                String suVersion = SuShell.getSuVersion();
+                requireActivity().runOnUiThread(() -> {
+                    useRootPref.setSummary(
+                            getString(
+                                    R.string.settings_main_use_root_summary,
+                                    suVersion
+                            )
+                    );
+                });
+            });
+        } else {
+            useRootPref.setSummary(
+                    getString(
+                            R.string.settings_main_use_root_summary,
+                            getString(R.string.not_available)
+                    )
+            );
+        }
     }
 
     private void updateUseShizukuSummary() {
         Preference useShizukuPref =
                 findPreference(PreferencesKeys.USE_SHIZUKU);
 
-        if (Shizuku.pingBinder()) {
+        if (mShizukuAvailableCache != null) {
             useShizukuPref.setSummary(
-                    getString(R.string.settings_main_use_shizuku_summary)
+                    mShizukuAvailableCache
+                            ? getString(R.string.settings_main_use_shizuku_summary)
+                            : getString(R.string.settings_main_shizuku_unavailable)
             );
         } else {
-            useShizukuPref.setSummary(
-                    getString(R.string.settings_main_shizuku_unavailable)
-            );
+            mBackgroundExecutor.execute(() -> {
+                boolean available = Shizuku.pingBinder();
+                requireActivity().runOnUiThread(() -> {
+                    mShizukuAvailableCache = available;
+                    useShizukuPref.setSummary(
+                            available
+                                    ? getString(R.string.settings_main_use_shizuku_summary)
+                                    : getString(R.string.settings_main_shizuku_unavailable)
+                    );
+                });
+            });
         }
     }
 
@@ -534,18 +606,17 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                 }
             }
         }
+    }
 
+    @Override
+    public void onRequestPermissionResult(int requestCode, int grantResult) {
         if (requestCode == PermissionsUtils.REQUEST_CODE_SHIZUKU) {
-            if (grantResults.length == 0
-                    || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
                 AlertsUtils.showAlert(
                         this,
                         R.string.error,
                         R.string.permissions_required_shizuku
-
                 );
-
             } else {
                 mHelper.setInstaller(
                         PreferencesValues.INSTALLER_SHIZUKU
@@ -637,8 +708,47 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                 break;
 
             case "installer":
-                mHelper.setInstaller(selectedItemIndex);
-                updateInstallerSummary();
+                // Validate availability before persisting
+                if (selectedItemIndex == PreferencesValues.INSTALLER_ROOTED) {
+                    mBackgroundExecutor.execute(() -> {
+                        boolean rootAvailable = SuShell.isRootAvailable();
+                        requireActivity().runOnUiThread(() -> {
+                            if (!rootAvailable) {
+                                SimpleAlertDialogFragment.newInstance(
+                                        requireContext(),
+                                        R.string.error,
+                                        R.string.settings_main_root_unavailable
+                                ).show(getChildFragmentManager(), null);
+                            } else {
+                                mHelper.setInstaller(selectedItemIndex);
+                                updateInstallerSummary();
+                            }
+                        });
+                    });
+                } else if (selectedItemIndex == PreferencesValues.INSTALLER_SHIZUKU) {
+                    mBackgroundExecutor.execute(() -> {
+                        boolean shizukuAvailable = Shizuku.pingBinder();
+                        requireActivity().runOnUiThread(() -> {
+                            if (!shizukuAvailable) {
+                                SimpleAlertDialogFragment.newInstance(
+                                        requireContext(),
+                                        R.string.error,
+                                        R.string.settings_main_shizuku_unavailable
+                                ).show(getChildFragmentManager(), null);
+                            } else if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
+                                Shizuku.requestPermission(
+                                        PermissionsUtils.REQUEST_CODE_SHIZUKU
+                                );
+                            } else {
+                                mHelper.setInstaller(selectedItemIndex);
+                                updateInstallerSummary();
+                            }
+                        });
+                    });
+                } else {
+                    mHelper.setInstaller(selectedItemIndex);
+                    updateInstallerSummary();
+                }
                 break;
         }
     }
