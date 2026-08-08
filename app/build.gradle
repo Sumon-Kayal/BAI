@@ -4,7 +4,9 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 def hasSigningConfig = keystorePropertiesFile.exists()
 if (hasSigningConfig) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    keystorePropertiesFile.withInputStream { input ->
+        keystoreProperties.load(input)
+    }
 }
 
 android {
@@ -17,14 +19,13 @@ android {
 
     defaultConfig {
         applicationId "com.sumon.bundleapp.installer"
-        minSdkVersion 21
-        targetSdkVersion 35
+        minSdk 21
+        targetSdk 35
         versionCode 61
         versionName "4.6"
 
         buildConfigField "int", "DEFAULT_THEME", "6"
         buildConfigField "int", "DEFAULT_DARK_THEME", "11"
-        buildConfigField "boolean", "HIDE_DONATE_BUTTON", "false"
     }
 
     signingConfigs {
@@ -56,6 +57,8 @@ android {
 }
 
 dependencies {
+    // Memory leak detection (debug builds only)
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     // AndroidX
@@ -94,7 +97,4 @@ dependencies {
     implementation "dev.rikka.shizuku:aidl:$shizuku_version"
 
     // Memory leak detection
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
 }
-
-

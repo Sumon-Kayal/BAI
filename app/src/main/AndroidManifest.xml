@@ -29,16 +29,17 @@
 
     <application
         android:allowBackup="false"
+        android:localeConfig="@xml/locales_config"
         android:banner="@drawable/tv_banner"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/icon"
         android:theme="@style/AppTheme.Light"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="33">
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity" />
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.BackupManageAppActivity" />
-        <activity android:name="com.sumon.bundleapp.installer.ui.activities.DonateActivity" />
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.MiActivity" />
         <activity
             android:name="com.sumon.bundleapp.installer.ui.activities.MainActivity"
@@ -310,6 +311,7 @@
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.AboutActivity" />
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.ConfirmationIntentWrapperActivity" />
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.LicensesActivity" />
+        <activity android:name="com.sumon.bundleapp.installer.ui.activities.EulaActivity" />
         <activity android:name="com.sumon.bundleapp.installer.installer2.impl.rootless.ConfirmationIntentWrapperActivity2" />
 
 
