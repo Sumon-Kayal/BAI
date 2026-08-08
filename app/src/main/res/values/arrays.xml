@@ -76,8 +76,8 @@
     <string-array name="name_format_parts">
         <item>Name</item>
         <item>Version</item>
-        <item>Package</item>
         <item>Version code</item>
+        <item>Package</item>
         <item>Timestamp</item>
     </string-array>
 
