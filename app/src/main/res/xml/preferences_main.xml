@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        android:title="@string/settings_category_main_languages"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:icon="@drawable/ic_pref_language"
+            android:key="app_language"
+            android:title="@string/settings_main_app_language" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/settings_category_main_ui"
         app:iconSpaceReserved="false">
 
@@ -138,18 +149,6 @@
             android:title="@string/settings_main_enable_apk_action_view"
             android:summary="@string/settings_main_enable_apk_action_view_summary"
             android:defaultValue="true" />
-
-        <SwitchPreference
-            android:icon="@drawable/ic_pref_analytics"
-            android:key="firebase_enabled"
-            android:title="@string/settings_main_enable_analytics"
-            android:summary="@string/settings_main_enable_analytics_summary"
-            android:defaultValue="true" />
-
-        <Preference
-            android:icon="@drawable/ic_pref_donate"
-            android:key="donate"
-            android:title="@string/settings_main_donate" />
 
         <Preference
             android:icon="@drawable/ic_pref_info"
