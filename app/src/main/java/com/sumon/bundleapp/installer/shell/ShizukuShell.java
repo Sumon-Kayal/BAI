@@ -10,6 +10,7 @@ import com.sumon.bundleapp.installer.utils.Utils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 
 import rikka.shizuku.Shizuku;
 import rikka.shizuku.ShizukuRemoteProcess;
@@ -58,6 +59,14 @@ public class ShizukuShell implements Shell {
         return "'" + arg.replace("'", "'\\''") + "'";
     }
 
+    // Shizuku.newProcess() has been made private in newer Shizuku API versions (in favor of
+    // UserService), but it is still functional under the hood. Invoke it via reflection.
+    private static ShizukuRemoteProcess newProcess(String[] cmd, @Nullable String[] env, @Nullable String dir) throws Exception {
+        Method method = Shizuku.class.getDeclaredMethod("newProcess", String[].class, String[].class, String.class);
+        method.setAccessible(true);
+        return (ShizukuRemoteProcess) method.invoke(null, cmd, env, dir);
+    }
+
     private Result execInternal(Command command, @Nullable InputStream inputPipe) {
         StringBuilder stdOutSb = new StringBuilder();
         StringBuilder stdErrSb = new StringBuilder();
@@ -65,7 +74,7 @@ public class ShizukuShell implements Shell {
         try {
             Command.Builder shCommand = new Command.Builder("sh", "-c", command.toString());
 
-            ShizukuRemoteProcess process = Shizuku.newProcess(shCommand.build().toStringArray(), null, null);
+            ShizukuRemoteProcess process = newProcess(shCommand.build().toStringArray(), null, null);
 
             Thread stdOutD = IOUtils.writeStreamToStringBuilder(stdOutSb, process.getInputStream());
             Thread stdErrD = IOUtils.writeStreamToStringBuilder(stdErrSb, process.getErrorStream());
