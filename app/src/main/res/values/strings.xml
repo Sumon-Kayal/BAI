@@ -195,6 +195,7 @@
     <string name="settings_title">Settings</string>
     <string name="settings_category_main_languages">Languages</string>
     <string name="settings_main_app_language">App language</string>
+    <string name="app_language_system_default">System default</string>
     <string name="settings_main_home_directory">Home directory</string>
     <string name="settings_main_home_directory_summary">Starting directory in APKs picker\nCurrently: %s</string>
     <string name="settings_main_file_picker_sort">Files sorting</string>
@@ -243,12 +244,20 @@
     <string name="settings_main_auto_theme_pre_q_warning">Please note that following the system theme may not work correctly on Android versions lower than Q</string>
     <string name="settings_main_use_installerx">Pro mode</string>
     <string name="settings_main_use_installerx_summary">Enable installer Pro mode that allows you to select parts to install from a .apks file (or other archives with multiple APK files). Please note that Pro mode is experimental and it may not work properly. Feedback is welcome</string>
-    <string name="settings_main_enable_analytics">Analytics</string>
-    <string name="settings_main_enable_analytics_summary">Allow BAI to collect analytics data such as app usage data and errors. You can find out more about data being collected in Privacy Policy which you can find on about screen. Changing this setting may not fully apply it until you restart BAI</string>
     <string name="settings_main_backup_settings">Backup settings</string>
     <string name="settings_main_backup_settings_summary">Tap to open backup settings</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
     <string name="settings_main_enable_apk_action_view_summary">Support opening .apk files via BAI from other apps. Can be disabled since on some ROMs this setting being enabled doesn\'t let you open .apk files at all</string>
+    <string name="settings_main_disable_animations">Disable animations</string>
+    <string name="settings_main_disable_animations_summary">Disable UI animations in the app</string>
+    <string name="settings_main_enable_legacy_mode">Enable legacy mode</string>
+    <string name="settings_main_enable_legacy_mode_summary">Use legacy installer implementation for compatibility</string>
+    <string name="settings_main_use_data_dir">Use data directory</string>
+    <string name="settings_main_use_data_dir_summary">Store temporary files in app data directory</string>
+    <string name="settings_main_allow_root">Allow root access</string>
+    <string name="settings_main_allow_root_summary">Allow the app to request root access when needed</string>
+    <string name="settings_main_allow_shizuku">Allow Shizuku access</string>
+    <string name="settings_main_allow_shizuku_summary">Allow the app to use Shizuku when available</string>
 
     <string name="name_format_builder_title">Select parts to include in backup file name</string>
     <string name="name_format_builder_preview">Preview: %s</string>

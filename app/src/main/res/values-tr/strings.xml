@@ -231,8 +231,6 @@
     <string name="settings_main_auto_theme_pre_q_warning">Sistem temasını izlemenin Q\'dan düşük Android sürümlerinde düzgün çalışmayabileceğini lütfen unutmayın</string>
     <string name="settings_main_use_installerx">Pro modu</string>
     <string name="settings_main_use_installerx_summary">Bir .apks dosyasından (veya birden fazla APK dosyasına sahip diğer arşivlerden) yüklenecek parçaları seçmenize olanak tanıyan installer Pro modunu etkinleştirin. Pro modunun deneysel olduğunu ve düzgün çalışmayabileceğini lütfen unutmayın</string>
-    <string name="settings_main_enable_analytics">Analiz</string>
-    <string name="settings_main_enable_analytics_summary">BAI\'nin uygulama kullanım verileri ve hatalar gibi analiz verilerini toplamasına izin verin. Hakkında ekranında Gizlilik Politikasında toplanan veriler hakkında daha fazla bilgi edinebilirsiniz. Bu ayarı değiştirmek, BAI\'yi yeniden başlatana kadar tam olarak uygulanmayabilir</string>
     <string name="settings_main_backup_settings">Yedekleme ayarları</string>
     <string name="settings_main_backup_settings_summary">Yedekleme ayarlarını açmak için dokunun</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>

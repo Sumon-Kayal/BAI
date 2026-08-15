@@ -8,11 +8,18 @@ Copyright (C) 2020 Aefyr
 Modifications:
 Copyright (C) 2026 Sumon Kayal
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is licensed under the GNU General Public License version 3 (GPLv3).
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+The complete text of the GNU General Public License version 3 is included with this application. You can view it in the app's installation directory under the LICENSE file, or online at:
 
-You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
+https://www.gnu.org/licenses/gpl-3.0.html
+
+Key points of the GPL v3 license:
+
+- You are free to use, copy, modify, and distribute this software.
+- If you distribute this software or modifications of it, you must provide the source code and license it under GPLv3.
+- This program is distributed WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+- See the full license text for complete terms and conditions.
 
 ## Distribution
 

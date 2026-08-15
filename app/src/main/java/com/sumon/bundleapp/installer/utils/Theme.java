@@ -274,5 +274,10 @@ public class Theme {
             return obj instanceof ThemeDescriptor
                     && ((ThemeDescriptor) obj).getId() == getId();
         }
+
+        @Override
+        public int hashCode() {
+            return getId();
+        }
     }
                                         }

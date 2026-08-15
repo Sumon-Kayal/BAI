@@ -231,8 +231,6 @@
     <string name="settings_main_auto_theme_pre_q_warning">Por favor, note que seguir o tema do sistema pode não funcionar corretamente nas versões do Android inferiores ao Q</string>
     <string name="settings_main_use_installerx">Modo Pro</string>
     <string name="settings_main_use_installerx_summary">Habilitar o modo Pro do instalador permite você selecionar partes para instalar a partir de um arquivo .apks (ou outros arquivos com vários arquivos APK). Por favor, note que o modo Pro é experimental e que pode não funcionar corretamente, feedbacks são bem-vindos</string>
-    <string name="settings_main_enable_analytics">Analytics</string>
-    <string name="settings_main_enable_analytics_summary">Permita que o BAI colete dados analíticos, como erros e dados de uso do aplicativo. Você pode descobrir mais sobre os dados que estão sendo coletados na Política de Privacidade que você pode encontrar na tela sobre. Alterar esta configuração pode não aplicá-la totalmente até que você reinicie o BAI</string>
     <string name="settings_main_backup_settings">Configurações de backup</string>
     <string name="settings_main_backup_settings_summary">Toque para abrir as configurações de backup</string>
     <string name="settings_main_enable_apk_action_view">Permitir a abertura de arquivos .apk via BAI</string>
