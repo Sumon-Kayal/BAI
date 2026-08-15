@@ -6,7 +6,7 @@ BAI (Bundle APKs Installer) is an Android app that lets you install split APKs (
 
 [<img src="https://img.shields.io/badge/Download-GitHub_Releases-2ea44f?logo=github&logoColor=white"
      alt="Get it on GitHub Releases"
-     height="40">](../../releases/latest)
+     height="40">](https://github.com/Sumon-Kayal/BAI/releases/latest)
 
 [![Dead Code Check](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml)
 
@@ -14,7 +14,7 @@ BAI (Bundle APKs Installer) is an Android app that lets you install split APKs (
 
 [![Debug Release](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml)
 
-BAI is not published on Google Play or F-Droid — grab the APK directly from [Releases](../../releases/latest).
+BAI is not published on Google Play or F-Droid — grab the APK directly from [Releases](https://github.com/Sumon-Kayal/BAI/releases/latest).
 
 ## State of BAI
 BAI is a fork of [SAI](https://github.com/Aefyr/SAI) by polychromaticfox, maintained by Sumon Kayal. If you're looking for an actual backup solution, you can try [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) or [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
