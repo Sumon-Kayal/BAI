@@ -1,0 +1,100 @@
+apply plugin: 'com.android.application'
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+def hasSigningConfig = keystorePropertiesFile.exists()
+if (hasSigningConfig) {
+    keystorePropertiesFile.withInputStream { input ->
+        keystoreProperties.load(input)
+    }
+}
+
+android {
+    namespace 'com.sumon.bundleapp.installer'
+    compileSdk 36
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    defaultConfig {
+        applicationId "com.sumon.bundleapp.installer"
+        minSdk 21
+        targetSdk 36
+        versionCode 61
+        versionName "4.6"
+
+        buildConfigField "int", "DEFAULT_THEME", "6"
+        buildConfigField "int", "DEFAULT_DARK_THEME", "11"
+    }
+
+    signingConfigs {
+        release {
+            if (hasSigningConfig) {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            if (hasSigningConfig) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // Memory leak detection (debug builds only)
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+
+    // AndroidX
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.documentfile:documentfile:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.8.7'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+
+    // Material Design
+    implementation 'com.google.android.material:material:1.13.0'
+
+    // UI / Utilities
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation 'com.tomergoldst.android:tooltips:1.0.11'
+    implementation 'com.google.code.gson:gson:2.13.1'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // flexfilter: vendored at com/aefyr/flexfilter/
+    // pseudoapksigner: vendored at com/aefyr/pseudoapksigner/
+
+    // Room
+    def room_version = "2.7.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // Shizuku / Sui
+    def shizuku_version = "13.1.5"
+    implementation "dev.rikka.shizuku:api:$shizuku_version"
+    implementation "dev.rikka.shizuku:provider:$shizuku_version"
+    implementation "dev.rikka.shizuku:shared:$shizuku_version"
+    implementation "dev.rikka.shizuku:aidl:$shizuku_version"
+
+    // Memory leak detection
+}
