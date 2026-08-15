@@ -8,6 +8,12 @@ BAI (Bundle APKs Installer) is an Android app that lets you install split APKs (
      alt="Get it on GitHub Releases"
      height="40">](../../releases/latest)
 
+[![Dead Code Check](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml)
+
+[![CodeQL](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml)
+
+[![Debug Release](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml)
+
 BAI is not published on Google Play or F-Droid — grab the APK directly from [Releases](../../releases/latest).
 
 ## State of BAI
