@@ -270,6 +270,8 @@
     <string name="mi_miui_version">MIUI version - %1$s (%2$d (%3$s))</string>
     <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset app permissions, or have other unexpected consequences</string>
 
+    <string name="donate_message_not_donated">Hello. As you know, BAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting BAI by making a donation. You will also get the legendary <b>BAI Gold</b> theme!</string>
+
     <string name="installerx_dialog_title">Customize installation</string>
     <string name="installerx_dialog_choose_filepicker">How do you want to select files to install?</string>
     <string name="installerx_dialog_loading">Parsing APKs…</string>
@@ -341,10 +343,12 @@
     <string name="about_author">Maintained by Sumon Kayal\nForked from SAI by polychromaticfox</string>
     <string name="about_source">GitHub</string>
     <string name="about_source_link" translatable="false">https://github.com/Sumon-Kayal/BAI</string>
+    <string name="about_donate">Donate</string>
     <string name="about_licenses">Licenses</string>
     <string name="about_translate">Help to translate BAI</string>
     <string name="about_translate_link" translatable="false">https://github.com/Sumon-Kayal/BAI/tree/Translations</string>
     <string name="about_privacy">Privacy Policy</string>
     <string name="about_eula">End User License Agreement</string>
+    <string name="eula_load_error">Failed to load the license agreement.</string>
 
 </resources>
