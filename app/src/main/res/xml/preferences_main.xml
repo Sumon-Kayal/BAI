@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        android:title="@string/settings_category_main_languages"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            android:icon="@drawable/ic_pref_language"
+            android:key="app_language"
+            android:title="@string/settings_main_app_language" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/settings_category_main_ui"
         app:iconSpaceReserved="false">
 
@@ -43,6 +54,36 @@
             android:summary="@string/settings_main_ui_show_app_features_summary"
             android:defaultValue="true" />
 
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_unarchive"
+            android:key="disable_animations"
+            android:title="@string/settings_main_disable_animations"
+            android:summary="@string/settings_main_disable_animations_summary" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_old_installer"
+            android:key="enable_legacy_mode"
+            android:title="@string/settings_main_enable_legacy_mode"
+            android:summary="@string/settings_main_enable_legacy_mode_summary" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_home"
+            android:key="use_data_dir"
+            android:title="@string/settings_main_use_data_dir"
+            android:summary="@string/settings_main_use_data_dir_summary" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_root"
+            android:key="allow_root"
+            android:title="@string/settings_main_allow_root"
+            android:summary="@string/settings_main_allow_root_summary" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_root"
+            android:key="allow_shizuku"
+            android:title="@string/settings_main_allow_shizuku"
+            android:summary="@string/settings_main_allow_shizuku_summary" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -61,6 +102,24 @@
             android:key="installer"
             android:title="@string/settings_main_installer"
             android:summary="@string/settings_main_installer_summary" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_root"
+            android:key="use_root"
+            android:title="@string/settings_main_use_root"
+            android:summary="@string/settings_main_use_root_summary" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_root"
+            android:key="use_shizuku"
+            android:title="@string/settings_main_use_shizuku"
+            android:summary="@string/settings_main_use_shizuku_summary" />
+
+        <SwitchPreference
+            android:icon="@drawable/ic_pref_root"
+            android:key="use_shell"
+            android:title="@string/settings_main_use_shell"
+            android:summary="@string/settings_main_use_shell_summary" />
 
         <ListPreference
             android:icon="@drawable/ic_pref_install_location"
@@ -138,18 +197,6 @@
             android:title="@string/settings_main_enable_apk_action_view"
             android:summary="@string/settings_main_enable_apk_action_view_summary"
             android:defaultValue="true" />
-
-        <SwitchPreference
-            android:icon="@drawable/ic_pref_analytics"
-            android:key="firebase_enabled"
-            android:title="@string/settings_main_enable_analytics"
-            android:summary="@string/settings_main_enable_analytics_summary"
-            android:defaultValue="true" />
-
-        <Preference
-            android:icon="@drawable/ic_pref_donate"
-            android:key="donate"
-            android:title="@string/settings_main_donate" />
 
         <Preference
             android:icon="@drawable/ic_pref_info"

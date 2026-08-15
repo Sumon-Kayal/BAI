@@ -224,17 +224,13 @@
     <string name="settings_category_main_ui">Arayüz</string>
     <string name="settings_main_ui_show_app_features">Uygulama özelliklerini göster</string>
     <string name="settings_main_ui_show_app_features_summary">İçeriğe dayalı uygulama özelliği etiketlerini yedekleme ekranında gösterir</string>
-    <string name="settings_main_ui_theme">Tema</string>
-    <string name="settings_main_donate">BAI\'yi destekle</string>
-    <string name="settings_main_auto_theme">Otomatik tema</string>
+    <string name="settings_main_ui_theme">Tema</string>    <string name="settings_main_auto_theme">Otomatik tema</string>
     <string name="settings_main_auto_theme_summary">Sistem temasına bağlı olarak seçilen açık ve koyu temalar arasında otomatik olarak geçiş yapma</string>
     <string name="settings_main_auto_theme_picker">Tema seç</string>
     <string name="settings_main_auto_theme_picker_summary">Geçerli açık tema: %s\nGeçerli koyu tema: %s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Sistem temasını izlemenin Q\'dan düşük Android sürümlerinde düzgün çalışmayabileceğini lütfen unutmayın</string>
     <string name="settings_main_use_installerx">Pro modu</string>
     <string name="settings_main_use_installerx_summary">Bir .apks dosyasından (veya birden fazla APK dosyasına sahip diğer arşivlerden) yüklenecek parçaları seçmenize olanak tanıyan installer Pro modunu etkinleştirin. Pro modunun deneysel olduğunu ve düzgün çalışmayabileceğini lütfen unutmayın</string>
-    <string name="settings_main_enable_analytics">Analiz</string>
-    <string name="settings_main_enable_analytics_summary">BAI\'nin uygulama kullanım verileri ve hatalar gibi analiz verilerini toplamasına izin verin. Hakkında ekranında Gizlilik Politikasında toplanan veriler hakkında daha fazla bilgi edinebilirsiniz. Bu ayarı değiştirmek, BAI\'yi yeniden başlatana kadar tam olarak uygulanmayabilir</string>
     <string name="settings_main_backup_settings">Yedekleme ayarları</string>
     <string name="settings_main_backup_settings_summary">Yedekleme ayarlarını açmak için dokunun</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
@@ -256,20 +252,7 @@
     <string name="mi_continue_countdown">%d s içinde devam edebilirsiniz.</string>
     <string name="mi_continue">Devam et</string>
     <string name="mi_miui_version">MIUI Sürüm - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">MIUI sürümünüze bağlı olarak, MIUI optimizasyonunu kapatmak hiçbir şey yapamaz, uygulama izinlerini sıfırlayabilir veya beklenmedik başka sonuçlar doğurabilir</string>
-    <string name="donate_message_not_donated">Merhaba. Bildiğiniz gibi, BAI tamamen ücretsiz bir açık kaynaklı uygulama ve her zaman bu şekilde kalacak. Eğer beğendiyseniz, lütfen bağış yaparak BAI\'yi desteklemeyi düşünün. Efsanevi <b>BAI Gold</b> temasını da alacaksınız!</string>
-    <string name="donate_message_donated">BAI\'yi desteklediğiniz için çok teşekkürler!\nYeni <b>BAI Gold</b> temanıza göz atmayı unutmayın</string>
-    <string name="donate_message_floss">Merhaba. BAI\'nın FLOSS sürümünü kullanıyorsunuz. Bildiğiniz gibi, BAI tamamen ücretsiz bir açık kaynaklı uygulama ve her zaman bu şekilde kalacak. Eğer beğendiyseniz, lütfen bağış yaparak BAI\'yi desteklemeyi düşünün.\n\nFLOSS sürümünde, <b>FLOSS Gold</b> teması varsayılan olarak kullanılabilir.</string>
-    <string name="donate_message_unknown_or_error">Bağış durumu alınamıyor. Lütfen Google Play Hizmetleri\'nin yüklü olduğundan emin olun ve cihazınızı yeniden başlatmayı deneyin.</string>
-    <string name="donate_message_pending">Bağışınız beklemede. Tamamladıktan sonra otomatik olarak uygulanmazsa, lütfen BAI\'yi yeniden başlatın.</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">PayPal\'in bir değişiği</string>
-    <string name="donate_billing_not_available">Google Play\'e bağlanılamıyor. Lütfen Google Play Hizmetleri\'nin yüklü olduğundan emin olun ve cihazınızı yeniden başlatmayı deneyin.</string>
-    <string name="donate_donate_only_theme">Bağış gerekli</string>
-    <string name="donate_dialog_close">Bir daha gösterme</string>
-    <string name="donate_dialog_go_to_donate_page">Bağış ekranına git</string>
-    <string name="donate_dialog_title">Bağış</string>
-    <string name="installerx_dialog_title">Kurulumu özelleştir</string>
+    <string name="mi_consequences">MIUI sürümünüze bağlı olarak, MIUI optimizasyonunu kapatmak hiçbir şey yapamaz, uygulama izinlerini sıfırlayabilir veya beklenmedik başka sonuçlar doğurabilir</string>    <string name="installerx_dialog_title">Kurulumu özelleştir</string>
     <string name="installerx_dialog_choose_filepicker">Yüklenecek dosyaları nasıl seçmek istersiniz?</string>
     <string name="installerx_dialog_loading">APK\'lar Ayrıştırılıyor…</string>
     <string name="installerx_dialog_install">Yükle</string>
@@ -331,9 +314,7 @@
     <string name="auto_theme_dark_theme">Koyu tema</string>
     <string name="auto_theme_selection_hint">Değiştirmek için dokun</string>
     <string name="about_author">polychromaticfox tarafından yazıldı</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">Bağış yap</string>
-    <string name="about_licenses">Lisanslar</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">Lisanslar</string>
     <string name="about_translate">BAI\'yi çevirmeye yardım et</string>
     <string name="about_privacy">Gizlilik Politikası</string>
     <string name="about_eula">Son Kullanıcı Lisans Anlaşması</string>

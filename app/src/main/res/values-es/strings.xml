@@ -224,17 +224,13 @@
     <string name="settings_category_main_ui">UI</string>
     <string name="settings_main_ui_show_app_features">Mostrar características de la aplicación</string>
     <string name="settings_main_ui_show_app_features_summary">Show contextual app feature badges on backup screen</string>
-    <string name="settings_main_ui_theme">Tema</string>
-    <string name="settings_main_donate">Soporte BAI</string>
-    <string name="settings_main_auto_theme">Tema automático</string>
+    <string name="settings_main_ui_theme">Tema</string>    <string name="settings_main_auto_theme">Tema automático</string>
     <string name="settings_main_auto_theme_summary">Cambia automáticamente entre temas claros y oscuros seleccionados dependiendo del tema del sistema</string>
     <string name="settings_main_auto_theme_picker">Elegir temas</string>
     <string name="settings_main_auto_theme_picker_summary">Tema de luz actual: %s\nTema oscuro actual: %s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Por favor, ten en cuenta que seguir el tema del sistema puede no funcionar correctamente en versiones Android inferiores a Q</string>
     <string name="settings_main_use_installerx">Modo Pro</string>
     <string name="settings_main_use_installerx_summary">Habilitar el modo del instalador Pro que le permite seleccionar partes para instalar desde un archivo .apks (u otros archivos con múltiples archivos APK). Por favor, tenga en cuenta que el modo Pro es experimental y puede que no funcione correctamente. Se agradecen los comentarios</string>
-    <string name="settings_main_enable_analytics">Analytics</string>
-    <string name="settings_main_enable_analytics_summary">Allow BAI to collect analytics data such as app usage data and errors. You can find out more about data being collected in Privacy Policy which you can find on about screen. Changing this setting may not fully apply it until you restart BAI</string>
     <string name="settings_main_backup_settings">Backup settings</string>
     <string name="settings_main_backup_settings_summary">Tap to open backup settings</string>
     <string name="settings_main_enable_apk_action_view">Habilitar la apertura de archivos .apk a través de BAI</string>
@@ -256,20 +252,7 @@
     <string name="mi_continue_countdown">Puede continuar en %d s.</string>
     <string name="mi_continue">Continuar</string>
     <string name="mi_miui_version">Versión MIUI - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">Dependiendo de tu versión MIUI, desactivar la optimización MIUI puede no hacer nada, restablecer los permisos de aplicaciones o tener otras consecuencias inesperadas</string>
-    <string name="donate_message_not_donated">Hola. Como ya sabe, BAI es una aplicación de código abierto completamente gratuita y siempre será así. Si le gusta, por favor considere apoyar a BAI haciendo una donación. ¡También obtendrá el legendario tema <b>Oro BAI</b>!</string>
-    <string name="donate_message_donated">¡Muchas gracias por apoyar a BAI!\nNo se olvide de echar un vistazo a su nuevo tema <b>Oro BAI</b></string>
-    <string name="donate_message_floss">Hola. Está usando la versión FLOSS de BAI. Como sabe, BAI es una aplicación de código abierto completamente gratuita y siempre será así. Si le gusta, por favor considere apoyar BAI haciendo una donación.\n\nEn la versión FLOSS, el tema <b>Oro FLOSS</b> está disponible por defecto.</string>
-    <string name="donate_message_unknown_or_error">No se puede obtener el estado de la donación. Por favor, asegúrese de que tiene instalado Google Play Services e intente reiniciar su dispositivo.</string>
-    <string name="donate_message_pending">Su donación está pendiente. Si no se aplica automáticamente después de completarla, reinicie BAI.</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">Básicamente CIS PayPal</string>
-    <string name="donate_billing_not_available">No se puede conectar a Google Play. Por favor, asegúrese de que tiene instalado Google Play Services e intente reiniciar el dispositivo.</string>
-    <string name="donate_donate_only_theme">Donación requerida</string>
-    <string name="donate_dialog_close">No mostrar de nuevo</string>
-    <string name="donate_dialog_go_to_donate_page">Ir a la pantalla de donación</string>
-    <string name="donate_dialog_title">Donación</string>
-    <string name="installerx_dialog_title">Personalizar instalación</string>
+    <string name="mi_consequences">Dependiendo de tu versión MIUI, desactivar la optimización MIUI puede no hacer nada, restablecer los permisos de aplicaciones o tener otras consecuencias inesperadas</string>    <string name="installerx_dialog_title">Personalizar instalación</string>
     <string name="installerx_dialog_choose_filepicker">¿Cómo desea seleccionar los archivos a instalar?</string>
     <string name="installerx_dialog_loading">Analizando APKs…</string>
     <string name="installerx_dialog_install">Instalar</string>
@@ -331,9 +314,7 @@
     <string name="auto_theme_dark_theme">Tema oscuro</string>
     <string name="auto_theme_selection_hint">Toque para cambiar</string>
     <string name="about_author">por polychromaticfox</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">Donar</string>
-    <string name="about_licenses">Licencias</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">Licencias</string>
     <string name="about_translate">Ayude a traducir BAI</string>
     <string name="about_privacy">Política de privacidad</string>
     <string name="about_eula">Acuerdo de Licencia de Usuario Final</string>

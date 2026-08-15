@@ -14,10 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.sumon.bundleapp.installer.adapters.ThemeAdapter;
-import com.sumon.bundleapp.installer.billing.BillingManager;
-import com.sumon.bundleapp.installer.billing.DefaultBillingManager;
-import com.sumon.bundleapp.installer.billing.DonationStatus;
-import com.sumon.bundleapp.installer.ui.activities.DonateActivity;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
 import com.sumon.bundleapp.installer.utils.Theme;
 import com.sumon.bundleapp.installer.utils.Utils;
@@ -32,8 +28,6 @@ public class ThemeSelectionDialogFragment extends BaseBottomSheetDialogFragment 
     public static final int MODE_CHOOSE = 1;
 
     private static final String EXTRA_MODE = "mode";
-
-    private BillingManager mBillingManager;
 
     private int mMode = MODE_APPLY;
 
@@ -63,8 +57,6 @@ public class ThemeSelectionDialogFragment extends BaseBottomSheetDialogFragment 
         if (args != null) {
             mMode = args.getInt(EXTRA_MODE, MODE_APPLY);
         }
-
-        mBillingManager = DefaultBillingManager.getInstance(requireContext());
     }
 
     @Nullable
@@ -89,7 +81,6 @@ public class ThemeSelectionDialogFragment extends BaseBottomSheetDialogFragment 
         ThemeAdapter adapter = new ThemeAdapter(requireContext());
         adapter.setThemes(Theme.getInstance(requireContext()).getThemes());
         adapter.setOnThemeInteractionListener(this);
-        mBillingManager.getDonationStatus().observe(this, adapter::setDonationStatus);
         recycler.setAdapter(adapter);
 
         revealBottomSheet();
@@ -97,12 +88,6 @@ public class ThemeSelectionDialogFragment extends BaseBottomSheetDialogFragment 
 
     @Override
     public void onThemeClicked(Theme.ThemeDescriptor theme) {
-        DonationStatus donationStatus = mBillingManager.getDonationStatus().getValue();
-        if (theme.isDonationRequired() && !donationStatus.unlocksThemes()) {
-            DonateActivity.start(requireContext());
-            return;
-        }
-
         switch (mMode) {
             case MODE_APPLY:
                 Theme.getInstance(getContext()).setConcreteTheme(theme);

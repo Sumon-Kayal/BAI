@@ -224,17 +224,13 @@
     <string name="settings_category_main_ui">Інтерфейс</string>
     <string name="settings_main_ui_show_app_features">Показувати особливості додатків</string>
     <string name="settings_main_ui_show_app_features_summary">Show contextual app feature badges on backup screen</string>
-    <string name="settings_main_ui_theme">Тема</string>
-    <string name="settings_main_donate">Підтримати BAI</string>
-    <string name="settings_main_auto_theme">Автоматична тема</string>
+    <string name="settings_main_ui_theme">Тема</string>    <string name="settings_main_auto_theme">Автоматична тема</string>
     <string name="settings_main_auto_theme_summary">Автоматично перемикатися між виділеними світлими та темними темами, залежно від системної теми</string>
     <string name="settings_main_auto_theme_picker">Вибрати теми</string>
     <string name="settings_main_auto_theme_picker_summary">Світла тема: %s\nТемна тема: %s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Зверніть увагу, що наступні теми системи можуть не працювати коректно на версіях Android нижче Q</string>
     <string name="settings_main_use_installerx">Професіональний режим</string>
     <string name="settings_main_use_installerx_summary">Увімкніть професіональний режим установки, який дозволяє вибрати частини для встановлення з файлу .apks (або інших архівів з декількома файлами APK). Будь ласка, зверніть увагу, що Pro режим експериментальний і він може працювати некоректно, вітаються ваші відгуки і побажання</string>
-    <string name="settings_main_enable_analytics">Analytics</string>
-    <string name="settings_main_enable_analytics_summary">Allow BAI to collect analytics data such as app usage data and errors. You can find out more about data being collected in Privacy Policy which you can find on about screen. Changing this setting may not fully apply it until you restart BAI</string>
     <string name="settings_main_backup_settings">Backup settings</string>
     <string name="settings_main_backup_settings_summary">Tap to open backup settings</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
@@ -256,20 +252,7 @@
     <string name="mi_continue_countdown">Ви зможете продовжити через %d сек.</string>
     <string name="mi_continue">Продовжити</string>
     <string name="mi_miui_version">Версія MIUI - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">Залежно від вашої версії MIUI для вимкнення оптимізації MIUI може нічого не зробити, скинути дозволи програм або ж інші несподівані наслідки</string>
-    <string name="donate_message_not_donated">Привіт. Як відомо, BAI - це абсолютно безкоштовний додаток з відкритим кодом, і він завжди залишатиметься таким. Якщо вам це подобається, будь ласка, подумайте про підтримку BAI, зробивши пожертву. Ви також отримаєте легендарну тему <b>BAI Gold</b>!</string>
-    <string name="donate_message_donated">Величезна подяка за підтримку BAI!\nНе забудьте перевірити свою нову <b>BAI Gold</b> тему</string>
-    <string name="donate_message_floss">Вітаємо. Ви використовуєте FLOSS версію BAI. Як ви знаєте, BAI є повністю безкоштовним додатком з відкритим вихідним кодом, і це завжди залишатиметься таким. Якщо вам подобається додаток, будь ласка, підтримайте BAI, зробивши пожертву.\n\nУ версії FLOSS, тема <b>FLOSS Gold</b> доступна за замовчуванням.</string>
-    <string name="donate_message_unknown_or_error">Не вдалося отримати статус пожертвування. Будь ласка, переконайтеся, що у вас встановлені сервіси Google Play і спробуйте перезавантажити пристрій.</string>
-    <string name="donate_message_pending">Ваша пожертва очікує підтвердження. Якщо внески не застосовуються автоматично після її завершення, будь ласка, перезапустіть BAI.</string>
-    <string name="donate_non_iap_yandex_title">Яндекс.Гроші</string>
-    <string name="donate_non_iap_yandex_desc">Закинути пожертвування мені на Яндекс.Гроші</string>
-    <string name="donate_billing_not_available">Не вдалося підключитися до Google Play. Будь ласка, переконайтеся, що у вас встановлені сервіси Google Play і спробуйте перезавантажити пристрій.</string>
-    <string name="donate_donate_only_theme">Необхідно пожертвувати</string>
-    <string name="donate_dialog_close">Більше не показувати</string>
-    <string name="donate_dialog_go_to_donate_page">Перейти на екран пожертвування</string>
-    <string name="donate_dialog_title">Пожертва</string>
-    <string name="installerx_dialog_title">Кастомізація установника</string>
+    <string name="mi_consequences">Залежно від вашої версії MIUI для вимкнення оптимізації MIUI може нічого не зробити, скинути дозволи програм або ж інші несподівані наслідки</string>    <string name="installerx_dialog_title">Кастомізація установника</string>
     <string name="installerx_dialog_choose_filepicker">Які ви хочете вибрати файли для встановлення?</string>
     <string name="installerx_dialog_loading">Аналіз APKs…</string>
     <string name="installerx_dialog_install">Встановити</string>
@@ -331,9 +314,7 @@
     <string name="auto_theme_dark_theme">Темна тема</string>
     <string name="auto_theme_selection_hint">Торкніться, щоб змінити</string>
     <string name="about_author">by polychromaticfox</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">Підтримати</string>
-    <string name="about_licenses">Ліцензії</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">Ліцензії</string>
     <string name="about_translate">Допомога в локалізіції BAI</string>
     <string name="about_privacy">Політика конфіденційності</string>
     <string name="about_eula">End User License Agreement</string>

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
 import com.sumon.bundleapp.installer.utils.Utils;
@@ -57,7 +58,7 @@ public class ErrorLogDialogFragment2 extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
                 .setTitle(mTitle)
                 .setMessage(mDisplayFullError ? mFullError : mErrorMessage)
                 .setPositiveButton(R.string.ok, null);

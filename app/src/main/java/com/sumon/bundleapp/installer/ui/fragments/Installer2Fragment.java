@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sumon.bundleapp.installer.adapters.SaiPiSessionsAdapter;
 import com.sumon.bundleapp.installer.ui.dialogs.AppInstalledDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.DarkLightThemeSelectionDialogFragment;
-import com.sumon.bundleapp.installer.ui.dialogs.DonationSuggestionDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ErrorLogDialogFragment2;
 import com.sumon.bundleapp.installer.ui.dialogs.FilePickerDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallationConfirmationDialogFragment;
@@ -96,9 +95,6 @@ public class Installer2Fragment extends InstallerFragment implements FilePickerD
             //For some reason this observer gets called after state save on some devices
             if (isStateSaved())
                 return;
-
-            if (event.type().equals(InstallerViewModel.EVENT_PACKAGE_INSTALLED))
-                DonationSuggestionDialogFragment.showIfNeeded(requireContext(), getChildFragmentManager());
 
             if (!mHelper.showInstallerDialogs()) {
                 event.consume();

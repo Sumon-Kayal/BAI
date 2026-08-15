@@ -224,17 +224,13 @@
     <string name="settings_category_main_ui">Araüz</string>
     <string name="settings_main_ui_show_app_features">Tətbiq xüsusiyyətlərini göstər</string>
     <string name="settings_main_ui_show_app_features_summary">Nüsxə ekranında əlaqəli tətbiq xüsusiyyəti beclərini göstər</string>
-    <string name="settings_main_ui_theme">Mövzu</string>
-    <string name="settings_main_donate">BAI\'yə dəstək ol</string>
-    <string name="settings_main_auto_theme">Avto Mövzu</string>
+    <string name="settings_main_ui_theme">Mövzu</string>    <string name="settings_main_auto_theme">Avto Mövzu</string>
     <string name="settings_main_auto_theme_summary">Sistem mövzusundan asılı olaraq işıqlı və qaranlıq mövzular arasında avtomatik keçiş et</string>
     <string name="settings_main_auto_theme_picker">Mövzuları seç</string>
     <string name="settings_main_auto_theme_picker_summary">Hazırkı işıqlı mövzu: %s\nHazırkı qaranlıq mövzu: %s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Xahiş edirik sistem mövzuları ilə keçiş etmək Android Q versiyasından aşağı olduqda düzgün işləməyə bilər</string>
     <string name="settings_main_use_installerx">Pro mod</string>
     <string name="settings_main_use_installerx_summary">Sizə hər hansı .apks faylından (yaxud digər çoxlu APK faylları arxivlərindən) hissələr seçib qurmağa imkan yaradan qurucu Pro modunu açın. Xahiş olunur Pro modun yoxlama halında olduğunu və düzgün işləməyə biləcəyini nəzərinizdə saxlayın</string>
-    <string name="settings_main_enable_analytics">Analitik</string>
-    <string name="settings_main_enable_analytics_summary">BAI\'yə tətbiq istifadəsi məlumatı və xətalar kimi analitik məlumatları yığmağa icazə verin. Məxfilik Siyasəti\'ndə məlumatların yığılması barədə əlavə məlumat ala bilərsiniz. Bu seçimi dəyişmək BAI\'ni yenidən başladana qədər tam effekt verməyə bilər</string>
     <string name="settings_main_backup_settings">Nüsxə tənzimləmələri</string>
     <string name="settings_main_backup_settings_summary">Nüsxə tənzimləmələrini açmaq üçün toxun</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
@@ -256,20 +252,7 @@
     <string name="mi_continue_countdown">%d s sonra davam edə bilərsiniz.</string>
     <string name="mi_continue">Davam et</string>
     <string name="mi_miui_version">MIUI versiyası - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">MIUI versiyanızdan asılı olaraq, MIUI optimizasiyasını söndürmək heçbir fərq yaratmaya bilər, tətbiqlərin icazələrini sıfırlayın yoxsa digər gözlənilməz nəticələrlə üzləşə bilərsiniz</string>
-    <string name="donate_message_not_donated">Salam. Bildiyiniz kimi, BAI tamamilə pulsuz açıq-mənbə tətbiqdir və belə də qalacaq. Əgər sevdinizsə, xahiş edirik BAI\'yə iaşə etməyi diqqətə alın. Bununla da əfsanəvi <b>BAI Qızıl</b> mövzusunu əldə edin!</string>
-    <string name="donate_message_donated">BAI\'ni dəstəklədiyiniz üçün çox təşəkkür edirik!\nYeni <b>BAI Qızıl</b> mövzunuza baxmaq yadınızdan çıxmasın</string>
-    <string name="donate_message_floss">Salam. Siz BAI\'nin FLOSS versiyasını işlədirsiniz. Bildiyiniz kimi, BAI tamamilə pulsuz açıq-mənbə tətbiqdir və belə də qalacaq. Əgər sevdinizsə, xahiş edirik BAI\'yə iaşə etməyi diqqətə alın.\n\n<b>FLOSS Qızıl</b> mövzusu FLOSS versiyasında standart şəkildə var.</string>
-    <string name="donate_message_unknown_or_error">İaşənin vəziyyətinə baxmaq olmur. Xahiş olunur Google Play Xidmətlərinin yüklü olduğundan əmin olun və cihazınızı yenidən başladın.</string>
-    <string name="donate_message_pending">İaşəniz gözləyir, əgər qurtardıqdan sonra avtomatik yerinə yetirilməsə, xahiş olunur BAI\'ni yenidən başladın.</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">Qısaca PayPal</string>
-    <string name="donate_billing_not_available">Google Play\'ə qoşulmaq olmur. Xahiş olunur Google Play Xidmətlərinin yüklü olduğundan əmin olun və cihazınızı yenidən başladın.</string>
-    <string name="donate_donate_only_theme">İaşə tələb olunur</string>
-    <string name="donate_dialog_close">Birdə göstərmə</string>
-    <string name="donate_dialog_go_to_donate_page">İaşə ekranına gedin</string>
-    <string name="donate_dialog_title">İaşə</string>
-    <string name="installerx_dialog_title">Qurmanı özəlləşdir</string>
+    <string name="mi_consequences">MIUI versiyanızdan asılı olaraq, MIUI optimizasiyasını söndürmək heçbir fərq yaratmaya bilər, tətbiqlərin icazələrini sıfırlayın yoxsa digər gözlənilməz nəticələrlə üzləşə bilərsiniz</string>    <string name="installerx_dialog_title">Qurmanı özəlləşdir</string>
     <string name="installerx_dialog_choose_filepicker">Faylları qurarkən necə seçmək istəyirsiniz?</string>
     <string name="installerx_dialog_loading">APKlar bölünür…</string>
     <string name="installerx_dialog_install">Qur</string>
@@ -331,9 +314,7 @@
     <string name="auto_theme_dark_theme">Qaranlıq mövzu</string>
     <string name="auto_theme_selection_hint">Dəyişmək üçün toxun</string>
     <string name="about_author">polychromaticfox\'dən</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">İaşə et</string>
-    <string name="about_licenses">Lisenziyalar</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">Lisenziyalar</string>
     <string name="about_translate">BAI\'nin tərcüməsinə dəstək ol</string>
     <string name="about_privacy">Məxfilik Siyasəti</string>
     <string name="about_eula">İstifadəçi Lisenziya Razılaşması</string>

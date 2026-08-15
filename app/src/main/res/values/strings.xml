@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name" translatable="false">BAI</string>
     <string name="app_name_full" translatable="false">Bundle APKs Installer</string>
 
@@ -38,7 +40,7 @@
     <string name="installer_error_aborted">Installation was cancelled by user</string>
     <string name="installer_error_blocked">Installation was blocked by %s</string>
     <string name="installer_error_blocked_device">device</string>
-    <string name="installer_error_conflict">Unable to install the app because it conflicts with an already installed app with same package name</string>
+    <string name="installer_error_conflict">Unable to install the app because it conflicts with an already installed app with the same package name</string>
     <string name="installer_error_incompatible">Application is incompatible with this device</string>
     <string name="installer_error_bad_apks">Invalid APK files selected</string>
     <string name="installer_error_storage">Not enough storage space to install the app</string>
@@ -79,19 +81,17 @@
     <string name="installer_rootless_error2_install_failed_no_shared_user">Shared user requested by package doesn\'t exist</string>
     <string name="installer_rootless_error2_install_failed_update_incompatible">App signature doesn\'t match the signature of an already installed app with the same package name</string>
     <string name="installer_rootless_error2_install_failed_shared_user_incompatible">App has requested an already existing shared user, but their signatures don\'t match</string>
-    <string name="installer_rootless_error2_install_failed_missing_shared_library">App has requested a shared library that is not installed on the device</string>
+    <string name="installer_rootless_error2_install_failed_missing_shared_library">App has requested a shared library that is not installed in the system</string>
     <string name="installer_rootless_error2_install_failed_replace_couldnt_delete">The system was unable to delete the previous version of this package</string>
     <string name="installer_rootless_error2_install_failed_dexopt">Installation failed while optimizing and validating package dex files, either because there was not enough storage or the validation failed</string>
     <string name="installer_rootless_error2_install_failed_older_sdk">Device Android version is lower than required by the package</string>
     <string name="installer_rootless_error2_install_failed_conflicting_provider">Package contains a content provider with the same authority as a provider already installed in the system</string>
     <string name="installer_rootless_error2_install_failed_newer_sdk">Device Android version is higher than required by the package</string>
-    <string name="installer_rootless_error2_install_failed_test_only">Installed package is test-only and INSTALL_ALLOW_TEST flag was not supplied</string>
+    <string name="installer_rootless_error2_install_failed_test_only">Installed package is test-only and the INSTALL_ALLOW_TEST flag was not supplied</string>
     <string name="installer_rootless_error2_install_failed_cpu_abi_incompatible">Package doesn\'t contain native code that is compatible with this device\'s CPU</string>
-    <string name="installer_rootless_error2_install_failed_missing_feature">Package requires a feature that is not supported by this device</string>
-    <!-- no idea what this means, don't wanna dig android sources deeper for this -->
+    <string name="installer_rootless_error2_install_failed_missing_feature">Package requires a feature that is not supported by the device</string>
     <string name="installer_rootless_error2_install_failed_container_error">Secure container mount point couldn\'t be accessed on external media</string>
     <string name="installer_rootless_error2_install_failed_invalid_install_location">Package couldn\'t be installed in the specified location</string>
-    <!-- tbh i have no idea what that means lol, like an sd card maybe, but this code doesn't seem to be used at all -->
     <string name="installer_rootless_error2_install_failed_media_unavailable">Package couldn\'t be installed in the specified location because the media is not available</string>
     <string name="installer_rootless_error2_install_failed_verification_timeout">Package verification timed out</string>
     <string name="installer_rootless_error2_install_failed_verification_failure">Package has failed verification</string>
@@ -99,7 +99,7 @@
     <string name="installer_rootless_error2_install_failed_uid_changed">Package was assigned a different UID than it previously held</string>
     <string name="installer_rootless_error2_install_failed_version_downgrade">A newer version of this package is already installed</string>
     <string name="installer_rootless_error2_install_failed_permission_model_downgrade">New version of the package doesn\'t support runtime permissions but the currently installed version does</string>
-    <string name="installer_rootless_error2_install_failed_sandbox_version_downgrade">New version of the package requires a lower sandbox version than the currently installed version of this package</string>
+    <string name="installer_rootless_error2_install_failed_sandbox_version_downgrade">The new version of the package requires a lower sandbox version than the currently installed version of this package</string>
     <string name="installer_rootless_error2_install_failed_missing_split">Package requires splits, but they weren\'t provided</string>
     <string name="installer_rootless_error2_install_parse_failed_not_apk">Provided file is not an APK file</string>
     <string name="installer_rootless_error2_install_parse_failed_bad_manifest">Unable to retrieve APK manifest</string>
@@ -118,9 +118,9 @@
     <string name="installer_rootless_error2_install_failed_aborted">Installation was cancelled by the user or aborted</string>
     <string name="installer_rootless_error2_install_failed_instant_app_invalid">Unsupported operation with an instant app</string>
     <string name="installer_rootless_error2_install_failed_bad_dex_metadata">Dex metadata file is invalid or there\'s no matching APK file for a dex metadata file</string>
-    <string name="installer_rootless_error2_install_failed_bad_signature">There\'s some problem with APK signature</string>
+    <string name="installer_rootless_error2_install_failed_bad_signature">There\'s a problem with the APK signature</string>
     <string name="installer_rootless_error2_install_failed_other_staged_session_in_progress">There\'s already a package installer session being committed for this package name</string>
-    <string name="installer_rootless_error2_install_failed_multipackage_inconsistency">One of the child package installer sessions does not match the parent session in respect to staged or rollback enabled parameters</string>
+    <string name="installer_rootless_error2_install_failed_multipackage_inconsistency">One of the child package installer sessions does not match the parent package installer session in respect to staged or rollback enabled parameters</string>
     <string name="installer_rootless_error2_install_failed_wrong_installed_version">Required version of an already installed package doesn\'t match the actual version of the installed package</string>
 
     <string name="backup_backup">Backup</string>
@@ -136,7 +136,7 @@
     <string name="backup_search_hint">Search apps</string>
     <string name="backup_search_splits_only">Split APKs only</string>
     <string name="backup_search_show_system_apps">Show system apps</string>
-    <string name="backup_warning"><b>Managed backups are currently in beta, please report issues in BAI\'s GitHub repo (you can find the link on about screen)</b>\n\n<b>Backup files format</b>\nBAI backups apps as .apks files (which are just ZIP archives with .apk files) with some meta information added to the archive (such as app name and icon). Backed up .apks files can still be installed as normal .apks files (because they are normal .apks files, except for some additional files in the archive which are ignored by installer)\n\n<b>What is backed up</b>\nCurrently BAI backups only apps APK files (no data/obb/etc)\n\n<b>External changes to backup directory</b>\nBAI doesn\'t automatically keep track of external changes done to files in the backup directory. So, if you\'ve changed them outside of BAI, use reindex option in 3-dots menu at the top right of backup screen to rescan backups directory.\n\n<b>You can always open this help from the 3-dots menu at the top right of backup screen</b></string>
+    <string name="backup_warning"><b>Managed backups are currently in beta, please report issues in BAI\'s GitHub repo (you can find the link on about screen)</b>\n\n<b>Backup files format</b>\nBAI backups apps as .apks files (which are just ZIP archives with .apk files) with some meta information added to the archive (such as app name and icon). Backed up .apks files can still be installed as normal .apks files (because they are normal .apks files, except for some additional files in the archive which are ignored by installer)\n\n<b>What is backed up</b>\nCurrently BAI backups only apps APK files (no data/obb/etc)\n\n<b>External changes to backup directory</b>\nBAI doesn\'t automatically keep track of external changes done to files in the backup directory. If you\'ve changed them outside of BAI, use reindex option in 3-dots menu at the top right of backup screen to rescan backups directory.\n\n<b>You can always open this help from the 3-dots menu at the top right of backup screen</b></string>
     <string name="backup_export_all_splits">Backup all split APKs</string>
     <string name="backup_export_all_splits_prompt">Do you want to backup all split APKs?</string>
     <string name="backup_export_selected_apps_prompt">Do you want to backup %d selected apps?</string>
@@ -183,7 +183,7 @@
     <string name="backup_component_apk_files">APK Files</string>
     <string name="backup_component_unknown">Unknown component with type \"%s\"</string>
     <string name="backup_lbs_provider_name">Local storage</string>
-    <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with BAI 3.10+ in the selected directory will be indexed as backups. Default directory for backups prior to BAI 4.0 used to be Internal Storage > BAI</string>
+    <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with SAI 3.10+ or BAI 4.6+ in the selected directory will be indexed as backups. Default directory for backups used by SAI was Internal Storage &gt; SAI.</string>
     <string name="backup_lbs_select_dir">Select directory</string>
     <string name="backup_lbs_current_dir">Current backups directory: %s\n\nNote: BAI will only show backups from the currently selected directory.</string>
     <string name="backup_settings">Backup settings</string>
@@ -193,6 +193,9 @@
     <string name="backup_export_apk_desc">Export a single selected part as a .apk file. Exported .apk files are not backups and won\'t be managed by BAI</string>
 
     <string name="settings_title">Settings</string>
+    <string name="settings_category_main_languages">Languages</string>
+    <string name="settings_main_app_language">App language</string>
+    <string name="app_language_system_default">System default</string>
     <string name="settings_main_home_directory">Home directory</string>
     <string name="settings_main_home_directory_summary">Starting directory in APKs picker\nCurrently: %s</string>
     <string name="settings_main_file_picker_sort">Files sorting</string>
@@ -234,26 +237,32 @@
     <string name="settings_main_ui_show_app_features">Show app features</string>
     <string name="settings_main_ui_show_app_features_summary">Show contextual app feature badges on backup screen</string>
     <string name="settings_main_ui_theme">Theme</string>
-    <string name="settings_main_donate">Support BAI</string>
     <string name="settings_main_auto_theme">Auto theme</string>
     <string name="settings_main_auto_theme_summary">Automatically switch between selected light and dark themes depending on system theme</string>
     <string name="settings_main_auto_theme_picker">Choose themes</string>
-    <string name="settings_main_auto_theme_picker_summary">Current light theme: %s\nCurrent dark theme: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Current light theme: %1$s\nCurrent dark theme: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Please note that following the system theme may not work correctly on Android versions lower than Q</string>
     <string name="settings_main_use_installerx">Pro mode</string>
-    <string name="settings_main_use_installerx_summary">Enable installer Pro mode that allows you to select parts to install from a .apks file (or other archives with multiple APK files). Please note that Pro mode is experimental and it may not work properly, feedback is welcome</string>
-    <string name="settings_main_enable_analytics">Analytics</string>
-    <string name="settings_main_enable_analytics_summary">Allow BAI to collect analytics data such as app usage data and errors. You can find out more about data being collected in Privacy Policy which you can find on about screen. Changing this setting may not fully apply it until you restart BAI</string>
+    <string name="settings_main_use_installerx_summary">Enable installer Pro mode that allows you to select parts to install from a .apks file (or other archives with multiple APK files). Please note that Pro mode is experimental and it may not work properly. Feedback is welcome</string>
     <string name="settings_main_backup_settings">Backup settings</string>
     <string name="settings_main_backup_settings_summary">Tap to open backup settings</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
     <string name="settings_main_enable_apk_action_view_summary">Support opening .apk files via BAI from other apps. Can be disabled since on some ROMs this setting being enabled doesn\'t let you open .apk files at all</string>
+    <string name="settings_main_disable_animations">Disable animations</string>
+    <string name="settings_main_disable_animations_summary">Disable UI animations in the app</string>
+    <string name="settings_main_enable_legacy_mode">Enable legacy mode</string>
+    <string name="settings_main_enable_legacy_mode_summary">Use legacy installer implementation for compatibility</string>
+    <string name="settings_main_use_data_dir">Use data directory</string>
+    <string name="settings_main_use_data_dir_summary">Store temporary files in app data directory</string>
+    <string name="settings_main_allow_root">Allow root access</string>
+    <string name="settings_main_allow_root_summary">Allow the app to request root access when needed</string>
+    <string name="settings_main_allow_shizuku">Allow Shizuku access</string>
+    <string name="settings_main_allow_shizuku_summary">Allow the app to use Shizuku when available</string>
 
     <string name="name_format_builder_title">Select parts to include in backup file name</string>
     <string name="name_format_builder_preview">Preview: %s</string>
     <string name="name_format_builder_preview_empty">Please select at least one part</string>
 
-    <!-- These strings that start with "sss_" don't really have to be translated except for the warning maybe -->
     <string name="sss">Super Secret Settings</string>
     <string name="sss_warning_title"><b>WARNING</b></string>
     <string name="sss_warning_summary"><b>Don\'t touch anything here unless you know what you\'re doing. Some options here can break BAI or even damage your system</b></string>
@@ -268,22 +277,7 @@
     <string name="mi_continue_countdown">You can continue in %d s.</string>
     <string name="mi_continue">Continue</string>
     <string name="mi_miui_version">MIUI version - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset apps permissions or have other unexpected consequences</string>
-
-    <string name="donate_message_not_donated">Hello. As you know, BAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting BAI by making a donation. You will also get the legendary <b>BAI Gold</b> theme!</string>
-    <string name="donate_message_donated">Huge thanks for supporting BAI!\nDon\'t forget to check out your new <b>BAI Gold</b> theme</string>
-    <string name="donate_message_floss">Hello. You\'re using FLOSS version of BAI. As you know, BAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting BAI by making a donation.\n\nIn FLOSS version, the <b>FLOSS Gold</b> theme is available by default.</string>
-    <string name="donate_message_unknown_or_error">Unable to get donation status. Please make sure you have Google Play Services installed and try restarting your device.</string>
-    <string name="donate_message_pending">Your donation is pending. If it isn\'t applied automatically after you complete it, please restart BAI.</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">Basically CIS PayPal lol</string>
-    <string name="donate_non_iap_yandex_target" translatable="false">https://money.yandex.ru/to/410015319360538</string>
-    <string name="donate_billing_not_available">Unable to connect to Google Play. Please make sure you have Google Play Services installed and try restarting your device.</string>
-    <string name="donate_donate_only_theme">Donation required</string>
-    <string name="donate_dialog_close">Don\'t show again</string>
-    <string name="donate_dialog_go_to_donate_page">Go to donate screen</string>
-    <string name="donate_dialog_title">Donation</string>
-
+    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset app permissions, or have other unexpected consequences</string>
     <string name="installerx_dialog_title">Customize installation</string>
     <string name="installerx_dialog_choose_filepicker">How do you want to select files to install?</string>
     <string name="installerx_dialog_loading">Parsing APKs…</string>
@@ -311,7 +305,7 @@
     <string name="installerx_split_config_dpi_for_base">%1$s (%2$d DPI) resources for base APK</string>
     <string name="installerx_split_config_dpi_for_module">%1$s (%2$d DPI) resources for feature \"%3$s\"</string>
     <string name="installerx_category_unknown">Unknown</string>
-    <string name="installerx_category_unknown_desc">Split APK parts with unknown purpose, please open an issue on BAI\'s GitHub and attach this APK or at least a screenshot of parts names if you encounter this. It is highly recommended to install these parts unless you know their exact purpose</string>
+    <string name="installerx_category_unknown_desc">Split APK parts with unknown purpose, please open an issue on BAI\'s GitHub and attach this APK or at least a screenshot of the part names if you encounter this. It is highly recommended to install these parts unless you know their exact purpose</string>
 
     <string name="installerx_default_mess_resolver_error_unknown_extension">Unexpected file extension: %s</string>
 
@@ -354,12 +348,11 @@
 
     <string name="about_author">Maintained by Sumon Kayal\nForked from SAI by polychromaticfox</string>
     <string name="about_source">GitHub</string>
-    <string name="about_source_link" translatable="false">https://github.com/Sumon-Kayal/BAI</string>
-    <string name="about_donate">Donate</string>
-    <string name="about_donate_link" translatable="false">https://yasobe.ru/na/sai</string>
-    <string name="about_licenses">Licenses</string>
+    <string name="about_source_link" translatable="false">https://github.com/Sumon-Kayal/BAI</string>    <string name="about_licenses">Licenses</string>
     <string name="about_translate">Help to translate BAI</string>
     <string name="about_translate_link" translatable="false">https://github.com/Sumon-Kayal/BAI/tree/Translations</string>
     <string name="about_privacy">Privacy Policy</string>
     <string name="about_eula">End User License Agreement</string>
+    <string name="eula_load_error">Failed to load the license agreement.</string>
+
 </resources>

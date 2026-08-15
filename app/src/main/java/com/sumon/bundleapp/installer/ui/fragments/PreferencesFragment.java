@@ -14,18 +14,17 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
-import com.sumon.bundleapp.installer.analytics.AnalyticsProvider;
-import com.sumon.bundleapp.installer.analytics.DefaultAnalyticsProvider;
 import com.sumon.bundleapp.installer.shell.SuShell;
 import com.sumon.bundleapp.installer.ui.activities.AboutActivity;
 import com.sumon.bundleapp.installer.ui.activities.ApkActionViewProxyActivity;
 import com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity;
-import com.sumon.bundleapp.installer.ui.activities.DonateActivity;
 import com.sumon.bundleapp.installer.ui.dialogs.DarkLightThemeSelectionDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.FilePickerDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.SimpleAlertDialogFragment;
@@ -44,57 +43,82 @@ import com.github.angads25.filepicker.model.DialogProperties;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import rikka.shizuku.Shizuku;
 
 public class PreferencesFragment extends PreferenceFragmentCompat implements FilePickerDialogFragment.OnFilesSelectedListener, SingleChoiceListDialogFragment.OnItemSelectedListener, BaseBottomSheetDialogFragment.OnDismissListener, SharedPreferences.OnSharedPreferenceChangeListener, DarkLightThemeSelectionDialogFragment.OnDarkLightThemesChosenListener, Shizuku.OnRequestPermissionResultListener {
 
     private PreferencesHelper mHelper;
-    private AnalyticsProvider mAnalyticsProvider;
     private PackageManager mPm;
 
     private Preference mHomeDirPref;
     private Preference mFilePickerSortPref;
     private Preference mInstallerPref;
     private Preference mThemePref;
+    private Preference mAppLanguagePref;
+
+    // Order must match R.array.app_language_names exactly. Empty string means
+    // "System default" (clears the app-level locale override).
+    private static final String[] APP_LANGUAGE_TAGS = {
+            "", "en", "ar", "az", "bg", "de", "el", "es", "fr", "it", "ja",
+            "ko", "pl", "pt-BR", "ru", "sv", "tr", "uk", "vi", "zh-CN", "zh-TW"
+    };
+
     private SwitchPreference mAutoThemeSwitch;
     private Preference mAutoThemePicker;
 
     private FilePickerDialogFragment mPendingFilePicker;
 
+    private final ExecutorService mBackgroundExecutor = Executors.newCachedThreadPool();
+    private Boolean mShizukuAvailableCache = null;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         mHelper = PreferencesHelper.getInstance(requireContext());
-        mAnalyticsProvider = DefaultAnalyticsProvider.getInstance(requireContext());
         mPm = requireContext().getPackageManager();
 
         //Inject some prefs
         //Inject current auto theme status since it isn't managed by PreferencesKeys.AUTO_THEME key
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putBoolean(PreferencesKeys.AUTO_THEME, Theme.getInstance(requireContext()).getThemeMode() == Theme.Mode.AUTO_LIGHT_DARK).apply();
+        prefsEditor.putBoolean(
+                PreferencesKeys.AUTO_THEME,
+                Theme.getInstance(requireContext()).getThemeMode() == Theme.Mode.AUTO_LIGHT_DARK
+        ).apply();
 
         //Inject apk proxy activity state since there's no guarantee preference value matches actual state
-        int apkProxyActivityState = mPm.getComponentEnabledSetting(ApkActionViewProxyActivity.getComponentName(requireContext()));
+        int apkProxyActivityState = mPm.getComponentEnabledSetting(
+                ApkActionViewProxyActivity.getComponentName(requireContext()));
+
         boolean isApkProxyActivityEnabled;
+
         switch (apkProxyActivityState) {
             case PackageManager.COMPONENT_ENABLED_STATE_DEFAULT:
             case PackageManager.COMPONENT_ENABLED_STATE_ENABLED:
                 isApkProxyActivityEnabled = true;
                 break;
+
             case PackageManager.COMPONENT_ENABLED_STATE_DISABLED:
             case PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER:
             case PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED:
                 isApkProxyActivityEnabled = false;
                 break;
+
             default:
-                throw new IllegalStateException(String.format("ApkProxyActivity state is %d", apkProxyActivityState));
+                throw new IllegalStateException(
+                        String.format("ApkProxyActivity state is %d", apkProxyActivityState));
         }
-        prefsEditor.putBoolean(PreferencesKeys.ENABLE_APK_ACTION_VIEW, isApkProxyActivityEnabled);
+
+        prefsEditor.putBoolean(
+                PreferencesKeys.ENABLE_APK_ACTION_VIEW,
+                isApkProxyActivityEnabled
+        );
 
         prefsEditor.apply();
-
 
         if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
             Shizuku.addRequestPermissionResultListener(this);
@@ -108,8 +132,22 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences_main, rootKey);
 
+        mAppLanguagePref = findPreference("app_language");
+        updateAppLanguageSummary();
+
+        mAppLanguagePref.setOnPreferenceClickListener((p) -> {
+            SingleChoiceListDialogFragment.newInstance(
+                    getText(R.string.settings_main_app_language),
+                    R.array.app_language_names,
+                    getCurrentAppLanguageIndex()
+            ).show(getChildFragmentManager(), "app_language");
+
+            return true;
+        });
+
         mHomeDirPref = findPreference("home_directory");
         updateHomeDirPrefSummary();
+
         mHomeDirPref.setOnPreferenceClickListener((p) -> {
             selectHomeDir();
             return true;
@@ -117,8 +155,14 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
 
         mFilePickerSortPref = findPreference("file_picker_sort");
         updateFilePickerSortSummary();
+
         mFilePickerSortPref.setOnPreferenceClickListener((p) -> {
-            SingleChoiceListDialogFragment.newInstance(getText(R.string.settings_main_file_picker_sort), R.array.file_picker_sort_variants, mHelper.getFilePickerRawSort()).show(getChildFragmentManager(), "sort");
+            SingleChoiceListDialogFragment.newInstance(
+                    getText(R.string.settings_main_file_picker_sort),
+                    R.array.file_picker_sort_variants,
+                    mHelper.getFilePickerRawSort()
+            ).show(getChildFragmentManager(), "sort");
+
             return true;
         });
 
@@ -127,19 +171,18 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             return true;
         });
 
-        Preference donatePref = Objects.requireNonNull(findPreference("donate"));
-        donatePref.setOnPreferenceClickListener(p -> {
-            startActivity(new Intent(requireContext(), DonateActivity.class));
-            return true;
-        });
-        donatePref.setVisible(!BuildConfig.HIDE_DONATE_BUTTON);
-
         mInstallerPref = findPreference("installer");
         updateInstallerSummary();
-        mInstallerPref.setOnPreferenceClickListener((p -> {
-            SingleChoiceListDialogFragment.newInstance(getText(R.string.settings_main_installer), R.array.installers, mHelper.getInstaller()).show(getChildFragmentManager(), "installer");
+
+        mInstallerPref.setOnPreferenceClickListener((p) -> {
+            SingleChoiceListDialogFragment.newInstance(
+                    getText(R.string.settings_main_installer),
+                    R.array.installers,
+                    mHelper.getInstaller()
+            ).show(getChildFragmentManager(), "installer");
+
             return true;
-        }));
+        });
 
         findPreference(PreferencesKeys.BACKUP_SETTINGS).setOnPreferenceClickListener(p -> {
             startActivity(new Intent(requireContext(), BackupSettingsActivity.class));
@@ -148,212 +191,612 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
 
         mThemePref = findPreference(PreferencesKeys.THEME);
         updateThemeSummary();
+
         mThemePref.setOnPreferenceClickListener(p -> {
-            ThemeSelectionDialogFragment.newInstance(requireContext()).show(getChildFragmentManager(), "theme");
+            ThemeSelectionDialogFragment.newInstance(requireContext())
+                    .show(getChildFragmentManager(), "theme");
+
             return true;
         });
+
         if (Theme.getInstance(requireContext()).getThemeMode() != Theme.Mode.CONCRETE) {
             mThemePref.setVisible(false);
         }
 
-        mAutoThemeSwitch = Objects.requireNonNull(findPreference(PreferencesKeys.AUTO_THEME));
-        mAutoThemePicker = findPreference(PreferencesKeys.AUTO_THEME_PICKER);
+        mAutoThemeSwitch = Objects.requireNonNull(
+                findPreference(PreferencesKeys.AUTO_THEME));
+
+        mAutoThemePicker = findPreference(
+                PreferencesKeys.AUTO_THEME_PICKER);
+
         updateAutoThemePickerSummary();
 
         mAutoThemeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean value = (boolean) newValue;
-            if (value) {
-                if (!Utils.apiIsAtLeast(Build.VERSION_CODES.Q))
-                    SimpleAlertDialogFragment.newInstance(requireContext(), R.string.settings_main_auto_theme, R.string.settings_main_auto_theme_pre_q_warning).show(getChildFragmentManager(), null);
 
-                Theme.getInstance(requireContext()).setMode(Theme.Mode.AUTO_LIGHT_DARK);
+            if (value) {
+                if (!Utils.apiIsAtLeast(Build.VERSION_CODES.Q)) {
+                    SimpleAlertDialogFragment.newInstance(
+                            requireContext(),
+                            R.string.settings_main_auto_theme,
+                            R.string.settings_main_auto_theme_pre_q_warning
+                    ).show(getChildFragmentManager(), null);
+                }
+
+                Theme.getInstance(requireContext())
+                        .setMode(Theme.Mode.AUTO_LIGHT_DARK);
+
             } else {
-                Theme.getInstance(requireContext()).setMode(Theme.Mode.CONCRETE);
+                Theme.getInstance(requireContext())
+                        .setMode(Theme.Mode.CONCRETE);
             }
 
             //Hack to not mess with hiding/showing preferences manually
             requireActivity().recreate();
+
             return true;
         });
 
         mAutoThemePicker.setOnPreferenceClickListener(pref -> {
-            DarkLightThemeSelectionDialogFragment.newInstance().show(getChildFragmentManager(), null);
+            DarkLightThemeSelectionDialogFragment.newInstance()
+                    .show(getChildFragmentManager(), null);
+
             return true;
         });
 
-        if (Theme.getInstance(requireContext()).getThemeMode() != Theme.Mode.AUTO_LIGHT_DARK) {
+        if (Theme.getInstance(requireContext()).getThemeMode()
+                != Theme.Mode.AUTO_LIGHT_DARK) {
             mAutoThemePicker.setVisible(false);
         }
 
-        SwitchPreference analyticsPref = findPreference(PreferencesKeys.ENABLE_ANALYTICS);
-        analyticsPref.setOnPreferenceChangeListener((preference, newValue) -> {
-            mAnalyticsProvider.setDataCollectionEnabled((boolean) newValue);
-            return true;
-        });
-        if (!mAnalyticsProvider.supportsDataCollection())
-            analyticsPref.setVisible(false);
+        SwitchPreference enableApkActionViewPref =
+                findPreference(PreferencesKeys.ENABLE_APK_ACTION_VIEW);
 
-        SwitchPreference enableApkActionViewPref = findPreference(PreferencesKeys.ENABLE_APK_ACTION_VIEW);
-        enableApkActionViewPref.setOnPreferenceChangeListener((preference, newValue) -> {
-            boolean enabled = (boolean) newValue;
-            mPm.setComponentEnabledSetting(ApkActionViewProxyActivity.getComponentName(requireContext()), enabled ? PackageManager.COMPONENT_ENABLED_STATE_DEFAULT : PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-            return true;
-        });
+        enableApkActionViewPref.setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    boolean enabled = (boolean) newValue;
 
+                    mPm.setComponentEnabledSetting(
+                            ApkActionViewProxyActivity.getComponentName(requireContext()),
+                            enabled
+                                    ? PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
+                                    : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP
+                    );
 
-        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-    }
+                    return true;
+                }
+        );
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        SwitchPreference disableAnimationsPref =
+                findPreference(PreferencesKeys.DISABLE_ANIMATIONS);
 
-        setDividerHeight(0);
-    }
+        disableAnimationsPref.setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    requireActivity().recreate();
+                    return true;
+                }
+        );
 
-    private void openFilePicker(FilePickerDialogFragment filePicker) {
-        if (!PermissionsUtils.checkAndRequestStoragePermissions(this)) {
-            mPendingFilePicker = filePicker;
-            return;
-        }
-        filePicker.show(Objects.requireNonNull(getChildFragmentManager()), null);
-    }
+        findPreference(PreferencesKeys.USE_ROOT)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    if ((boolean) newValue) {
+                        mBackgroundExecutor.execute(() -> {
+                            boolean rootAvailable = SuShell.isRootAvailable();
+                            if (getActivity() != null && isAdded()) {
+                                requireActivity().runOnUiThread(() -> {
+                                    if (getActivity() != null && isAdded() && !rootAvailable) {
+                                        SimpleAlertDialogFragment.newInstance(
+                                                requireContext(),
+                                                R.string.error,
+                                                R.string.settings_main_root_unavailable
+                                        ).show(getChildFragmentManager(), null);
+                                        ((SwitchPreference) preference).setChecked(false);
+                                    }
+                                });
+                            }
+                        });
+                    }
 
-    private void selectHomeDir() {
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.SINGLE_MODE;
-        properties.selection_type = DialogConfigs.DIR_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
+                    return true;
+                });
 
-        openFilePicker(FilePickerDialogFragment.newInstance("home", getString(R.string.settings_main_pick_dir), properties));
+        findPreference(PreferencesKeys.USE_SHIZUKU)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    if ((boolean) newValue) {
+                        if (!Shizuku.pingBinder()) {
+                            SimpleAlertDialogFragment.newInstance(
+                                    requireContext(),
+                                    R.string.error,
+                                    R.string.settings_main_shizuku_unavailable
+                            ).show(getChildFragmentManager(), null);
+
+                            return false;
+                        }
+
+                        if (Shizuku.checkSelfPermission()
+                                != PackageManager.PERMISSION_GRANTED) {
+                            mHelper.setInstaller(PreferencesValues.INSTALLER_ROOTLESS);
+                            updateInstallerSummary();
+
+                            Shizuku.requestPermission(
+                                    PermissionsUtils.REQUEST_CODE_SHIZUKU);
+                        }
+                    } else {
+                        // When disabling USE_SHIZUKU, reset to rootless installer if currently using Shizuku
+                        if (mHelper.getInstaller() == PreferencesValues.INSTALLER_SHIZUKU) {
+                            mHelper.setInstaller(PreferencesValues.INSTALLER_ROOTLESS);
+                            updateInstallerSummary();
+                        }
+                    }
+
+                    return true;
+                });
+
+        findPreference(PreferencesKeys.ENABLE_LEGACY_MODE)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    requireActivity().recreate();
+                    return true;
+                });
+
+        findPreference(PreferencesKeys.USE_DATA_DIR)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    requireActivity().recreate();
+                    return true;
+                });
+
+        findPreference(PreferencesKeys.ALLOW_ROOT)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    requireActivity().recreate();
+                    return true;
+                });
+
+        findPreference(PreferencesKeys.ALLOW_SHIZUKU)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    requireActivity().recreate();
+                    return true;
+                });
+
+        findPreference(PreferencesKeys.USE_SHELL)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                    requireActivity().recreate();
+                    return true;
+                });
+
+        updateUseRootSummary();
+        updateUseShizukuSummary();
+        updateUseShellSummary();
     }
 
     private void updateHomeDirPrefSummary() {
-        mHomeDirPref.setSummary(getString(R.string.settings_main_home_directory_summary, mHelper.getHomeDirectory()));
+        String homeDir = mHelper.getHomeDirectory();
+
+        if (homeDir == null || homeDir.isEmpty()) {
+            homeDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        }
+
+        mHomeDirPref.setSummary(homeDir);
     }
 
     private void updateFilePickerSortSummary() {
-        mFilePickerSortPref.setSummary(getString(R.string.settings_main_file_picker_sort_summary, getResources().getStringArray(R.array.file_picker_sort_variants)[mHelper.getFilePickerRawSort()]));
+        String[] sortVariants = getResources().getStringArray(
+                R.array.file_picker_sort_variants
+        );
+        int sortIndex = mHelper.getFilePickerRawSort();
+
+        // Clamp index to valid range
+        if (sortIndex < 0 || sortIndex >= sortVariants.length) {
+            sortIndex = 0;
+            mHelper.setFilePickerRawSort(sortIndex);
+        }
+
+        mFilePickerSortPref.setSummary(
+                getString(
+                        R.string.settings_main_file_picker_sort_summary,
+                        sortVariants[sortIndex]
+                )
+        );
     }
 
     private void updateInstallerSummary() {
-        mInstallerPref.setSummary(getString(R.string.settings_main_installer_summary, getResources().getStringArray(R.array.installers)[mHelper.getInstaller()]));
+        String[] installers = getResources().getStringArray(
+                R.array.installers
+        );
+        int installerIndex = mHelper.getInstaller();
+
+        // Clamp index to valid range
+        if (installerIndex < 0 || installerIndex >= installers.length) {
+            installerIndex = PreferencesValues.INSTALLER_ROOTLESS;
+            mHelper.setInstaller(installerIndex);
+        }
+
+        mInstallerPref.setSummary(
+                getString(
+                        R.string.settings_main_installer_summary,
+                        installers[installerIndex]
+                )
+        );
     }
 
     private void updateThemeSummary() {
-        mThemePref.setSummary(Theme.getInstance(requireContext()).getConcreteTheme().getName(requireContext()));
+        mThemePref.setSummary(
+                Theme.getInstance(requireContext())
+                        .getConcreteTheme()
+                        .getName(requireContext())
+        );
     }
 
     private void updateAutoThemePickerSummary() {
         Theme theme = Theme.getInstance(requireContext());
-        mAutoThemePicker.setSummary(getString(R.string.settings_main_auto_theme_picker_summary, theme.getLightTheme().getName(requireContext()), theme.getDarkTheme().getName(requireContext())));
+
+        mAutoThemePicker.setSummary(
+                getString(
+                        R.string.settings_main_auto_theme_picker_summary,
+                        theme.getLightTheme().getName(requireContext()),
+                        theme.getDarkTheme().getName(requireContext())
+                )
+        );
+    }
+
+    private void updateAppLanguageSummary() {
+        if (mAppLanguagePref == null) {
+            return;
+        }
+
+        int index = getCurrentAppLanguageIndex();
+
+        String[] names = getResources()
+                .getStringArray(R.array.app_language_names);
+
+        if (index >= 0 && index < names.length) {
+            mAppLanguagePref.setSummary(names[index]);
+        }
+    }
+
+    private int getCurrentAppLanguageIndex() {
+        LocaleListCompat locales =
+                AppCompatDelegate.getApplicationLocales();
+
+        if (locales.isEmpty()) {
+            return 0;
+        }
+
+        Locale currentLocale = locales.get(0);
+        if (currentLocale == null) {
+            return 0;
+        }
+
+        for (int i = 1; i < APP_LANGUAGE_TAGS.length; i++) {
+            LocaleListCompat tagLocales = LocaleListCompat.forLanguageTags(APP_LANGUAGE_TAGS[i]);
+            if (!tagLocales.isEmpty()) {
+                Locale tagLocale = tagLocales.get(0);
+                if (tagLocale != null && currentLocale.getLanguage().equals(tagLocale.getLanguage())) {
+                    // Exact match: both language and country/script must match
+                    boolean countryMatch = currentLocale.getCountry().equals(tagLocale.getCountry());
+                    boolean scriptMatch = currentLocale.getScript().equals(tagLocale.getScript());
+
+                    // For languages with regional variants (like Chinese), require exact match
+                    // Only allow empty-country matching if both are empty or if no regional variants exist
+                    if (countryMatch && scriptMatch) {
+                        return i;
+                    } else if (currentLocale.getCountry().isEmpty() && tagLocale.getCountry().isEmpty()
+                            && scriptMatch) {
+                        return i;
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private void selectHomeDir() {
+        if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
+                || PermissionsUtils.hasStoragePermission(requireContext())) {
+
+            DialogProperties properties = new DialogProperties();
+            properties.selection_mode = DialogConfigs.SINGLE_MODE;
+            properties.selection_type = DialogConfigs.DIR_SELECT;
+            properties.root = new File(
+                    mHelper.getHomeDirectory() != null
+                            ? mHelper.getHomeDirectory()
+                            : Environment.getExternalStorageDirectory().getAbsolutePath()
+            );
+
+            FilePickerDialogFragment.newInstance(
+                    "home",
+                    getString(R.string.settings_main_home_directory),
+                    properties
+            ).show(getChildFragmentManager(), "file_picker");
+
+        } else {
+            DialogProperties properties = new DialogProperties();
+            properties.selection_mode = DialogConfigs.SINGLE_MODE;
+            properties.selection_type = DialogConfigs.DIR_SELECT;
+            properties.root = new File(
+                    mHelper.getHomeDirectory() != null
+                            ? mHelper.getHomeDirectory()
+                            : Environment.getExternalStorageDirectory().getAbsolutePath()
+            );
+
+            mPendingFilePicker = FilePickerDialogFragment.newInstance(
+                    "home",
+                    getString(R.string.settings_main_home_directory),
+                    properties
+            );
+
+            PermissionsUtils.requestStoragePermission(
+                    this,
+                    PermissionsUtils.REQUEST_CODE_STORAGE_PERMISSIONS
+            );
+        }
+    }
+
+    private void updateUseRootSummary() {
+        Preference useRootPref =
+                findPreference(PreferencesKeys.USE_ROOT);
+
+        if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
+            mBackgroundExecutor.execute(() -> {
+                String suVersion = SuShell.getSuVersion();
+                if (getActivity() != null && isAdded()) {
+                    requireActivity().runOnUiThread(() -> {
+                        if (getActivity() != null && isAdded() && useRootPref != null) {
+                            useRootPref.setSummary(
+                                    getString(
+                                            R.string.settings_main_use_root_summary,
+                                            suVersion
+                                    )
+                            );
+                        }
+                    });
+                }
+            });
+        } else {
+            useRootPref.setSummary(
+                    getString(
+                            R.string.settings_main_use_root_summary,
+                            getString(R.string.not_available)
+                    )
+            );
+        }
+    }
+
+    private void updateUseShizukuSummary() {
+        Preference useShizukuPref =
+                findPreference(PreferencesKeys.USE_SHIZUKU);
+
+        if (mShizukuAvailableCache != null) {
+            useShizukuPref.setSummary(
+                    mShizukuAvailableCache
+                            ? getString(R.string.settings_main_use_shizuku_summary)
+                            : getString(R.string.settings_main_shizuku_unavailable)
+            );
+        } else {
+            mBackgroundExecutor.execute(() -> {
+                boolean available = Shizuku.pingBinder();
+                if (getActivity() != null && isAdded()) {
+                    requireActivity().runOnUiThread(() -> {
+                        if (getActivity() != null && isAdded() && useShizukuPref != null) {
+                            mShizukuAvailableCache = available;
+                            useShizukuPref.setSummary(
+                                    available
+                                            ? getString(R.string.settings_main_use_shizuku_summary)
+                                            : getString(R.string.settings_main_shizuku_unavailable)
+                            );
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void updateUseShellSummary() {
+        Preference useShellPref =
+                findPreference(PreferencesKeys.USE_SHELL);
+
+        useShellPref.setSummary(
+                getString(R.string.settings_main_use_shell_summary)
+        );
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults
+        );
 
         if (requestCode == PermissionsUtils.REQUEST_CODE_STORAGE_PERMISSIONS) {
-            if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)
-                AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
-            else {
+            if (grantResults.length == 0
+                    || grantResults[0] == PackageManager.PERMISSION_DENIED) {
+
+                AlertsUtils.showAlert(
+                        this,
+                        R.string.error,
+                        R.string.permissions_required_storage
+                );
+
+            } else {
                 if (mPendingFilePicker != null) {
                     openFilePicker(mPendingFilePicker);
                     mPendingFilePicker = null;
                 }
             }
         }
+    }
 
+    @Override
+    public void onRequestPermissionResult(int requestCode, int grantResult) {
         if (requestCode == PermissionsUtils.REQUEST_CODE_SHIZUKU) {
-            if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)
-                AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_shizuku);
-            else {
-                mHelper.setInstaller(PreferencesValues.INSTALLER_SHIZUKU);
+            if (grantResult == PackageManager.PERMISSION_DENIED) {
+                AlertsUtils.showAlert(
+                        this,
+                        R.string.error,
+                        R.string.permissions_required_shizuku
+                );
+            } else {
+                mHelper.setInstaller(
+                        PreferencesValues.INSTALLER_SHIZUKU
+                );
+
                 updateInstallerSummary();
             }
         }
     }
 
     @Override
-    public void onFilesSelected(String tag, List<File> files) {
+    public void onFilesSelected(
+            String tag,
+            List<File> files) {
+
         switch (tag) {
             case "home":
-                mHelper.setHomeDirectory(files.get(0).getAbsolutePath());
+                mHelper.setHomeDirectory(
+                        files.get(0).getAbsolutePath()
+                );
                 updateHomeDirPrefSummary();
                 break;
         }
     }
 
     @Override
-    public void onItemSelected(String dialogTag, int selectedItemIndex) {
+    public void onItemSelected(
+            String dialogTag,
+            int selectedItemIndex) {
+
         switch (dialogTag) {
+            case "app_language":
+                LocaleListCompat newLocales =
+                        selectedItemIndex == 0
+                                ? LocaleListCompat.getEmptyLocaleList()
+                                : LocaleListCompat.forLanguageTags(
+                                        APP_LANGUAGE_TAGS[selectedItemIndex]
+                                );
+
+                AppCompatDelegate.setApplicationLocales(
+                        newLocales
+                );
+
+                updateAppLanguageSummary();
+                break;
+
             case "sort":
                 mHelper.setFilePickerRawSort(selectedItemIndex);
+
                 switch (selectedItemIndex) {
                     case 0:
-                        mHelper.setFilePickerSortBy(DialogConfigs.SORT_BY_NAME);
-                        mHelper.setFilePickerSortOrder(DialogConfigs.SORT_ORDER_NORMAL);
+                        mHelper.setFilePickerSortBy(
+                                DialogConfigs.SORT_BY_NAME
+                        );
+                        mHelper.setFilePickerSortOrder(
+                                DialogConfigs.SORT_ORDER_NORMAL
+                        );
                         break;
+
                     case 1:
-                        mHelper.setFilePickerSortBy(DialogConfigs.SORT_BY_NAME);
-                        mHelper.setFilePickerSortOrder(DialogConfigs.SORT_ORDER_REVERSE);
+                        mHelper.setFilePickerSortBy(
+                                DialogConfigs.SORT_BY_NAME
+                        );
+                        mHelper.setFilePickerSortOrder(
+                                DialogConfigs.SORT_ORDER_REVERSE
+                        );
                         break;
+
                     case 2:
-                        mHelper.setFilePickerSortBy(DialogConfigs.SORT_BY_LAST_MODIFIED);
-                        mHelper.setFilePickerSortOrder(DialogConfigs.SORT_ORDER_NORMAL);
+                        mHelper.setFilePickerSortBy(
+                                DialogConfigs.SORT_BY_DATE
+                        );
+                        mHelper.setFilePickerSortOrder(
+                                DialogConfigs.SORT_ORDER_NORMAL
+                        );
                         break;
+
                     case 3:
-                        mHelper.setFilePickerSortBy(DialogConfigs.SORT_BY_LAST_MODIFIED);
-                        mHelper.setFilePickerSortOrder(DialogConfigs.SORT_ORDER_REVERSE);
+                        mHelper.setFilePickerSortBy(
+                                DialogConfigs.SORT_BY_DATE
+                        );
+                        mHelper.setFilePickerSortOrder(
+                                DialogConfigs.SORT_ORDER_REVERSE
+                        );
                         break;
+
                     case 4:
-                        mHelper.setFilePickerSortBy(DialogConfigs.SORT_BY_SIZE);
-                        mHelper.setFilePickerSortOrder(DialogConfigs.SORT_ORDER_REVERSE);
+                        mHelper.setFilePickerRawSort(4);
+                        mHelper.setFilePickerSortBy(
+                                DialogConfigs.SORT_BY_SIZE
+                        );
+                        mHelper.setFilePickerSortOrder(
+                                DialogConfigs.SORT_ORDER_NORMAL
+                        );
                         break;
+
                     case 5:
-                        mHelper.setFilePickerSortBy(DialogConfigs.SORT_BY_SIZE);
-                        mHelper.setFilePickerSortOrder(DialogConfigs.SORT_ORDER_NORMAL);
+                        mHelper.setFilePickerRawSort(5);
+                        mHelper.setFilePickerSortBy(
+                                DialogConfigs.SORT_BY_SIZE
+                        );
+                        mHelper.setFilePickerSortOrder(
+                                DialogConfigs.SORT_ORDER_REVERSE
+                        );
                         break;
                 }
+
                 updateFilePickerSortSummary();
                 break;
+
             case "installer":
-                boolean installerSet = false;
-                switch (selectedItemIndex) {
-                    case PreferencesValues.INSTALLER_ROOTLESS:
-                        installerSet = true;
-                        break;
-                    case PreferencesValues.INSTALLER_ROOTED:
-                        if (!SuShell.getInstance().requestRoot()) {
-                            AlertsUtils.showAlert(this, R.string.error, R.string.settings_main_use_root_error);
-                            return;
+                // Validate availability before persisting
+                if (selectedItemIndex == PreferencesValues.INSTALLER_ROOTED) {
+                    mBackgroundExecutor.execute(() -> {
+                        boolean rootAvailable = SuShell.isRootAvailable();
+                        if (getActivity() != null && isAdded()) {
+                            requireActivity().runOnUiThread(() -> {
+                                if (getActivity() != null && isAdded()) {
+                                    if (!rootAvailable) {
+                                        SimpleAlertDialogFragment.newInstance(
+                                                requireContext(),
+                                                R.string.error,
+                                                R.string.settings_main_root_unavailable
+                                        ).show(getChildFragmentManager(), null);
+                                    } else {
+                                        mHelper.setInstaller(selectedItemIndex);
+                                        updateInstallerSummary();
+                                    }
+                                }
+                            });
                         }
-                        installerSet = true;
-                        break;
-                    case PreferencesValues.INSTALLER_SHIZUKU:
-                        if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
-                            AlertsUtils.showAlert(this, R.string.error, R.string.settings_main_installer_error_shizuku_pre_m);
-                            return;
+                    });
+                } else if (selectedItemIndex == PreferencesValues.INSTALLER_SHIZUKU) {
+                    mBackgroundExecutor.execute(() -> {
+                        boolean shizukuAvailable = Shizuku.pingBinder();
+                        if (getActivity() != null && isAdded()) {
+                            requireActivity().runOnUiThread(() -> {
+                                if (getActivity() != null && isAdded()) {
+                                    if (!shizukuAvailable) {
+                                        SimpleAlertDialogFragment.newInstance(
+                                                requireContext(),
+                                                R.string.error,
+                                                R.string.settings_main_shizuku_unavailable
+                                        ).show(getChildFragmentManager(), null);
+                                    } else if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
+                                        Shizuku.requestPermission(
+                                                PermissionsUtils.REQUEST_CODE_SHIZUKU
+                                        );
+                                    } else {
+                                        mHelper.setInstaller(selectedItemIndex);
+                                        updateInstallerSummary();
+                                    }
+                                }
+                            });
                         }
-
-                        if (!Shizuku.pingBinder()) {
-                            AlertsUtils.showAlert(this, R.string.error, R.string.settings_main_installer_error_no_shizuku);
-                            return;
-                        }
-
-                        if (!Shizuku.isPreV11() && Shizuku.getVersion() >= 11) {
-                            if (Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
-                                installerSet = true;
-                            } else {
-                                Shizuku.requestPermission(PermissionsUtils.REQUEST_CODE_SHIZUKU);
-                            }
-                        } else {
-                            installerSet = PermissionsUtils.checkAndRequestShizukuPermissions(this);
-                        }
-
-                        break;
-                }
-                if (installerSet) {
+                    });
+                } else {
                     mHelper.setInstaller(selectedItemIndex);
                     updateInstallerSummary();
                 }
@@ -362,51 +805,75 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     }
 
     @Override
-    public void onDialogDismissed(@NonNull String dialogTag) {
-        switch (dialogTag) {
-            case "theme":
-                updateThemeSummary();
-                break;
+    public void onSharedPreferenceChanged(
+            SharedPreferences sharedPreferences,
+            String key) {
+
+        if (PreferencesKeys.THEME_MODE.equals(key)) {
+            updateThemeSummary();
         }
+    }
+
+    @Override
+    public void onDismiss(
+            BaseBottomSheetDialogFragment dialog) {
+        updateUseRootSummary();
+        updateUseShizukuSummary();
+        updateUseShellSummary();
+    }
+
+    @Override
+    public void onDarkLightThemesChosen(
+            Theme.ThemeDescriptor lightTheme,
+            Theme.ThemeDescriptor darkTheme) {
+
+        Theme.getInstance(requireContext()).setLightTheme(lightTheme);
+        Theme.getInstance(requireContext()).setDarkTheme(darkTheme);
+
+        updateAutoThemePickerSummary();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateUseRootSummary();
+        updateUseShizukuSummary();
+        updateUseShellSummary();
+    }
+
+    private void openFilePicker(
+            FilePickerDialogFragment fragment) {
+        fragment.show(
+                getChildFragmentManager(),
+                "file_picker"
+        );
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-
         if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
             Shizuku.removeRequestPermissionResultListener(this);
         }
-    }
 
-    @SuppressLint("ApplySharedPref")
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (key.equals(PreferencesKeys.USE_OLD_INSTALLER)) {
-            prefs.edit().putBoolean(PreferencesKeys.USE_OLD_INSTALLER, prefs.getBoolean(PreferencesKeys.USE_OLD_INSTALLER, false)).commit();
-            Utils.hardRestartApp(requireContext());
-        }
+        mBackgroundExecutor.shutdown();
+
+        super.onDestroy();
     }
 
     @Override
-    public void onThemesChosen(@Nullable String tag, Theme.ThemeDescriptor lightTheme, Theme.ThemeDescriptor darkTheme) {
-        Theme theme = Theme.getInstance(requireContext());
-        theme.setLightTheme(lightTheme);
-        theme.setDarkTheme(darkTheme);
+    public void onStart() {
+        super.onStart();
+
+        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
-    public void onRequestPermissionResult(int requestCode, int grantResult) {
-        switch (requestCode) {
-            case PermissionsUtils.REQUEST_CODE_SHIZUKU:
-                if (grantResult == PackageManager.PERMISSION_DENIED)
-                    AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_shizuku);
-                else {
-                    mHelper.setInstaller(PreferencesValues.INSTALLER_SHIZUKU);
-                    updateInstallerSummary();
-                }
-                break;
-        }
+    public void onStop() {
+        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
+
+        super.onStop();
     }
 }

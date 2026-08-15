@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="app_language_names" translatable="false">
+        <item>@string/app_language_system_default</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Azərbaycan dili</item>
+        <item>Български</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>한국어</item>
+        <item>Polski</item>
+        <item>Português (Brasil)</item>
+        <item>Русский</item>
+        <item>Svenska</item>
+        <item>Türkçe</item>
+        <item>Українська</item>
+        <item>Tiếng Việt</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+
     <string-array name="file_picker_sort_variants">
-        <item>"By name (Alphabetical)"</item>
-        <item>"By name (Reverse alphabetical)"</item>
-        <item>"Later modified first"</item>
-        <item>"Older modified first"</item>
-        <item>"Smallest file size first"</item>
-        <item>"Biggest file size first"</item>
+        <item>By name (Alphabetical)</item>
+        <item>By name (Reverse alphabetical)</item>
+        <item>Later modified first</item>
+        <item>Older modified first</item>
+        <item>Smallest file size first</item>
+        <item>Biggest file size first</item>
     </string-array>
 
     <string-array name="installers">
-        <item>"Rootless (recommended)"</item>
-        <item>"Rooted (requires root)"</item>
-        <item>"Shizuku (requires Shizuku 3.x)"</item>
+        <item>Rootless (recommended)</item>
+        <item>Rooted (requires root)</item>
+        <item>Shizuku (requires Shizuku 3.x)</item>
     </string-array>
 
     <string-array name="size_units">
@@ -61,6 +85,5 @@
         <item>Internal file picker</item>
         <item>System file picker</item>
     </string-array>
-
 
 </resources>

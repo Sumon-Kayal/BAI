@@ -33,7 +33,6 @@ import com.sumon.bundleapp.installer.backup2.BackupApp;
 import com.sumon.bundleapp.installer.ui.activities.BackupManageAppActivity;
 import com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity;
 import com.sumon.bundleapp.installer.ui.dialogs.BatchBackupDialogFragment;
-import com.sumon.bundleapp.installer.ui.dialogs.DonationSuggestionDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.OneTimeWarningDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.SimpleAlertDialogFragment;
 import com.sumon.bundleapp.installer.ui.recycler.RecyclerPaddingDecoration;
@@ -356,6 +355,5 @@ public class BackupFragment extends SaiBaseFragment implements BackupPackagesAda
     @Override
     public void onBatchBackupEnqueued(@Nullable String dialogTag) {
         mViewModel.getSelection().clear();
-        DonationSuggestionDialogFragment.showIfNeeded(requireContext(), getChildFragmentManager());
     }
 }

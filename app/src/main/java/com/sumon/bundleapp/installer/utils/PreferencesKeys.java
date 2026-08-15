@@ -23,10 +23,16 @@ public class PreferencesKeys {
     public static final String AUTO_THEME_PICKER = "auto_theme_picker";
     public static final String USE_INSTALLERX = "use_installerx";
     public static final String USE_BRUTE_PARSER = "use_brute_parser";
-    public static final String ENABLE_ANALYTICS = "firebase_enabled";
     public static final String INITIAL_INDEXING_RUN = "initial_indexing_run";
     public static final String BACKUP_SETTINGS = "backup_settings";
     public static final String BACKUP_APK_EXPORT = "single_apk_export";
     public static final String ENABLE_APK_ACTION_VIEW = "enable_apk_action_view";
-
-}
+    public static final String DISABLE_ANIMATIONS = "disable_animations";
+    public static final String USE_ROOT = "use_root";
+    public static final String USE_SHIZUKU = "use_shizuku";
+    public static final String USE_SHELL = "use_shell";
+    public static final String ENABLE_LEGACY_MODE = "enable_legacy_mode";
+    public static final String USE_DATA_DIR = "use_data_dir";
+    public static final String ALLOW_ROOT = "allow_root";
+    public static final String ALLOW_SHIZUKU = "allow_shizuku";
+    }

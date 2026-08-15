@@ -1,12 +1,15 @@
+![BAI Banner](https://github.com/Sumon-Kayal/BAI/blob/929fc2f7941e911501379fb3656cc68d361891e9/assets/BAI%20Banner.png?raw=true)
+
 # Bundle APKs Installer (BAI)
 
 BAI (Bundle APKs Installer) is an Android app that lets you install split APKs (such as ones distributed as an Android App Bundle) as if they were a single package. It supports both rooted and rootless installation methods.
 
-[<img src="https://img.shields.io/badge/Download-GitHub_Releases-2ea44f?logo=github&logoColor=white"
-     alt="Get it on GitHub Releases"
-     height="40">](../../releases/latest)
+[![Download](https://img.shields.io/badge/Download-GitHub_Releases-2ea44f?logo=github&logoColor=white)](https://github.com/Sumon-Kayal/BAI/releases/latest)
+[![Dead Code Check](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml)
+[![CodeQL](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml)
+[![Debug Release](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml)
 
-BAI is not published on Google Play or F-Droid — grab the APK directly from [Releases](../../releases/latest).
+BAI is not published on Google Play or F-Droid — grab the APK directly from [Releases](https://github.com/Sumon-Kayal/BAI/releases/latest).
 
 ## State of BAI
 BAI is a fork of [SAI](https://github.com/Aefyr/SAI) by polychromaticfox, maintained by Sumon Kayal. If you're looking for an actual backup solution, you can try [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) or [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
@@ -14,7 +17,11 @@ BAI is a fork of [SAI](https://github.com/Aefyr/SAI) by polychromaticfox, mainta
 ## What's different from upstream SAI
 - **Distributed only through GitHub Releases**, built by this repo's own CI — not affiliated with Play Store or F-Droid.
 - **Single build variant.** Based on SAI's F-Droid flavor (no Google Play Billing to begin with); the `normal`/Play Store flavor has been removed entirely rather than kept alongside it.
-- **Modernized build:** AGP 8.8.0, Gradle 8.11.1, JDK 17, compileSdk/targetSdk 35 (Android 15) while keeping minSdk 21 (Android 5.0). Two dependencies that no longer resolve on JitPack (`pseudoapksigner`, `flexfilter`) were vendored as plain Java source rather than replaced with alternatives, so behavior is unchanged.
+- **No donation feature.** The donate button, billing status tracking, and related UI have been removed entirely, not just hidden.
+- **Offline EULA.** The End User License Agreement is bundled with the app (`app/src/main/assets/EULA/EULA.md`) and shown in-app — no network request needed to read it.
+- **Per-app language switcher** under Settings → Languages, independent of your system language.
+- **Modernized build:** AGP 9.2.0, Gradle 9.7.0, JDK 17, compileSdk/targetSdk 36 (Android 16) while keeping minSdk 21 (Android 5.0).
+- Two dependencies that no longer resolve on JitPack (`pseudoapksigner`, `flexfilter`) were vendored as plain Java source rather than replaced with alternatives, so behavior is unchanged.
 - **CodeQL security scanning** runs on every push/PR via `.github/workflows/codeql.yml`.
 - Package name changed to `com.sumon.bundleapp.installer` so it can install side-by-side with the original SAI if you still have it.
 

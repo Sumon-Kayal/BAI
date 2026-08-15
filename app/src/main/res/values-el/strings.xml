@@ -224,17 +224,13 @@
     <string name="settings_category_main_ui">UI</string>
     <string name="settings_main_ui_show_app_features">Show app features</string>
     <string name="settings_main_ui_show_app_features_summary">Show contextual app feature badges on backup screen</string>
-    <string name="settings_main_ui_theme">Theme</string>
-    <string name="settings_main_donate">Support BAI</string>
-    <string name="settings_main_auto_theme">Auto theme</string>
+    <string name="settings_main_ui_theme">Theme</string>    <string name="settings_main_auto_theme">Auto theme</string>
     <string name="settings_main_auto_theme_summary">Automatically switch between selected light and dark themes depending on system theme</string>
     <string name="settings_main_auto_theme_picker">Choose themes</string>
     <string name="settings_main_auto_theme_picker_summary">Current light theme: %s\nCurrent dark theme: %s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Please note that following the system theme may not work correctly on Android versions lower than Q</string>
     <string name="settings_main_use_installerx">Pro mode</string>
     <string name="settings_main_use_installerx_summary">Enable installer Pro mode that allows you to select parts to install from a .apks file (or other archives with multiple APK files). Please note that Pro mode is experimental and it may not work properly, feedback is welcome</string>
-    <string name="settings_main_enable_analytics">Analytics</string>
-    <string name="settings_main_enable_analytics_summary">Allow BAI to collect analytics data such as app usage data and errors. You can find out more about data being collected in Privacy Policy which you can find on about screen. Changing this setting may not fully apply it until you restart BAI</string>
     <string name="settings_main_backup_settings">Backup settings</string>
     <string name="settings_main_backup_settings_summary">Tap to open backup settings</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
@@ -256,20 +252,7 @@
     <string name="mi_continue_countdown">You can continue in %d s.</string>
     <string name="mi_continue">Continue</string>
     <string name="mi_miui_version">MIUI version - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset apps permissions or have other unexpected consequences</string>
-    <string name="donate_message_not_donated">Hello. As you know, BAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting BAI by making a donation. You will also get the legendary <b>BAI Gold</b> theme!</string>
-    <string name="donate_message_donated">Huge thanks for supporting BAI!\nDon\'t forget to check out your new <b>BAI Gold</b> theme</string>
-    <string name="donate_message_floss">Hello. You\'re using FLOSS version of BAI. As you know, BAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting BAI by making a donation.\n\nIn FLOSS version, the <b>FLOSS Gold</b> theme is available by default.</string>
-    <string name="donate_message_unknown_or_error">Unable to get donation status. Please make sure you have Google Play Services installed and try restarting your device.</string>
-    <string name="donate_message_pending">Your donation is pending. If it isn\'t applied automatically after you complete it, please restart BAI.</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">Basically CIS PayPal lol</string>
-    <string name="donate_billing_not_available">Unable to connect to Google Play. Please make sure you have Google Play Services installed and try restarting your device.</string>
-    <string name="donate_donate_only_theme">Donation required</string>
-    <string name="donate_dialog_close">Don\'t show again</string>
-    <string name="donate_dialog_go_to_donate_page">Go to donate screen</string>
-    <string name="donate_dialog_title">Donation</string>
-    <string name="installerx_dialog_title">Customize installation</string>
+    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset apps permissions or have other unexpected consequences</string>    <string name="installerx_dialog_title">Customize installation</string>
     <string name="installerx_dialog_choose_filepicker">How do you want to select files to install?</string>
     <string name="installerx_dialog_loading">Parsing APKs…</string>
     <string name="installerx_dialog_install">Install</string>
@@ -331,9 +314,7 @@
     <string name="auto_theme_dark_theme">Dark theme</string>
     <string name="auto_theme_selection_hint">Tap to change</string>
     <string name="about_author">by polychromaticfox</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">Donate</string>
-    <string name="about_licenses">Licenses</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">Licenses</string>
     <string name="about_translate">Help to translate BAI</string>
     <string name="about_privacy">Privacy Policy</string>
     <string name="about_eula">End User License Agreement</string>
