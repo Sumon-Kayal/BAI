@@ -44,6 +44,12 @@ public class ErrorLogDialogFragment extends DialogFragment {
         mLog = args.getCharSequence(ARG_LOG, "log");
     }
 
+    /**
+     * Creates a dialog displaying the error log with options to close or copy it.
+     *
+     * @param  savedInstanceState the previously saved dialog state
+     * @return                  the configured error log dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

@@ -55,6 +55,11 @@ public class ErrorLogDialogFragment2 extends DialogFragment {
         mDisplayFullError = args.getBoolean(ARG_DISPLAY_FULL_ERROR, false);
     }
 
+    /**
+     * Creates a dialog displaying the configured error message and available actions.
+     *
+     * @return the error dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

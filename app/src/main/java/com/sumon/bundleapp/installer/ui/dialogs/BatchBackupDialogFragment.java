@@ -75,6 +75,12 @@ public class BatchBackupDialogFragment extends DialogFragment {
         });
     }
 
+    /**
+     * Creates the confirmation dialog for the batch backup operation.
+     *
+     * @param savedInstanceState the previously saved dialog state
+     * @return the configured batch backup confirmation dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

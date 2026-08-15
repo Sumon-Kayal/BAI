@@ -43,6 +43,11 @@ public class AppInstalledDialogFragment extends DialogFragment {
         mPackage = args.getString(ARG_PACKAGE, "");
     }
 
+    /**
+     * Creates a confirmation dialog for the installed application, with an option to open it when launchable.
+     *
+     * @return the installed-application confirmation dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

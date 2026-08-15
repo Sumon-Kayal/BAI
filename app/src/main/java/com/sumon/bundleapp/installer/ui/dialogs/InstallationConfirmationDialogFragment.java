@@ -49,6 +49,11 @@ public class InstallationConfirmationDialogFragment extends DialogFragment {
         mApksFileUri = args.getParcelable(ARG_APKS_FILE);
     }
 
+    /**
+     * Creates the installation confirmation dialog for the APK file.
+     *
+     * @return the confirmation dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

@@ -49,12 +49,22 @@ public class SimpleAlertDialogFragment extends DialogFragment {
         mMessage = args.getCharSequence(ARG_MESSAGE, "message");
     }
 
+    /**
+     * Creates the dialog displaying the configured title, message, and an OK button.
+     *
+     * @return the configured alert dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext())).setTitle(mTitle).setMessage(mMessage).setPositiveButton(R.string.ok, null).create();
     }
 
+    /**
+     * Notifies the parent fragment or hosting activity when the dialog is dismissed.
+     *
+     * @param dialog the dismissed dialog
+     */
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);

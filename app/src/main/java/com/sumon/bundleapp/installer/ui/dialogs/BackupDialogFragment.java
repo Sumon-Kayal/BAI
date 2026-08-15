@@ -57,6 +57,9 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
         return inflater.inflate(R.layout.dialog_backup, container, false);
     }
 
+    /**
+     * Configures the backup dialog after its content view has been created.
+     */
     @Override
     protected void onContentViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setTitle(R.string.backup_dialog_title);

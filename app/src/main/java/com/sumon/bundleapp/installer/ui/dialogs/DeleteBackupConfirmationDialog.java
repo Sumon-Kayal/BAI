@@ -49,6 +49,12 @@ public class DeleteBackupConfirmationDialog extends DialogFragment {
         mTimestamp = args.getLong(ARG_TIMESTAMP);
     }
 
+    /**
+     * Creates a confirmation dialog for deleting the stored backup.
+     *
+     * @param savedInstanceState previously saved dialog state, if available
+     * @return the backup deletion confirmation dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

@@ -26,6 +26,11 @@ public class MiuiWarningDialogFragment extends DialogFragment {
         setCancelable(false);
     }
 
+    /**
+     * Creates the non-cancelable MIUI warning dialog and configures its action to open application development settings.
+     *
+     * @return the configured warning dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

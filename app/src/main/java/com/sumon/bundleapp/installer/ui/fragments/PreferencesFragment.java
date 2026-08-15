@@ -127,6 +127,13 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Configures the application preferences screen, including summaries, visibility,
+     * selection dialogs, change listeners, and integration checks.
+     *
+     * @param savedInstanceState previously saved fragment state
+     * @param rootKey              preference hierarchy key used to load the settings
+     */
     @SuppressLint("ApplySharedPref")
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -517,6 +524,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         }
     }
 
+    /**
+     * Updates the root-use preference summary with the detected SU version or an availability message.
+     */
     private void updateUseRootSummary() {
         Preference useRootPref =
                 findPreference(PreferencesKeys.USE_ROOT);
@@ -543,6 +553,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         }
     }
 
+    /**
+     * Updates the Shizuku preference summary based on Shizuku availability.
+     */
     private void updateUseShizukuSummary() {
         Preference useShizukuPref =
                 findPreference(PreferencesKeys.USE_SHIZUKU);
@@ -642,6 +655,12 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         }
     }
 
+    /**
+     * Applies a selection made in an application settings dialog.
+     *
+     * @param dialogTag          identifies the setting being changed
+     * @param selectedItemIndex  index of the selected option
+     */
     @Override
     public void onItemSelected(
             String dialogTag,
@@ -799,6 +818,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         );
     }
 
+    /**
+     * Removes the Shizuku permission-result listener and destroys the fragment.
+     */
     @Override
     public void onDestroy() {
         if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {

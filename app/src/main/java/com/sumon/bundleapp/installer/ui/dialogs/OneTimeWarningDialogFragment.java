@@ -73,6 +73,13 @@ public class OneTimeWarningDialogFragment extends DialogFragment {
         setCancelable(false);
     }
 
+    /**
+     * Creates the warning dialog and marks it as acknowledged when the user selects
+     * the positive action.
+     *
+     * @param savedInstanceState previously saved dialog state, if available
+     * @return the warning dialog
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
