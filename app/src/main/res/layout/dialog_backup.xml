@@ -55,7 +55,7 @@
                     android:text="@string/backup_export_apk_desc" />
             </LinearLayout>
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/switch_backup_dialog_apk_export"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -225,9 +225,7 @@
     <string name="settings_category_main_ui">UI</string>
     <string name="settings_main_ui_show_app_features">アプリのタイプを表示する</string>
     <string name="settings_main_ui_show_app_features_summary">バックアップ画面でアプリのタイプ(システムアプリ, Split APK) を表示します</string>
-    <string name="settings_main_ui_theme">テーマ</string>
-    <string name="settings_main_donate">BAIを支援する</string>
-    <string name="settings_main_auto_theme">オートテーマ</string>
+    <string name="settings_main_ui_theme">テーマ</string>    <string name="settings_main_auto_theme">オートテーマ</string>
     <string name="settings_main_auto_theme_summary">端末のテーマ設定によって、選択されたライトテーマとダークテーマを自動的に切り替えます</string>
     <string name="settings_main_auto_theme_picker">テーマを選択してください</string>
     <string name="settings_main_auto_theme_picker_summary">現在の設定 \nライトテーマ: %s\nダークテーマ: %s</string>
@@ -257,20 +255,7 @@
     <string name="mi_continue_countdown">%d 秒後に続行できます。</string>
     <string name="mi_continue">続行</string>
     <string name="mi_miui_version">MIUI version - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">MIUIのバージョンによっては、MIUIの最適化をオフにしても何も起こらなかったり、アプリの権限がリセットされたり、何らかの想定外の結果が生じる場合があります。</string>
-    <string name="donate_message_not_donated">こんにちは。ご存知のように、BAIは完全にフリーかつオープンソースのアプリで、今後もその方針を貫きます。このアプリを気に入っていただけたなら、BAIに寄付して開発をサポートしていただけると嬉しいです。寄付へのお礼として、伝説の<b>BAI Gold</b>テーマを開放いたします！</string>
-    <string name="donate_message_donated">BAIをご支援いただき本当にありがとうございます！\n心ばかりのお礼ですが、お使いのBAIに<b>BAI Gold</b>テーマを追加いたしました。</string>
-    <string name="donate_message_floss">こんにちは。あなたは今FLOSSバージョンのBAIをお使いになっています。ご存知のように、BAIは完全にフリーかつオープンソースのアプリで、今後もその方針を貫きます。このアプリを気に入っていただけたなら、BAIに寄付して開発をサポートしていただけると嬉しいです。\n\nFLOSSバージョンでは、<b>FLOSS Gold</b>テーマがデフォルトで利用可能になります。</string>
-    <string name="donate_message_unknown_or_error">寄付ステータスを取得できませんでした。Google Play開発者サービスがインストールされていることを確認してください。また、端末を再起動してみてください。</string>
-    <string name="donate_message_pending">寄付はまだ途中です。完了後に自動的に適用されない場合は、BAIを再起動してください。</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">CIS諸国で人気のPayPal的なやつ</string>
-    <string name="donate_billing_not_available">Google Playに接続できませんでした。Google Play開発者サービスがインストールされていることを確認してください。また、端末を再起動してみてください。</string>
-    <string name="donate_donate_only_theme">このテーマは寄付の特典です</string>
-    <string name="donate_dialog_close">今後は表示しない</string>
-    <string name="donate_dialog_go_to_donate_page">寄付画面に移動</string>
-    <string name="donate_dialog_title">寄付</string>
-    <string name="installerx_dialog_title">カスタムインストール</string>
+    <string name="mi_consequences">MIUIのバージョンによっては、MIUIの最適化をオフにしても何も起こらなかったり、アプリの権限がリセットされたり、何らかの想定外の結果が生じる場合があります。</string>    <string name="installerx_dialog_title">カスタムインストール</string>
     <string name="installerx_dialog_choose_filepicker">どの方法でインストールするファイルを選択しますか？</string>
     <string name="installerx_dialog_loading">APKを解析しています…</string>
     <string name="installerx_dialog_install">インストール</string>
@@ -332,9 +317,7 @@
     <string name="auto_theme_dark_theme">ダークテーマ</string>
     <string name="auto_theme_selection_hint">変更するにはタップしてください</string>
     <string name="about_author">by polychromaticfox</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">寄付</string>
-    <string name="about_licenses">ライセンス</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">ライセンス</string>
     <string name="about_translate">BAIの多言語化やりませんか？</string>
     <string name="about_privacy">プライバシーポリシー</string>
     <string name="about_eula">End User License Agreement</string>

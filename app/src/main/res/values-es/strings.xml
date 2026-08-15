@@ -224,9 +224,7 @@
     <string name="settings_category_main_ui">UI</string>
     <string name="settings_main_ui_show_app_features">Mostrar características de la aplicación</string>
     <string name="settings_main_ui_show_app_features_summary">Show contextual app feature badges on backup screen</string>
-    <string name="settings_main_ui_theme">Tema</string>
-    <string name="settings_main_donate">Soporte BAI</string>
-    <string name="settings_main_auto_theme">Tema automático</string>
+    <string name="settings_main_ui_theme">Tema</string>    <string name="settings_main_auto_theme">Tema automático</string>
     <string name="settings_main_auto_theme_summary">Cambia automáticamente entre temas claros y oscuros seleccionados dependiendo del tema del sistema</string>
     <string name="settings_main_auto_theme_picker">Elegir temas</string>
     <string name="settings_main_auto_theme_picker_summary">Tema de luz actual: %s\nTema oscuro actual: %s</string>
@@ -256,20 +254,7 @@
     <string name="mi_continue_countdown">Puede continuar en %d s.</string>
     <string name="mi_continue">Continuar</string>
     <string name="mi_miui_version">Versión MIUI - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">Dependiendo de tu versión MIUI, desactivar la optimización MIUI puede no hacer nada, restablecer los permisos de aplicaciones o tener otras consecuencias inesperadas</string>
-    <string name="donate_message_not_donated">Hola. Como ya sabe, BAI es una aplicación de código abierto completamente gratuita y siempre será así. Si le gusta, por favor considere apoyar a BAI haciendo una donación. ¡También obtendrá el legendario tema <b>Oro BAI</b>!</string>
-    <string name="donate_message_donated">¡Muchas gracias por apoyar a BAI!\nNo se olvide de echar un vistazo a su nuevo tema <b>Oro BAI</b></string>
-    <string name="donate_message_floss">Hola. Está usando la versión FLOSS de BAI. Como sabe, BAI es una aplicación de código abierto completamente gratuita y siempre será así. Si le gusta, por favor considere apoyar BAI haciendo una donación.\n\nEn la versión FLOSS, el tema <b>Oro FLOSS</b> está disponible por defecto.</string>
-    <string name="donate_message_unknown_or_error">No se puede obtener el estado de la donación. Por favor, asegúrese de que tiene instalado Google Play Services e intente reiniciar su dispositivo.</string>
-    <string name="donate_message_pending">Su donación está pendiente. Si no se aplica automáticamente después de completarla, reinicie BAI.</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">Básicamente CIS PayPal</string>
-    <string name="donate_billing_not_available">No se puede conectar a Google Play. Por favor, asegúrese de que tiene instalado Google Play Services e intente reiniciar el dispositivo.</string>
-    <string name="donate_donate_only_theme">Donación requerida</string>
-    <string name="donate_dialog_close">No mostrar de nuevo</string>
-    <string name="donate_dialog_go_to_donate_page">Ir a la pantalla de donación</string>
-    <string name="donate_dialog_title">Donación</string>
-    <string name="installerx_dialog_title">Personalizar instalación</string>
+    <string name="mi_consequences">Dependiendo de tu versión MIUI, desactivar la optimización MIUI puede no hacer nada, restablecer los permisos de aplicaciones o tener otras consecuencias inesperadas</string>    <string name="installerx_dialog_title">Personalizar instalación</string>
     <string name="installerx_dialog_choose_filepicker">¿Cómo desea seleccionar los archivos a instalar?</string>
     <string name="installerx_dialog_loading">Analizando APKs…</string>
     <string name="installerx_dialog_install">Instalar</string>
@@ -331,9 +316,7 @@
     <string name="auto_theme_dark_theme">Tema oscuro</string>
     <string name="auto_theme_selection_hint">Toque para cambiar</string>
     <string name="about_author">por polychromaticfox</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">Donar</string>
-    <string name="about_licenses">Licencias</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">Licencias</string>
     <string name="about_translate">Ayude a traducir BAI</string>
     <string name="about_privacy">Política de privacidad</string>
     <string name="about_eula">Acuerdo de Licencia de Usuario Final</string>

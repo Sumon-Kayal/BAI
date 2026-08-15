@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
 import com.sumon.bundleapp.installer.utils.Logs;
@@ -51,7 +52,7 @@ public class InstallationConfirmationDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getContext())
+        return new MaterialAlertDialogBuilder(getContext())
                 .setMessage(getString(R.string.installer_installation_confirmation, getFileNameFromUri(mApksFileUri)))
                 .setPositiveButton(R.string.yes, (d, w) -> {
                     mListener.onConfirmed(mApksFileUri);

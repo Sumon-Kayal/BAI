@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 public class EulaActivity extends ThemedActivity {
 
-    private static final String EULA_ASSET_PATH = "eula/eula.txt";
+    private static final String EULA_ASSET_PATH = "EULA/EULA.md";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

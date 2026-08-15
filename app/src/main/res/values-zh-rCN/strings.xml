@@ -224,9 +224,7 @@
     <string name="settings_category_main_ui">外观</string>
     <string name="settings_main_ui_show_app_features">显示应用特性</string>
     <string name="settings_main_ui_show_app_features_summary">在备份屏幕上显示上下文应用程序功能徽章</string>
-    <string name="settings_main_ui_theme">主题</string>
-    <string name="settings_main_donate">支持 BAI</string>
-    <string name="settings_main_auto_theme">自动主题</string>
+    <string name="settings_main_ui_theme">主题</string>    <string name="settings_main_auto_theme">自动主题</string>
     <string name="settings_main_auto_theme_summary">根据系统主题，在选定的浅色和深色主题之间自动切换</string>
     <string name="settings_main_auto_theme_picker">选择主题</string>
     <string name="settings_main_auto_theme_picker_summary">当前浅色主题: %s\n当前深色主题: %s</string>
@@ -256,20 +254,7 @@
     <string name="mi_continue_countdown">您可以在 %d 秒后继续。</string>
     <string name="mi_continue">继续</string>
     <string name="mi_miui_version">MIUI 版本 - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">根据您的MIUI版本，关闭MIUI优化可能不起作用，重置应用程序权限或产生其他意外后果</string>
-    <string name="donate_message_not_donated">如您所知，BAI是一个完全免费的开源应用，它将始终保持这种状态。 如果您愿意，请考虑通过捐款支持BAI。 您还将获得传奇的<b> BAI 金色</b>主题！</string>
-    <string name="donate_message_donated">非常感谢您支持BAI！\n不要忘记查看您新的 <b>BAI 金色</b> 主题</string>
-    <string name="donate_message_floss">你好。您正在使用 FLOSS 版本的 BAI 。如您所知，BAI 是一个完全免费的开源的应用，它将永远保持这种状态。 如果您喜欢，请考虑通过捐款来支持BAI。\n\n在 FLOSS 版本中， <b>FLOSS 金色</b> 主题默认可用。</string>
-    <string name="donate_message_unknown_or_error">无法获得捐赠状态。 请确保您已安装Google Play服务，然后尝试重新启动设备。</string>
-    <string name="donate_message_pending">您的捐款尚未完成。 如果完成后没有自动应用，请重新启动BAI。</string>
-    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
-    <string name="donate_non_iap_yandex_desc">基本上是独联体国家的PayPal</string>
-    <string name="donate_billing_not_available">无法连接到Google Play。 请确保您已安装Google Play服务，然后尝试重新启动设备。</string>
-    <string name="donate_donate_only_theme">需要捐赠</string>
-    <string name="donate_dialog_close">不再显示</string>
-    <string name="donate_dialog_go_to_donate_page">转至捐赠屏幕</string>
-    <string name="donate_dialog_title">捐赠</string>
-    <string name="installerx_dialog_title">自定义安装</string>
+    <string name="mi_consequences">根据您的MIUI版本，关闭MIUI优化可能不起作用，重置应用程序权限或产生其他意外后果</string>    <string name="installerx_dialog_title">自定义安装</string>
     <string name="installerx_dialog_choose_filepicker">您想要如何选择要安装的文件？</string>
     <string name="installerx_dialog_loading">正分析APKs…</string>
     <string name="installerx_dialog_install">安装</string>
@@ -331,9 +316,7 @@
     <string name="auto_theme_dark_theme">深色主题</string>
     <string name="auto_theme_selection_hint">点击以更改</string>
     <string name="about_author">由polychromaticfox开发</string>
-    <string name="about_source">GitHub</string>
-    <string name="about_donate">捐赠</string>
-    <string name="about_licenses">许可证</string>
+    <string name="about_source">GitHub</string>    <string name="about_licenses">许可证</string>
     <string name="about_translate">帮助翻译BAI</string>
     <string name="about_privacy">隐私政策</string>
     <string name="about_eula">最终用户许可协议</string>

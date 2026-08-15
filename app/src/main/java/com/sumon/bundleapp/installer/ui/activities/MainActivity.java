@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
 import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
-import com.sumon.bundleapp.installer.billing.BillingManager;
-import com.sumon.bundleapp.installer.billing.DefaultBillingManager;
 import com.sumon.bundleapp.installer.ui.fragments.BackupFragment;
 import com.sumon.bundleapp.installer.ui.fragments.Installer2Fragment;
 import com.sumon.bundleapp.installer.ui.fragments.InstallerFragment;
@@ -37,16 +35,12 @@ public class MainActivity extends ThemedActivity implements BottomNavigationView
 
     private boolean mIsNavigationEnabled = true;
 
-    private BillingManager mBillingManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         PermissionsUtils.checkAndRequestNotificationPermission(this);
-
-        mBillingManager = DefaultBillingManager.getInstance(this);
 
         //TODO is this ok?
         DefaultBackupManager.getInstance(this);
@@ -149,9 +143,19 @@ public class MainActivity extends ThemedActivity implements BottomNavigationView
         return mInstallerFragment;
     }
 
+    /**
+     * Works around a known AOSP framework leak (Activity$1#this$0, via
+     * android.app.IRequestFinishCallback$Stub, introduced in Android Q) -
+     * see https://issuetracker.google.com/issues/139738913 for the report
+     * and this exact fix. Only applies when this is the task root with no
+     * fragment back stack, i.e. back would otherwise just finish the task.
+     */
     @Override
-    protected void onResume() {
-        super.onResume();
-        mBillingManager.refresh();
+    public void onBackPressed() {
+        if (isTaskRoot() && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finishAfterTransition();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
