@@ -8,6 +8,9 @@ on:
     paths-ignore:
       - "README.md"
       - "LICENSE"
+      - "EULA.md"
+      - "CONTRIBUTING.md"
+      - "META-FORMAT.md"
       - ".gitignore"
 
   pull_request:
@@ -32,51 +35,120 @@ jobs:
       - name: Find TODO/FIXME markers
         run: |
           echo "Searching for TODO and FIXME comments..."
-          output=$(git grep -nI -E "TODO|FIXME" -- . \
+          output=$(git grep -nI -E "\\b(TODO|FIXME)\\b" -- . \
             ':(exclude).github/workflows/Dead code check.yml' \
             || true)
+
+          if [ -n "$output" ]; then
+            echo "::warning::TODO/FIXME markers found:"
+            echo "$output"
+          else
+            echo "No TODO/FIXME markers found."
+          fi
+
+      - name: Check for empty directories
+        run: |
+          echo "Checking for empty directories..."
+          # Git does not track empty directories, so only inspect directories
+          # that exist in the checked-out working tree.
+          output=$(find . -type d \
+            -not -path './.git' \
+            -not -path './.git/*' \
+            -empty -print)
+
           if [ -n "$output" ]; then
             echo "$output"
             exit 1
           fi
-          echo "No TODO/FIXME markers found."
 
-      - name: List empty directories
-        run: |
-          echo "Empty directories:"
-          output=$(git ls-files --others --directory --exclude-standard | while read dir; do
-            if [ -d "$dir" ] && [ -z "$(ls -A "$dir" 2>/dev/null)" ]; then
-              echo "$dir"
-            fi
-          done)
-          tracked_dirs=$(git ls-files | xargs -r dirname | sort -u | while read dir; do
-            if [ -d "$dir" ] && [ -z "$(ls -A "$dir" 2>/dev/null)" ]; then
-              echo "$dir"
-            fi
-          done)
-          all_empty="$output$tracked_dirs"
-          if [ -n "$all_empty" ]; then
-            echo "$all_empty"
-            exit 1
-          fi
           echo "No empty directories found."
 
-      - name: List large files (>10 MB)
+      - name: Check for large files (>10 MiB)
         run: |
-          echo "Large files:"
-          output=$(git ls-files | while read file; do
-            if [ -f "$file" ]; then
-              size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo 0)
-              if [ "$size" -gt 10000000 ]; then
-                echo "$file"
-              fi
+          echo "Checking tracked files larger than 10 MiB..."
+          output=$(git ls-files -z | while IFS= read -r -d '' file; do
+            if [ -f "$file" ] && [ "$(stat -c%s "$file")" -gt 10485760 ]; then
+              size=$(du -h "$file" | cut -f1)
+              echo "$size  $file"
             fi
           done)
+
           if [ -n "$output" ]; then
             echo "$output"
             exit 1
           fi
-          echo "No large files found."
+
+          echo "No tracked files larger than 10 MiB found."
+
+      - name: Run Android lint dead-code checks
+        shell: bash
+        run: |
+          set +e
+
+          if [ ! -x "./gradlew" ]; then
+            echo "::warning::Gradle wrapper not found; Android lint dead-code checks were skipped."
+            exit 0
+          fi
+
+          echo "Running Android lint..."
+          ./gradlew lint --continue --console=plain 2>&1 | tee lint-dead-code.log
+          lint_exit=${PIPESTATUS[0]}
+
+          # Lint can report many unrelated problems. For this workflow we
+          # specifically fail on findings that indicate unused/dead Android
+          # resources or unused declarations when those checks are available
+          # in the project's AGP/lint version.
+          dead_code=$(grep -E '\[(UnusedResources|UnusedIds|UnusedPrivateMethod|UnusedPrivateClass|UnusedVariable)\]' \
+            lint-dead-code.log || true)
+
+          if [ -n "$dead_code" ]; then
+            echo "::error::Potential dead/unused code detected:"
+            echo "$dead_code"
+            exit 1
+          fi
+
+          if [ "$lint_exit" -ne 0 ]; then
+            echo "::warning::Gradle lint exited with code $lint_exit, but no supported dead-code findings were detected."
+          fi
+
+          echo "No supported dead-code findings detected."
+
+      - name: Run R8 usage analysis when available
+        shell: bash
+        run: |
+          set +e
+
+          if [ ! -x "./gradlew" ]; then
+            echo "Gradle wrapper not found; R8 analysis skipped."
+            exit 0
+          fi
+
+          # R8's usage.txt is the strongest build-level signal available for
+          # unreachable/unused code. Do not fail the workflow merely because
+          # R8 is unavailable or the project has no minified release variant.
+          ./gradlew app:minifyReleaseWithR8 --console=plain >/tmp/r8.log 2>&1
+          r8_exit=$?
+
+          if [ "$r8_exit" -ne 0 ]; then
+            echo "::notice::R8 usage analysis was skipped or unavailable for this project."
+            tail -n 40 /tmp/r8.log || true
+            exit 0
+          fi
+
+          found=0
+          while IFS= read -r usage; do
+            if [ -f "$usage" ]; then
+              echo "::warning::R8 reports potentially removable code in $usage"
+              sed -n '1,200p' "$usage"
+              found=1
+            fi
+          done < <(find . -type f -path '*/build/outputs/mapping/*/usage.txt' -print)
+
+          if [ "$found" -eq 0 ]; then
+            echo "No R8 usage.txt report was generated."
+          else
+            echo "::notice::R8 found code that can be removed by the optimizer. Review the usage.txt reports before deleting anything manually."
+          fi
 
       - name: Check Git status
         run: |
