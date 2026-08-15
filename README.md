@@ -14,7 +14,12 @@ BAI is a fork of [SAI](https://github.com/Aefyr/SAI) by polychromaticfox, mainta
 ## What's different from upstream SAI
 - **Distributed only through GitHub Releases**, built by this repo's own CI — not affiliated with Play Store or F-Droid.
 - **Single build variant.** Based on SAI's F-Droid flavor (no Google Play Billing to begin with); the `normal`/Play Store flavor has been removed entirely rather than kept alongside it.
-- **Modernized build:** AGP 8.8.0, Gradle 8.11.1, JDK 17, compileSdk/targetSdk 35 (Android 15) while keeping minSdk 21 (Android 5.0). Two dependencies that no longer resolve on JitPack (`pseudoapksigner`, `flexfilter`) were vendored as plain Java source rather than replaced with alternatives, so behavior is unchanged.
+- **No donation feature.** The donate button, billing status tracking, and related UI have been removed entirely, not just hidden.
+- **Offline EULA.** The End User License Agreement is bundled with the app (`app/src/main/assets/EULA/EULA.md`) and shown in-app — no network request needed to read it.
+- **Per-app language switcher** under Settings → Languages, independent of your system language.
+- **Modernized build:** AGP 8.8.0, Gradle 9.7.0, JDK 17, compileSdk/targetSdk 35 (Android 15) while keeping minSdk 21 (Android 5.0).
+  ⚠️ *AGP 8.8.0 predates Gradle 9; Gradle's own compatibility matrix only lists tested support starting at AGP 9.0. This pairing has not been confirmed to build cleanly — verify before relying on it.*
+- Two dependencies that no longer resolve on JitPack (`pseudoapksigner`, `flexfilter`) were vendored as plain Java source rather than replaced with alternatives, so behavior is unchanged.
 - **CodeQL security scanning** runs on every push/PR via `.github/workflows/codeql.yml`.
 - Package name changed to `com.sumon.bundleapp.installer` so it can install side-by-side with the original SAI if you still have it.
 

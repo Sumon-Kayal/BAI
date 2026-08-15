@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
 
@@ -58,7 +59,7 @@ public class AppInstalledDialogFragment extends DialogFragment {
             Log.w("SAI", e);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(getContext())
                 .setTitle(R.string.app_name)
                 .setMessage(appLabel == null ? getString(R.string.installer_app_installed) : String.format(getString(R.string.installer_app_installed_full), appLabel))
                 .setNegativeButton(R.string.ok, null);

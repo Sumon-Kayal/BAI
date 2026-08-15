@@ -10,6 +10,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -77,7 +78,7 @@ public class BatchBackupDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
+        AlertDialog alertDialog = new MaterialAlertDialogBuilder(requireContext())
                 .setMessage(getExportPromptText())
                 .setPositiveButton(R.string.yes, null)
                 .setNegativeButton(R.string.cancel, null)

@@ -40,7 +40,7 @@
     <string name="installer_error_aborted">Installation was cancelled by user</string>
     <string name="installer_error_blocked">Installation was blocked by %s</string>
     <string name="installer_error_blocked_device">device</string>
-    <string name="installer_error_conflict">Unable to install the app because it conflicts with an already installed app with same package name</string>
+    <string name="installer_error_conflict">Unable to install the app because it conflicts with an already installed app with the same package name</string>
     <string name="installer_error_incompatible">Application is incompatible with this device</string>
     <string name="installer_error_bad_apks">Invalid APK files selected</string>
     <string name="installer_error_storage">Not enough storage space to install the app</string>
@@ -87,7 +87,7 @@
     <string name="installer_rootless_error2_install_failed_older_sdk">Device Android version is lower than required by the package</string>
     <string name="installer_rootless_error2_install_failed_conflicting_provider">Package contains a content provider with the same authority as a provider already installed in the system</string>
     <string name="installer_rootless_error2_install_failed_newer_sdk">Device Android version is higher than required by the package</string>
-    <string name="installer_rootless_error2_install_failed_test_only">Installed package is test-only and INSTALL_ALLOW_TEST flag was not supplied</string>
+    <string name="installer_rootless_error2_install_failed_test_only">Installed package is test-only and the INSTALL_ALLOW_TEST flag was not supplied</string>
     <string name="installer_rootless_error2_install_failed_cpu_abi_incompatible">Package doesn\'t contain native code that is compatible with this device\'s CPU</string>
     <string name="installer_rootless_error2_install_failed_missing_feature">Package requires a feature that is not supported by the device</string>
     <string name="installer_rootless_error2_install_failed_container_error">Secure container mount point couldn\'t be accessed on external media</string>
@@ -99,7 +99,7 @@
     <string name="installer_rootless_error2_install_failed_uid_changed">Package was assigned a different UID than it previously held</string>
     <string name="installer_rootless_error2_install_failed_version_downgrade">A newer version of this package is already installed</string>
     <string name="installer_rootless_error2_install_failed_permission_model_downgrade">New version of the package doesn\'t support runtime permissions but the currently installed version does</string>
-    <string name="installer_rootless_error2_install_failed_sandbox_version_downgrade">New version of the package requires a lower sandbox version than the currently installed version of this package</string>
+    <string name="installer_rootless_error2_install_failed_sandbox_version_downgrade">The new version of the package requires a lower sandbox version than the currently installed version of this package</string>
     <string name="installer_rootless_error2_install_failed_missing_split">Package requires splits, but they weren\'t provided</string>
     <string name="installer_rootless_error2_install_parse_failed_not_apk">Provided file is not an APK file</string>
     <string name="installer_rootless_error2_install_parse_failed_bad_manifest">Unable to retrieve APK manifest</string>
@@ -118,7 +118,7 @@
     <string name="installer_rootless_error2_install_failed_aborted">Installation was cancelled by the user or aborted</string>
     <string name="installer_rootless_error2_install_failed_instant_app_invalid">Unsupported operation with an instant app</string>
     <string name="installer_rootless_error2_install_failed_bad_dex_metadata">Dex metadata file is invalid or there\'s no matching APK file for a dex metadata file</string>
-    <string name="installer_rootless_error2_install_failed_bad_signature">There\'s some problem with APK signature</string>
+    <string name="installer_rootless_error2_install_failed_bad_signature">There\'s a problem with the APK signature</string>
     <string name="installer_rootless_error2_install_failed_other_staged_session_in_progress">There\'s already a package installer session being committed for this package name</string>
     <string name="installer_rootless_error2_install_failed_multipackage_inconsistency">One of the child package installer sessions does not match the parent package installer session in respect to staged or rollback enabled parameters</string>
     <string name="installer_rootless_error2_install_failed_wrong_installed_version">Required version of an already installed package doesn\'t match the actual version of the installed package</string>
@@ -183,7 +183,7 @@
     <string name="backup_component_apk_files">APK Files</string>
     <string name="backup_component_unknown">Unknown component with type \"%s\"</string>
     <string name="backup_lbs_provider_name">Local storage</string>
-    <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with BAI 3.10+ in the selected directory will be indexed as backups. Default directory for backups prior to BAI 4.0 used to be Internal Storage > BAI</string>
+    <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with SAI 3.10+ or BAI 4.6+ in the selected directory will be indexed as backups. Default directory for backups used by SAI was Internal Storage &gt; SAI.</string>
     <string name="backup_lbs_select_dir">Select directory</string>
     <string name="backup_lbs_current_dir">Current backups directory: %s\n\nNote: BAI will only show backups from the currently selected directory.</string>
     <string name="backup_settings">Backup settings</string>
@@ -195,7 +195,6 @@
     <string name="settings_title">Settings</string>
     <string name="settings_category_main_languages">Languages</string>
     <string name="settings_main_app_language">App language</string>
-    <string name="system_default_language">System default</string>
     <string name="settings_main_home_directory">Home directory</string>
     <string name="settings_main_home_directory_summary">Starting directory in APKs picker\nCurrently: %s</string>
     <string name="settings_main_file_picker_sort">Files sorting</string>
@@ -243,7 +242,7 @@
     <string name="settings_main_auto_theme_picker_summary">Current light theme: %1$s\nCurrent dark theme: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Please note that following the system theme may not work correctly on Android versions lower than Q</string>
     <string name="settings_main_use_installerx">Pro mode</string>
-    <string name="settings_main_use_installerx_summary">Enable installer Pro mode that allows you to select parts to install from a .apks file (or other archives with multiple APK files). Please note that Pro mode is experimental and it may not work properly, feedback is welcome</string>
+    <string name="settings_main_use_installerx_summary">Enable installer Pro mode that allows you to select parts to install from a .apks file (or other archives with multiple APK files). Please note that Pro mode is experimental and it may not work properly. Feedback is welcome</string>
     <string name="settings_main_enable_analytics">Analytics</string>
     <string name="settings_main_enable_analytics_summary">Allow BAI to collect analytics data such as app usage data and errors. You can find out more about data being collected in Privacy Policy which you can find on about screen. Changing this setting may not fully apply it until you restart BAI</string>
     <string name="settings_main_backup_settings">Backup settings</string>
@@ -269,7 +268,7 @@
     <string name="mi_continue_countdown">You can continue in %d s.</string>
     <string name="mi_continue">Continue</string>
     <string name="mi_miui_version">MIUI version - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset apps permissions or have other unexpected consequences</string>
+    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset app permissions, or have other unexpected consequences</string>
 
     <string name="installerx_dialog_title">Customize installation</string>
     <string name="installerx_dialog_choose_filepicker">How do you want to select files to install?</string>
@@ -298,7 +297,7 @@
     <string name="installerx_split_config_dpi_for_base">%1$s (%2$d DPI) resources for base APK</string>
     <string name="installerx_split_config_dpi_for_module">%1$s (%2$d DPI) resources for feature \"%3$s\"</string>
     <string name="installerx_category_unknown">Unknown</string>
-    <string name="installerx_category_unknown_desc">Split APK parts with unknown purpose, please open an issue on BAI\'s GitHub and attach this APK or at least a screenshot of parts names if you encounter this. It is highly recommended to install these parts unless you know their exact purpose</string>
+    <string name="installerx_category_unknown_desc">Split APK parts with unknown purpose, please open an issue on BAI\'s GitHub and attach this APK or at least a screenshot of the part names if you encounter this. It is highly recommended to install these parts unless you know their exact purpose</string>
 
     <string name="installerx_default_mess_resolver_error_unknown_extension">Unexpected file extension: %s</string>
 
@@ -347,6 +346,5 @@
     <string name="about_translate_link" translatable="false">https://github.com/Sumon-Kayal/BAI/tree/Translations</string>
     <string name="about_privacy">Privacy Policy</string>
     <string name="about_eula">End User License Agreement</string>
-    <string name="eula_load_error">Failed to load the license agreement.</string>
 
 </resources>

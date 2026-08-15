@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
 import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
@@ -51,7 +52,7 @@ public class DeleteBackupConfirmationDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new AlertDialog.Builder(requireContext())
+        return new MaterialAlertDialogBuilder(requireContext())
                 .setMessage(getString(R.string.backup_delete_backup_prompt, mBackupTimeSdf.format(new Date(mTimestamp))))
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.ok, (dialog, which) -> {

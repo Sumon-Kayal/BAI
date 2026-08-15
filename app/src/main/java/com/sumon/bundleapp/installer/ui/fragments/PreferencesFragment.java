@@ -284,9 +284,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                         mBackgroundExecutor.execute(() -> {
                             boolean rootAvailable = SuShell.isRootAvailable();
                             requireActivity().runOnUiThread(() -> {
-                                if (!isAdded()) {
-                                    return;
-                                }
                                 if (!rootAvailable) {
                                     SimpleAlertDialogFragment.newInstance(
                                             requireContext(),
@@ -528,9 +525,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             mBackgroundExecutor.execute(() -> {
                 String suVersion = SuShell.getSuVersion();
                 requireActivity().runOnUiThread(() -> {
-                    if (!isAdded()) {
-                        return;
-                    }
                     useRootPref.setSummary(
                             getString(
                                     R.string.settings_main_use_root_summary,
@@ -563,9 +557,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             mBackgroundExecutor.execute(() -> {
                 boolean available = Shizuku.pingBinder();
                 requireActivity().runOnUiThread(() -> {
-                    if (!isAdded()) {
-                        return;
-                    }
                     mShizukuAvailableCache = available;
                     useShizukuPref.setSummary(
                             available
@@ -711,24 +702,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                                 DialogConfigs.SORT_ORDER_REVERSE
                         );
                         break;
-
-                    case 4:
-                        mHelper.setFilePickerSortBy(
-                                DialogConfigs.SORT_BY_SIZE
-                        );
-                        mHelper.setFilePickerSortOrder(
-                                DialogConfigs.SORT_ORDER_NORMAL
-                        );
-                        break;
-
-                    case 5:
-                        mHelper.setFilePickerSortBy(
-                                DialogConfigs.SORT_BY_SIZE
-                        );
-                        mHelper.setFilePickerSortOrder(
-                                DialogConfigs.SORT_ORDER_REVERSE
-                        );
-                        break;
                 }
 
                 updateFilePickerSortSummary();
@@ -740,9 +713,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                     mBackgroundExecutor.execute(() -> {
                         boolean rootAvailable = SuShell.isRootAvailable();
                         requireActivity().runOnUiThread(() -> {
-                            if (!isAdded()) {
-                                return;
-                            }
                             if (!rootAvailable) {
                                 SimpleAlertDialogFragment.newInstance(
                                         requireContext(),
@@ -759,9 +729,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                     mBackgroundExecutor.execute(() -> {
                         boolean shizukuAvailable = Shizuku.pingBinder();
                         requireActivity().runOnUiThread(() -> {
-                            if (!isAdded()) {
-                                return;
-                            }
                             if (!shizukuAvailable) {
                                 SimpleAlertDialogFragment.newInstance(
                                         requireContext(),
@@ -819,7 +786,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     public void onResume() {
         super.onResume();
 
-        mShizukuAvailableCache = null;
         updateUseRootSummary();
         updateUseShizukuSummary();
         updateUseShellSummary();
@@ -838,8 +804,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
             Shizuku.removeRequestPermissionResultListener(this);
         }
-
-        mBackgroundExecutor.shutdown();
 
         super.onDestroy();
     }
