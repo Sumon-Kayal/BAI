@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">APK файлы</string>
     <string name="backup_component_unknown">Неизвестный компонент с типом \"%s\"</string>
     <string name="backup_lbs_provider_name">Локальное хранилище</string>
-    <string name="backup_lbs_warning_no_dir">Пожалуйста выберите папку для хранения бэкапов. .apks файлы, экспортированные с помощью BAI 3.10+ в выбранной папке будут индексированы как бэкапы. Папка по умолчанию до BAI 4.0 была Внутренняя память &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Пожалуйста выберите папку для хранения бэкапов. .apks файлы, экспортированные с помощью SAI 3.10+ или BAI 4.6+ в выбранной папке будут индексированы как бэкапы. Папка по умолчанию использованная SAI была Внутренняя память &gt; SAI</string>
     <string name="backup_lbs_select_dir">Выбрать папку</string>
     <string name="backup_lbs_current_dir">Текущая папка: %s\n\nBAI будет показывать бэкапы только в выбранной директории.</string>
     <string name="backup_settings">Настройки бэкапа</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">Экспортировать как .apk файл</string>
     <string name="backup_export_apk_desc">Экспортировать единственную выбранную часть как .apk файл. Экспортированные .apk файлы не являются бэкапами и не управляются BAI</string>
     <string name="settings_title">Настройки</string>
+    <string name="settings_language_system_default">Системный по умолчанию</string>
     <string name="settings_main_home_directory">Папка по умолчанию</string>
     <string name="settings_main_home_directory_summary">Начальная папка в выборе APK\nСейчас: %s</string>
     <string name="settings_main_file_picker_sort">Сортировка файлов</string>

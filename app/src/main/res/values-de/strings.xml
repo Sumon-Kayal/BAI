@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">APK-Dateien</string>
     <string name="backup_component_unknown">Unbekannte Komponente mit dem Typ \"%s\"</string>
     <string name="backup_lbs_provider_name">Lokaler Speicher</string>
-    <string name="backup_lbs_warning_no_dir">Bitte wähle ein Verzeichnis zum Speichern von Sicherungen aus. .apks-Dateien die mit BAI 3.10+ exportiert werden, werden als Backups indiziert. Standardverzeichnis für Sicherungen die mit einer Version früher als BAI 4.0 erstellt wurden, befinden sich im internen Speicher &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Bitte wähle ein Verzeichnis zum Speichern von Sicherungen aus. .apks-Dateien die mit SAI 3.10+ oder BAI 4.6+ exportiert werden, werden als Backups indiziert. Standardverzeichnis für Sicherungen die von SAI verwendet wurden, befinden sich im internen Speicher &gt; SAI</string>
     <string name="backup_lbs_select_dir">Verzeichnis auswählen</string>
     <string name="backup_lbs_current_dir">Aktuelles Sicherungsverzeichnis: %s\n\nHinweis: BAI wird nur Sicherungen aus dem aktuell ausgewählten Verzeichnis anzeigen.</string>
     <string name="backup_settings">Sicherungseinstellungen</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">Als .apk-Datei exportieren</string>
     <string name="backup_export_apk_desc">Einen ausgewählten Teil als .apk-Datei exportieren. Die exportierten .apk-Dateien sind keine Sicherungen und können nicht mit BAI verwaltet werden</string>
     <string name="settings_title">Einstellungen</string>
+    <string name="settings_language_system_default">Systemstandard</string>
     <string name="settings_main_home_directory">Heimatverzeichnis</string>
     <string name="settings_main_home_directory_summary">Startverzeichnis beim Auswählen von APKs\nAktuell: %s</string>
     <string name="settings_main_file_picker_sort">Dateisortierung</string>

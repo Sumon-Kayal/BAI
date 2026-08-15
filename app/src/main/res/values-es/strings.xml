@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">Archivos APK</string>
     <string name="backup_component_unknown">Unknown component with type \"%s\"</string>
     <string name="backup_lbs_provider_name">Almacenamiento local</string>
-    <string name="backup_lbs_warning_no_dir">Por favor, seleccione un directorio para guardar los respaldos. Los archivos .apk exportados con BAI 3.10+ en la carpeta seleccionada serán indexados como copias de seguridad. El directorio por defecto para las copias de seguridad en versiones anteriores a BAI 4.0 solía ser Almacenamiento interno &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Por favor, seleccione un directorio para guardar los respaldos. Los archivos .apk exportados con SAI 3.10+ o BAI 4.6+ en la carpeta seleccionada serán indexados como copias de seguridad. El directorio por defecto para las copias de seguridad usado por SAI era Almacenamiento interno &gt; SAI</string>
     <string name="backup_lbs_select_dir">Seleccionar directorio</string>
     <string name="backup_lbs_current_dir">Carpeta actual de respaldos: %s\n\nNota: BAI solo mostrará los respaldos de la carpeta actual seleccionada.</string>
     <string name="backup_settings">Ajustes de respaldo</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">Exportar como archivo .apk</string>
     <string name="backup_export_apk_desc">Exportar una sola parte seleccionada como un archivo .apk. Los archivos .apk exportados no son copias de seguridad y no serán gestionados por BAI</string>
     <string name="settings_title">Ajustes</string>
+    <string name="settings_language_system_default">Predeterminado del sistema</string>
     <string name="settings_main_home_directory">Directorio principal</string>
     <string name="settings_main_home_directory_summary">Iniciando directorio en el selector de APKs\nActualmente: %s</string>
     <string name="settings_main_file_picker_sort">Ordenar archivos</string>

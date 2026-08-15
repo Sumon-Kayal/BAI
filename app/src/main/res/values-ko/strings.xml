@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">APK 파일</string>
     <string name="backup_component_unknown">Unknown component with type \"%s\"</string>
     <string name="backup_lbs_provider_name">로컬 저장소</string>
-    <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with BAI 3.10+ in the selected directory will be indexed as backups. Default directory for backups prior to BAI 4.0 used to be Internal Storage &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with SAI 3.10+ or BAI 4.6+ in the selected directory will be indexed as backups. Default directory for backups used by SAI was Internal Storage &gt; SAI</string>
     <string name="backup_lbs_select_dir">디렉토리 선택</string>
     <string name="backup_lbs_current_dir">Current backups directory: %s\n\nNote: BAI will only show backups from the currently selected directory.</string>
     <string name="backup_settings">백업 설정</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">.apk 파일로 내보내기</string>
     <string name="backup_export_apk_desc">Export a single selected part as a .apk file. Exported .apk files are not backups and won\'t be managed by BAI</string>
     <string name="settings_title">설정</string>
+    <string name="settings_language_system_default">시스템 기본값</string>
     <string name="settings_main_home_directory">홈 디렉토리</string>
     <string name="settings_main_home_directory_summary">Starting directory in APKs picker\nCurrently: %s</string>
     <string name="settings_main_file_picker_sort">파일 정렬</string>

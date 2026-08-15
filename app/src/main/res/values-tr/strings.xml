@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">APK Dosyaları</string>
     <string name="backup_component_unknown">\"%s\" türüne sahip bilinmeyen bileşen</string>
     <string name="backup_lbs_provider_name">Yerel depolama</string>
-    <string name="backup_lbs_warning_no_dir">Lütfen yedekleri saklamak için bir dizin seçin. Seçilen dizinde BAI 3.10+ ile dışa aktarılan .apks dosyaları yedek olarak dizine eklenir. BAI 4.0\'dan önceki yedekler için varsayılan dizin, Dahili Depolama &gt; BAI idi</string>
+    <string name="backup_lbs_warning_no_dir">Lütfen yedekleri saklamak için bir dizin seçin. Seçilen dizinde SAI 3.10+ veya BAI 4.6+ ile dışa aktarılan .apks dosyaları yedek olarak dizine eklenir. SAI tarafından kullanılan yedekler için varsayılan dizin, Dahili Depolama &gt; SAI idi</string>
     <string name="backup_lbs_select_dir">Dizin seç</string>
     <string name="backup_lbs_current_dir">Geçerli yedek dizini: %s\n\nNot: BAI yalnızca seçili dizindeki yedekleri gösterir.</string>
     <string name="backup_settings">Yedekleme ayarları</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">.apk dosyası olarak dışa aktar</string>
     <string name="backup_export_apk_desc">Seçilen tek bir parçayı .apk dosyası olarak dışa aktarır. Dışa aktarılan .apk dosyaları yedek değildir ve BAI tarafından yönetilmeyecektir</string>
     <string name="settings_title">Ayarlar</string>
+    <string name="settings_language_system_default">Sistem varsayılanı</string>
     <string name="settings_main_home_directory">Ana dizin</string>
     <string name="settings_main_home_directory_summary">APK seçicisi başlangıç dizini\nŞu anki: %s</string>
     <string name="settings_main_file_picker_sort">Dosyaları sıralama</string>

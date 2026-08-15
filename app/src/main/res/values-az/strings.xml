@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">APK Faylları</string>
     <string name="backup_component_unknown">\"%s\" tipli bilinməyən komponent</string>
     <string name="backup_lbs_provider_name">Yerli yaddaş</string>
-    <string name="backup_lbs_warning_no_dir">Xahiş olunur nüsxələri saxlamaq üçün yer seçin. Seçilən yerdəki BAI 3.10+ ilə çıxarılmış .apks faylları nüsxələr kimi işarələnəcək. BAI 4.0\'a qədər nüsxələrin saxlandığı standart yer Daxili Yaddaş &gt; BAI olmuşdur</string>
+    <string name="backup_lbs_warning_no_dir">Xahiş olunur nüsxələri saxlamaq üçün yer seçin. Seçilən yerdəki SAI 3.10+ və ya BAI 4.6+ ilə çıxarılmış .apks faylları nüsxələr kimi işarələnəcək. SAI tərəfindən istifadə olunan nüsxələrin standart yeri Daxili Yaddaş &gt; SAI olmuşdur</string>
     <string name="backup_lbs_select_dir">Yeri seç</string>
     <string name="backup_lbs_current_dir">Hazırkı nüsxə yer: %s\n\nQeyd: BAI yalnız hazırkı yerdən seçilmiş nüsxələri göstərəcək.</string>
     <string name="backup_settings">Nüsxə tənzimləmələri</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">.apk faylı kimi çıxar</string>
     <string name="backup_export_apk_desc">Tək seçilmiş hissəni .apk kimi çıxar. Çıxarılmış .apk faylları nüsxə deyil və BAI tərəfindən idarə edilmirlər</string>
     <string name="settings_title">Tənzimləmələr</string>
+    <string name="settings_language_system_default">Sistem standartı</string>
     <string name="settings_main_home_directory">Ana yer</string>
     <string name="settings_main_home_directory_summary">APKları götürmə\'nin başlanğıc yeri\nHazırkı: %s</string>
     <string name="settings_main_file_picker_sort">Fayl nizamlama</string>

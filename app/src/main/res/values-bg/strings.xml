@@ -189,7 +189,7 @@ BAI (Bundle APKs Installer) е инсталатор на приложения, �
     <string name="backup_component_apk_files">Файлове на APK</string>
     <string name="backup_component_unknown">Неизвестен компонент от тип \"%s\"</string>
     <string name="backup_lbs_provider_name">Локално съхранение</string>
-    <string name="backup_lbs_warning_no_dir">Изберете директория, в която да се съхраняват архивите. .apks файлове, изнесени с BAI 3.10+ в избраната директория ще бъдат индексирани като резервни копия. Директория по подразбиране за резервни копия преди BAI 4.0 е била вътрешна памет &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Изберете директория, в която да се съхраняват архивите. .apks файлове, изнесени с SAI 3.10+ или BAI 4.6+ в избраната директория ще бъдат индексирани като резервни копия. Директория по подразбиране за резервни копия използвана от SAI е била вътрешна памет &gt; SAI</string>
     <string name="backup_lbs_select_dir">Избор на директория</string>
     <string name="backup_lbs_current_dir">Текуща директория за архивиране: %s\n\nБележка: BAI ще показва само архиви от текущо избраната директория.</string>
     <string name="backup_settings">Настройки за архивиране</string>
@@ -198,6 +198,7 @@ BAI (Bundle APKs Installer) е инсталатор на приложения, �
     <string name="backup_export_apk">Експорт като .apk файл</string>
     <string name="backup_export_apk_desc">Експорт на една избрана част като .apk файл. Експортираните .apk файлове не са резервни копия и няма да се управляват от BAI</string>
     <string name="settings_title">Настройки</string>
+    <string name="settings_language_system_default">Системен по подразбиране</string>
     <string name="settings_main_home_directory">Папка подразб.</string>
     <string name="settings_main_home_directory_summary">Начална папка в избора на APK
 Сега: %s</string>

@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">Fichiers APK</string>
     <string name="backup_component_unknown">Composant inconnu de type \"%s\"</string>
     <string name="backup_lbs_provider_name">Stockage local</string>
-    <string name="backup_lbs_warning_no_dir">Veuillez sélectionner un répertoire pour stocker les sauvegardes. Les fichiers .apks exportés avec BAI 3.10+ dans le répertoire sélectionné seront indexés en tant que sauvegardes. Répertoire par défaut pour les sauvegardes antérieures à BAI 4.0 utilisé pour le stockage interne &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Veuillez sélectionner un répertoire pour stocker les sauvegardes. Les fichiers .apks exportés avec SAI 3.10+ ou BAI 4.6+ dans le répertoire sélectionné seront indexés en tant que sauvegardes. Répertoire par défaut pour les sauvegardes utilisé par SAI était le stockage interne &gt; SAI</string>
     <string name="backup_lbs_select_dir">Sélectionner un répertoire</string>
     <string name="backup_lbs_current_dir">Répertoire actuel des sauvegardes : %s\n\nNote : BAI n\'affichera que les sauvegardes du répertoire actuellement sélectionné.</string>
     <string name="backup_settings">Sauvegarder les paramètres</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">Exporter en fichier .apk</string>
     <string name="backup_export_apk_desc">Exporter une seule partie sélectionnée en fichier .apk. Les fichiers .apk exportés ne sont pas des sauvegardes et ne seront pas gérés par BAI</string>
     <string name="settings_title">Paramètres</string>
+    <string name="settings_language_system_default">Par défaut du système</string>
     <string name="settings_main_home_directory">Répertoire principal</string>
     <string name="settings_main_home_directory_summary">Répertoire de démarrage dans le sélecteur APKs\nActuellement : %s</string>
     <string name="settings_main_file_picker_sort">Tri des fichiers</string>

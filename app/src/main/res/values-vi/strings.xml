@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">Tệp APK</string>
     <string name="backup_component_unknown">Thành phần không xác định với loại \"%s\"</string>
     <string name="backup_lbs_provider_name">Bộ lưu trữ cục bộ</string>
-    <string name="backup_lbs_warning_no_dir">Vui lòng chọn một thư mục để lưu trữ bản sao lưu. Các tệp .apks được xuất với BAI 3.10+ trong thư mục đã chọn sẽ được lập chỉ mục là bản sao lưu. Thư mục mặc định để sao lưu trước BAI 4.0 được sử dụng là Bộ nhớ trong &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Vui lòng chọn một thư mục để lưu trữ bản sao lưu. Các tệp .apks được xuất với SAI 3.10+ hoặc BAI 4.6+ trong thư mục đã chọn sẽ được lập chỉ mục là bản sao lưu. Thư mục mặc định để sao lưu được sử dụng bởi SAI là Bộ nhớ trong &gt; SAI</string>
     <string name="backup_lbs_select_dir">Chọn thư mục</string>
     <string name="backup_lbs_current_dir">Thư mục sao lưu hiện tại: %s\n\nGhi chú: BAI sẽ chỉ hiển thị các bản sao lưu từ thư mục hiện được chọn.</string>
     <string name="backup_settings">Cài đặt sao lưu</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">Xuất dưới dạng một tệp .apk</string>
     <string name="backup_export_apk_desc">Xuất một phần được chọn dưới dạng một tệp .apk. Các tệp .apk đã xuất không phải là bản sao lưu và sẽ không được BAI quản lý</string>
     <string name="settings_title">Cài đặt</string>
+    <string name="settings_language_system_default">Mặc định hệ thống</string>
     <string name="settings_main_home_directory">Thư mục chủ</string>
     <string name="settings_main_home_directory_summary">Đang bắt đầu thư mục trong bộ chọn APKs\nHiện tại: %s</string>
     <string name="settings_main_file_picker_sort">Cách sắp xếp tệp</string>

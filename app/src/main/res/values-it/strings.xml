@@ -175,7 +175,7 @@
     <string name="backup_component_apk_files">File APK</string>
     <string name="backup_component_unknown">Componente sconosciuto con tipo \"%s\"</string>
     <string name="backup_lbs_provider_name">Archivio locale</string>
-    <string name="backup_lbs_warning_no_dir">Si prega di selezionare una directory per il salvataggio dei backup. I file .apks esportati con BAI 3.10+ nella directory selezionata saranno indicizzati come backup. La directory predefinita per i backup antecedenti a BAI 4.0 verrà usata come Memoria Interna &gt; BAI</string>
+    <string name="backup_lbs_warning_no_dir">Si prega di selezionare una directory per il salvataggio dei backup. I file .apks esportati con SAI 3.10+ o BAI 4.6+ nella directory selezionata saranno indicizzati come backup. La directory predefinita per i backup usata da SAI era Memoria Interna &gt; SAI</string>
     <string name="backup_lbs_select_dir">Seleziona directory</string>
     <string name="backup_lbs_current_dir">Directory di backup attuale: %s\n\nNota: BAI mostrerà solo i backup dalla directory attualmente selezionata.</string>
     <string name="backup_settings">Impostazioni di backup</string>
@@ -184,6 +184,7 @@
     <string name="backup_export_apk">Esporta come file .apk</string>
     <string name="backup_export_apk_desc">Esporta una singola parte selezionata come file .apk. I file .apk esportati non sono backup e non saranno gestiti da BAI</string>
     <string name="settings_title">Impostazioni</string>
+    <string name="settings_language_system_default">Predefinito del sistema</string>
     <string name="settings_main_home_directory">Cartella principale</string>
     <string name="settings_main_home_directory_summary">Cartella iniziale del selettore APK\nAttuale: %s</string>
     <string name="settings_main_file_picker_sort">Ordinamento file</string>
