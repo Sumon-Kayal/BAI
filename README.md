@@ -1,3 +1,5 @@
+![BAI Banner](https://github.com/Sumon-Kayal/BAI/blob/929fc2f7941e911501379fb3656cc68d361891e9/assets/BAI%20Banner.png?raw=true)
+
 # Bundle APKs Installer (BAI)
 
 BAI (Bundle APKs Installer) is an Android app that lets you install split APKs (such as ones distributed as an Android App Bundle) as if they were a single package. It supports both rooted and rootless installation methods.
