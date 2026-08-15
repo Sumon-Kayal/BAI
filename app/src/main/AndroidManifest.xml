@@ -38,14 +38,6 @@
         android:theme="@style/AppTheme.Light"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="33">
-        <service
-            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
-            android:enabled="false"
-            android:exported="false">
-            <meta-data
-                android:name="autoStoreLocales"
-                android:value="true" />
-        </service>
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity" />
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.BackupManageAppActivity" />
         <activity android:name="com.sumon.bundleapp.installer.ui.activities.MiActivity" />

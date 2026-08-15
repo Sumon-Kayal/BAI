@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sumon.bundleapp.installer.billing.DonationStatus;
 import com.sumon.bundleapp.installer.utils.Theme;
 import com.sumon.bundleapp.installer.view.ThemeView;
 
@@ -19,7 +18,6 @@ import java.util.List;
 public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> {
 
     private List<Theme.ThemeDescriptor> mThemes;
-    private DonationStatus mDonationStatus;
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -34,11 +32,6 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> 
 
     public void setThemes(List<Theme.ThemeDescriptor> themes) {
         mThemes = themes;
-        notifyDataSetChanged();
-    }
-
-    public void setDonationStatus(DonationStatus donationStatus) {
-        mDonationStatus = donationStatus;
         notifyDataSetChanged();
     }
 
@@ -89,13 +82,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> 
 
         private void bindTo(Theme.ThemeDescriptor theme) {
             mThemeView.setTheme(theme);
-
-            if (theme.isDonationRequired() && !mDonationStatus.unlocksThemes()) {
-                mThemeView.setMessage(R.string.donate_donate_only_theme);
-            } else {
-                mThemeView.setMessage(null);
-            }
-
+            mThemeView.setMessage(null);
         }
     }
 
