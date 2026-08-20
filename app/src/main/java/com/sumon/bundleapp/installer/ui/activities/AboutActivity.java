@@ -24,7 +24,7 @@ public class AboutActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        InsetsUtils.applySystemBarInsetsAsPadding(findViewById(android.R.id.content));
+        InsetsUtils.applySystemBarInsetsAsPadding(findViewById(R.id.scrollview_about));
 
         mLegalStuffProvider = DefaultLegalStuffProvider.getInstance(this);
 

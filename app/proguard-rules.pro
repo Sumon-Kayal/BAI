@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep Shizuku API for reflective access to newProcess method
+-keep class rikka.shizuku.Shizuku {
+    public <methods>;
+    private <methods>;
+}

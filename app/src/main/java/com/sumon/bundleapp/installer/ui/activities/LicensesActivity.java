@@ -23,6 +23,7 @@ public class LicensesActivity extends ThemedActivity {
         RecyclerView recyclerView = findViewById(R.id.rv_licenses);
 
         InsetsUtils.applySystemBarInsetsAsPadding(recyclerView);
+        recyclerView.setClipToPadding(false);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 16);

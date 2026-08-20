@@ -284,6 +284,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                         mBackgroundExecutor.execute(() -> {
                             boolean rootAvailable = SuShell.isRootAvailable();
                             requireActivity().runOnUiThread(() -> {
+                                if (!isAdded()) return;
                                 if (!rootAvailable) {
                                     SimpleAlertDialogFragment.newInstance(
                                             requireContext(),
@@ -462,12 +463,22 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             LocaleListCompat tagLocales = LocaleListCompat.forLanguageTags(APP_LANGUAGE_TAGS[i]);
             if (!tagLocales.isEmpty()) {
                 Locale tagLocale = tagLocales.get(0);
-                if (tagLocale != null
-                        && currentLocale.getLanguage().equals(tagLocale.getLanguage())
-                        && (currentLocale.getCountry().isEmpty()
+                if (tagLocale != null && currentLocale.getLanguage().equals(tagLocale.getLanguage())) {
+                    // If either locale has a script, compare scripts
+                    String currentScript = currentLocale.getScript();
+                    String tagScript = tagLocale.getScript();
+                    if (!currentScript.isEmpty() || !tagScript.isEmpty()) {
+                        if (!currentScript.equals(tagScript)) {
+                            continue;
+                        }
+                    }
+
+                    // Only relax country matching when scripts are compatible
+                    if (currentLocale.getCountry().isEmpty()
                             || tagLocale.getCountry().isEmpty()
-                            || currentLocale.getCountry().equals(tagLocale.getCountry()))) {
-                    return i;
+                            || currentLocale.getCountry().equals(tagLocale.getCountry())) {
+                        return i;
+                    }
                 }
             }
         }
@@ -525,6 +536,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             mBackgroundExecutor.execute(() -> {
                 String suVersion = SuShell.getSuVersion();
                 requireActivity().runOnUiThread(() -> {
+                    if (!isAdded()) return;
                     useRootPref.setSummary(
                             getString(
                                     R.string.settings_main_use_root_summary,
@@ -557,6 +569,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             mBackgroundExecutor.execute(() -> {
                 boolean available = Shizuku.pingBinder();
                 requireActivity().runOnUiThread(() -> {
+                    if (!isAdded()) return;
                     mShizukuAvailableCache = available;
                     useShizukuPref.setSummary(
                             available
@@ -713,6 +726,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                     mBackgroundExecutor.execute(() -> {
                         boolean rootAvailable = SuShell.isRootAvailable();
                         requireActivity().runOnUiThread(() -> {
+                            if (!isAdded()) return;
                             if (!rootAvailable) {
                                 SimpleAlertDialogFragment.newInstance(
                                         requireContext(),
@@ -729,6 +743,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                     mBackgroundExecutor.execute(() -> {
                         boolean shizukuAvailable = Shizuku.pingBinder();
                         requireActivity().runOnUiThread(() -> {
+                            if (!isAdded()) return;
                             if (!shizukuAvailable) {
                                 SimpleAlertDialogFragment.newInstance(
                                         requireContext(),

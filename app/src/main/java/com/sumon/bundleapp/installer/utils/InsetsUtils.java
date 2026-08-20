@@ -14,6 +14,10 @@ import androidx.core.view.WindowInsetsCompat;
  * <p>
  * The padding variants remember the padding the view was laid out with and add the inset on top of
  * it, so they stay correct when insets are dispatched again on rotation or keyboard changes.
+ * <p>
+ * <b>IMPORTANT:</b> All methods in this class set an {@link androidx.core.view.OnApplyWindowInsetsListener}
+ * on the target view, which replaces any existing listener. Callers should choose the target view
+ * carefully to avoid conflicting with other inset handling logic on the same view.
  */
 public class InsetsUtils {
 

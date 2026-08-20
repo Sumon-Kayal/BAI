@@ -19,6 +19,7 @@ public class ShizukuShell implements Shell {
     private static final String TAG = "ShizukuShell";
 
     private static ShizukuShell sInstance;
+    private static Method sNewProcessMethod;
 
     private final PersistentShellSession mSession =
             new PersistentShellSession(TAG, () -> newRemoteProcess(new String[]{"sh"}));
@@ -68,9 +69,21 @@ public class ShizukuShell implements Shell {
         try {
             return mSession.exec(command);
         } catch (Exception e) {
-            Log.w(TAG, "Session command failed, dropping session", e);
+            Log.w(TAG, "Session command failed, retrying once after session restart", e);
             mSession.close();
-            return new Result(command, -1, "", "<!> BAI ShizukuShell Java exception: " + Utils.throwableToString(e));
+
+            // Retry once with fresh session
+            if (!mSession.ensureStarted(session -> session.exec(new Command("echo", "test")).isSuccessful())) {
+                return new Result(command, -1, "", "<!> BAI ShizukuShell: unable to restart shell session after failure");
+            }
+
+            try {
+                return mSession.exec(command);
+            } catch (Exception retryException) {
+                Log.w(TAG, "Session command failed on retry, giving up", retryException);
+                mSession.close();
+                return new Result(command, -1, "", "<!> BAI ShizukuShell Java exception: " + Utils.throwableToString(retryException));
+            }
         }
     }
 
@@ -114,9 +127,11 @@ public class ShizukuShell implements Shell {
     /**
      * Shizuku.newProcess is hidden from the public API surface, so it has to be reached reflectively.
      */
-    private static ShizukuRemoteProcess newRemoteProcess(String[] cmd) throws Exception {
-        Method method = Shizuku.class.getDeclaredMethod("newProcess", String[].class, String[].class, String.class);
-        method.setAccessible(true);
-        return (ShizukuRemoteProcess) method.invoke(null, cmd, null, null);
+    private static synchronized ShizukuRemoteProcess newRemoteProcess(String[] cmd) throws Exception {
+        if (sNewProcessMethod == null) {
+            sNewProcessMethod = Shizuku.class.getDeclaredMethod("newProcess", String[].class, String[].class, String.class);
+            sNewProcessMethod.setAccessible(true);
+        }
+        return (ShizukuRemoteProcess) sNewProcessMethod.invoke(null, cmd, null, null);
     }
 }

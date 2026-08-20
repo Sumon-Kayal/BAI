@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="app_language_names">
-        <item>System default</item>
+        <item>@string/app_language_system_default</item>
         <item>English</item>
         <item>العربية</item>
         <item>Azərbaycan dili</item>

@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A long-lived shell that commands are fed into, so a shell is spawned once instead of per command
@@ -21,18 +23,19 @@ import java.nio.charset.StandardCharsets;
  */
 class PersistentShellSession {
 
-    /** Echoed after every command to mark where its output ends and carry the exit code. */
-    private static final String MARKER = "__SAI_CMD_DONE__";
-
     private final String mTag;
     private final ProcessFactory mProcessFactory;
     private final StringBuilder mErrBuffer = new StringBuilder();
+    /** Echoed after every command to mark where its output ends and carry the exit code. */
+    private final String mMarker;
+    private final String mStderrMarker;
 
     private Process mProcess;
     private Writer mIn;
     private BufferedReader mOut;
     private BufferedReader mErr;
     private Thread mErrPump;
+    private volatile boolean mStderrMarkerSeen;
 
     interface ProcessFactory {
         Process start() throws Exception;
@@ -41,6 +44,9 @@ class PersistentShellSession {
     PersistentShellSession(String tag, ProcessFactory processFactory) {
         mTag = tag;
         mProcessFactory = processFactory;
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        mMarker = "__SAI_CMD_DONE_" + uuid + "__";
+        mStderrMarker = "__SAI_STDERR_DONE_" + uuid + "__";
     }
 
     /** @param validator run once after the shell starts; the session is discarded if it fails */
@@ -79,30 +85,49 @@ class PersistentShellSession {
     }
 
     synchronized Shell.Result exec(Shell.Command command) throws IOException {
+        return exec(command, true);
+    }
+
+    synchronized Shell.Result exec(Shell.Command command, boolean redirectStdin) throws IOException {
         if (mIn == null || mOut == null)
             throw new IOException("Shell session is not running");
 
         takeStderr();
+        mStderrMarkerSeen = false;
 
-        mIn.write(command.toString());
+        // Redirect stdin to /dev/null by default so commands can't consume the marker stream
+        String cmdString = command.toString();
+        if (redirectStdin && !cmdString.contains("<")) {
+            cmdString = cmdString + " </dev/null";
+        }
+
+        mIn.write(cmdString);
         mIn.write("\n");
-        mIn.write("echo " + MARKER + " $?\n");
+        mIn.write("echo " + mMarker + " $?\n");
+        mIn.write("echo " + mStderrMarker + " >&2\n");
         mIn.flush();
 
         StringBuilder out = new StringBuilder();
         int exitCode = -1;
         boolean finished = false;
         String line;
+        long deadline = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30);
+
         while ((line = mOut.readLine()) != null) {
+            if (System.currentTimeMillis() > deadline) {
+                close();
+                throw new IOException("Command timed out after 30 seconds");
+            }
+
             // A command whose last line lacks a trailing newline would otherwise glue itself to
             // the marker, so match anywhere in the line instead of only at its start.
-            int markerIndex = line.indexOf(MARKER);
+            int markerIndex = line.indexOf(mMarker);
             if (markerIndex >= 0) {
                 if (markerIndex > 0)
                     appendLine(out, line.substring(0, markerIndex));
 
                 try {
-                    exitCode = Integer.parseInt(line.substring(markerIndex + MARKER.length()).trim());
+                    exitCode = Integer.parseInt(line.substring(markerIndex + mMarker.length()).trim());
                 } catch (NumberFormatException ignored) {
                 }
 
@@ -116,6 +141,17 @@ class PersistentShellSession {
         if (!finished)
             throw new IOException("Shell session closed unexpectedly");
 
+        // Wait for stderr marker before taking stderr
+        long stderrDeadline = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5);
+        while (!mStderrMarkerSeen && System.currentTimeMillis() < stderrDeadline) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
         return new Shell.Result(command, exitCode, out.toString().trim(), takeStderr());
     }
 
@@ -128,6 +164,10 @@ class PersistentShellSession {
             try {
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    if (line.contains(mStderrMarker)) {
+                        mStderrMarkerSeen = true;
+                        continue;
+                    }
                     synchronized (mErrBuffer) {
                         appendLine(mErrBuffer, line);
                     }
