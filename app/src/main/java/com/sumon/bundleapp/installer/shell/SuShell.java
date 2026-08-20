@@ -26,6 +26,10 @@ public class SuShell implements Shell {
         sInstance = this;
     }
 
+    public static boolean isRootAvailable() {
+        return getInstance().requestRoot();
+    }
+
     public boolean requestRoot() {
         try {
             return exec(new Command("exit")).isSuccessful();

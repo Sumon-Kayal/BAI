@@ -74,7 +74,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     private FilePickerDialogFragment mPendingFilePicker;
 
     private final ExecutorService mBackgroundExecutor = Executors.newCachedThreadPool();
-    private Boolean mShizukuAvailableCache = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -268,97 +267,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                 }
         );
 
-        SwitchPreference disableAnimationsPref =
-                findPreference(PreferencesKeys.DISABLE_ANIMATIONS);
-
-        disableAnimationsPref.setOnPreferenceChangeListener(
-                (preference, newValue) -> {
-                    requireActivity().recreate();
-                    return true;
-                }
-        );
-
-        findPreference(PreferencesKeys.USE_ROOT)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    if ((boolean) newValue) {
-                        mBackgroundExecutor.execute(() -> {
-                            boolean rootAvailable = SuShell.isRootAvailable();
-                            requireActivity().runOnUiThread(() -> {
-                                if (!isAdded()) return;
-                                if (!rootAvailable) {
-                                    SimpleAlertDialogFragment.newInstance(
-                                            requireContext(),
-                                            R.string.error,
-                                            R.string.settings_main_root_unavailable
-                                    ).show(getChildFragmentManager(), null);
-                                    ((SwitchPreference) preference).setChecked(false);
-                                }
-                            });
-                        });
-                    }
-
-                    return true;
-                });
-
-        findPreference(PreferencesKeys.USE_SHIZUKU)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    if ((boolean) newValue) {
-                        if (!Shizuku.pingBinder()) {
-                            SimpleAlertDialogFragment.newInstance(
-                                    requireContext(),
-                                    R.string.error,
-                                    R.string.settings_main_shizuku_unavailable
-                            ).show(getChildFragmentManager(), null);
-
-                            return false;
-                        }
-
-                        if (Shizuku.checkSelfPermission()
-                                != PackageManager.PERMISSION_GRANTED) {
-                            mHelper.setInstaller(PreferencesValues.INSTALLER_NORMAL);
-                            updateInstallerSummary();
-
-                            Shizuku.requestPermission(
-                                    PermissionsUtils.REQUEST_CODE_SHIZUKU);
-                        }
-                    }
-
-                    return true;
-                });
-
-        findPreference(PreferencesKeys.ENABLE_LEGACY_MODE)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    requireActivity().recreate();
-                    return true;
-                });
-
-        findPreference(PreferencesKeys.USE_DATA_DIR)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    requireActivity().recreate();
-                    return true;
-                });
-
-        findPreference(PreferencesKeys.ALLOW_ROOT)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    requireActivity().recreate();
-                    return true;
-                });
-
-        findPreference(PreferencesKeys.ALLOW_SHIZUKU)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    requireActivity().recreate();
-                    return true;
-                });
-
-        findPreference(PreferencesKeys.USE_SHELL)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    requireActivity().recreate();
-                    return true;
-                });
-
-        updateUseRootSummary();
-        updateUseShizukuSummary();
-        updateUseShellSummary();
     }
 
     private void updateHomeDirPrefSummary() {
@@ -526,68 +434,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                     PermissionsUtils.REQUEST_CODE_STORAGE_PERMISSIONS
             );
         }
-    }
-
-    private void updateUseRootSummary() {
-        Preference useRootPref =
-                findPreference(PreferencesKeys.USE_ROOT);
-
-        if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
-            mBackgroundExecutor.execute(() -> {
-                String suVersion = SuShell.getSuVersion();
-                requireActivity().runOnUiThread(() -> {
-                    if (!isAdded()) return;
-                    useRootPref.setSummary(
-                            getString(
-                                    R.string.settings_main_use_root_summary,
-                                    suVersion
-                            )
-                    );
-                });
-            });
-        } else {
-            useRootPref.setSummary(
-                    getString(
-                            R.string.settings_main_use_root_summary,
-                            getString(R.string.not_available)
-                    )
-            );
-        }
-    }
-
-    private void updateUseShizukuSummary() {
-        Preference useShizukuPref =
-                findPreference(PreferencesKeys.USE_SHIZUKU);
-
-        if (mShizukuAvailableCache != null) {
-            useShizukuPref.setSummary(
-                    mShizukuAvailableCache
-                            ? getString(R.string.settings_main_use_shizuku_summary)
-                            : getString(R.string.settings_main_shizuku_unavailable)
-            );
-        } else {
-            mBackgroundExecutor.execute(() -> {
-                boolean available = Shizuku.pingBinder();
-                requireActivity().runOnUiThread(() -> {
-                    if (!isAdded()) return;
-                    mShizukuAvailableCache = available;
-                    useShizukuPref.setSummary(
-                            available
-                                    ? getString(R.string.settings_main_use_shizuku_summary)
-                                    : getString(R.string.settings_main_shizuku_unavailable)
-                    );
-                });
-            });
-        }
-    }
-
-    private void updateUseShellSummary() {
-        Preference useShellPref =
-                findPreference(PreferencesKeys.USE_SHELL);
-
-        useShellPref.setSummary(
-                getString(R.string.settings_main_use_shell_summary)
-        );
     }
 
     @Override
@@ -781,9 +627,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     @Override
     public void onDismiss(
             BaseBottomSheetDialogFragment dialog) {
-        updateUseRootSummary();
-        updateUseShizukuSummary();
-        updateUseShellSummary();
     }
 
     @Override
@@ -800,10 +643,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     @Override
     public void onResume() {
         super.onResume();
-
-        updateUseRootSummary();
-        updateUseShizukuSummary();
-        updateUseShellSummary();
     }
 
     private void openFilePicker(

@@ -27,4 +27,14 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
     public String getPrivacyPolicyUrl() {
         return null;
     }
+
+    @Override
+    public boolean hasEula() {
+        return false;
+    }
+
+    @Override
+    public String getEulaUrl() {
+        return null;
+    }
 }
