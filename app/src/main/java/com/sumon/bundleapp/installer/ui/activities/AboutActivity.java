@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.sumon.bundleapp.installer.legal.DefaultLegalStuffProvider;
 import com.sumon.bundleapp.installer.legal.LegalStuffProvider;
 import com.sumon.bundleapp.installer.ui.fragments.SuperSecretPreferencesFragment;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 
 public class AboutActivity extends ThemedActivity {
 
@@ -22,6 +23,8 @@ public class AboutActivity extends ThemedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        InsetsUtils.applySystemBarInsetsAsPadding(findViewById(android.R.id.content));
 
         mLegalStuffProvider = DefaultLegalStuffProvider.getInstance(this);
 

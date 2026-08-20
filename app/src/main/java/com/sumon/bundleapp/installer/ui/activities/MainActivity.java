@@ -19,6 +19,7 @@ import com.sumon.bundleapp.installer.ui.fragments.InstallerFragment;
 import com.sumon.bundleapp.installer.ui.fragments.LegacyInstallerFragment;
 import com.sumon.bundleapp.installer.ui.fragments.PreferencesFragment;
 import com.sumon.bundleapp.installer.utils.FragmentNavigator;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 import com.sumon.bundleapp.installer.utils.MiuiUtils;
 import com.sumon.bundleapp.installer.utils.PermissionsUtils;
 import com.sumon.bundleapp.installer.utils.PreferencesHelper;
@@ -50,6 +51,7 @@ public class MainActivity extends ThemedActivity implements BottomNavigationView
 
         mBottomNavigationView = findViewById(R.id.bottomnav_main);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
+        InsetsUtils.applyBottomInsetAsPadding(mBottomNavigationView);
 
         mFragmentNavigator = new FragmentNavigator(savedInstanceState, getSupportFragmentManager(), R.id.container_main, this);
         mInstallerFragment = mFragmentNavigator.findFragmentByTag("installer");

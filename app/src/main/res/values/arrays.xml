@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="app_language_names" translatable="false">
-        <item>@string/app_language_system_default</item>
+    <string-array name="app_language_names">
+        <item>System default</item>
         <item>English</item>
         <item>العربية</item>
         <item>Azərbaycan dili</item>
