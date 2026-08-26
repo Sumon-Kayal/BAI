@@ -9,7 +9,7 @@
     <string name="copy2">Kopyala</string>
     <string name="copied">Kopyalandı</string>
     <string name="dont_show_again">Bir daha gösterme</string>
-    <string name="warning">Warning</string>
+    <string name="warning">Uyarı</string>
     <string name="filepicker_internal">Dahili dosya seçici</string>
     <string name="filepicker_saf">Sistem dosya seçici</string>
     <string name="permissions_required_storage">BAI, depolamaya erişmek için izin gerektiriyor</string>
@@ -227,7 +227,7 @@
     <string name="settings_main_ui_theme">Tema</string>    <string name="settings_main_auto_theme">Otomatik tema</string>
     <string name="settings_main_auto_theme_summary">Sistem temasına bağlı olarak seçilen açık ve koyu temalar arasında otomatik olarak geçiş yapma</string>
     <string name="settings_main_auto_theme_picker">Tema seç</string>
-    <string name="settings_main_auto_theme_picker_summary">Geçerli açık tema: %s\nGeçerli koyu tema: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Geçerli açık tema: %1$s\nGeçerli koyu tema: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Sistem temasını izlemenin Q\'dan düşük Android sürümlerinde düzgün çalışmayabileceğini lütfen unutmayın</string>
     <string name="settings_main_use_installerx">Pro modu</string>
     <string name="settings_main_use_installerx_summary">Bir .apks dosyasından (veya birden fazla APK dosyasına sahip diğer arşivlerden) yüklenecek parçaları seçmenize olanak tanıyan installer Pro modunu etkinleştirin. Pro modunun deneysel olduğunu ve düzgün çalışmayabileceğini lütfen unutmayın</string>
@@ -235,8 +235,8 @@
     <string name="settings_main_enable_analytics_summary">BAI\'nin uygulama kullanım verileri ve hatalar gibi analiz verilerini toplamasına izin verin. Hakkında ekranında Gizlilik Politikasında toplanan veriler hakkında daha fazla bilgi edinebilirsiniz. Bu ayarı değiştirmek, BAI\'yi yeniden başlatana kadar tam olarak uygulanmayabilir</string>
     <string name="settings_main_backup_settings">Yedekleme ayarları</string>
     <string name="settings_main_backup_settings_summary">Yedekleme ayarlarını açmak için dokunun</string>
-    <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
-    <string name="settings_main_enable_apk_action_view_summary">Support opening .apk files via BAI from other apps. Can be disabled since on some ROMs this setting being enabled doesn\'t let you open .apk files at all</string>
+    <string name="settings_main_enable_apk_action_view">.apk dosyalarını BAI ile açmayı etkinleştir</string>
+    <string name="settings_main_enable_apk_action_view_summary">Diğer uygulamalardan .apk dosyalarını BAI ile açmayı destekler. Devre dışı bırakılabilir çünkü bazı ROM\'larda bu ayar açıkken .apk dosyalarını hiç açamazsınız</string>
     <string name="name_format_builder_title">Yedek dosya adına dahil edilecek parçaları seçin</string>
     <string name="name_format_builder_preview">Ön izleme: %s</string>
     <string name="name_format_builder_preview_empty">Lütfen en az bir parça seçin</string>
@@ -296,9 +296,9 @@
     <string name="installerx_notice_no_code_for_feature">\"%s\" özelliği için bazı mimari yapılandırma bölünmüş parçaları var, ancak bunların hiçbiri cihazınız tarafından desteklenmiyor</string>
     <string name="installerx_notice_no_locale_for_base">Baz APK için yerel yapılandırma bölünmüş parçalarının hiçbiri dillerinizle eşleşmiyor</string>
     <string name="installerx_notice_no_locale_for_feature">\"%s\" özelliği için yerel yapılandırmanın bölünmüş parçalarının hiçbiri dillerinizle eşleşmiyor</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
-    <string name="installerx_android_uri_host_file_too_big">File is too big to copy and your system doesn\'t support reading SAF files without copying</string>
-    <string name="installerx_thank_you_scoped_storage_very_cool">On Android 11 and up BAI requires storage permission to directly read files selected via system file picker due to scoped storage implementation making 0 sense. You can deny storage permission, but then BAI will have to copy selected files to parse them, BAI won\'t copy and parse large files.</string>
+    <string name="installerx_notice_huge_app">Bu uygulama çok büyük (>150MB). Çok büyük uygulamalarda (uygulama boyutu ne kadar büyükse o kadar yüksek) kurulumun takılma ihtimali vardır ancak uygulama yine de depolama alanını kaplar ve bunu root kullanmadan veya fabrika ayarlarına dönmeden geri alamazsınız</string>
+    <string name="installerx_android_uri_host_file_too_big">Dosya kopyalamak için çok büyük ve sisteminiz SAF dosyalarını kopyalamadan okumayı desteklemiyor</string>
+    <string name="installerx_thank_you_scoped_storage_very_cool">Android 11 ve üzeri sürümlerde BAI, sistem dosya seçici ile seçilen dosyaları doğrudan okumak için depolama izni ister çünkü kapsamlı depolama uygulamasının hiç mantığı yok. Depolama iznini reddedebilirsiniz, ancak o zaman BAI seçilen dosyaları ayrıştırmak için kopyalamak zorunda kalır, BAI büyük dosyaları kopyalayıp ayrıştırmaz.</string>
     <string name="theme_sai">BAI</string>
     <string name="theme_ruby">Ruby</string>
     <string name="theme_rena">Rena</string>
@@ -320,4 +320,12 @@
     <string name="about_translate">BAI\'yi çevirmeye yardım et</string>
     <string name="about_privacy">Gizlilik Politikası</string>
     <string name="about_eula">Son Kullanıcı Lisans Anlaşması</string>
+
+    <string name="apply">Uygula</string>
+    <string name="settings_category_main_languages">Diller</string>
+    <string name="settings_main_app_language">Uygulama dili</string>
+    <string name="eula_load_error">Lisans sözleşmesi yüklenemedi.</string>
+    <string name="settings_main_root_unavailable">Bu cihazda root erişimi kullanılamıyor.</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku kullanılamıyor veya izin verilmedi.</string>
+
 </resources>
