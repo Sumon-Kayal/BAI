@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="yes">Ναι</string>
-    <string name="no">No</string>
+    <string name="no">Όχι</string>
     <string name="cancel">Ακύρωση</string>
     <string name="ok">OK</string>
     <string name="help">Βοήθεια</string>
@@ -140,7 +140,7 @@
     <string name="backup_filter">Φίλτρο</string>
     <string name="backup_filter_common_option_doesnt_matter">Δεν έχει σημασία</string>
     <string name="backup_filter_common_option_yes">Ναι</string>
-    <string name="backup_filter_common_option_no">No</string>
+    <string name="backup_filter_common_option_no">Όχι</string>
     <string name="backup_filter_split_apk">Split APK</string>
     <string name="backup_filter_system_app">Εφαρμογή συστήματος</string>
     <string name="backup_filter_sort">Ταξινόμηση</string>
@@ -269,7 +269,7 @@
     <string name="installerx_category_dynamic_features">Δυναμικά χαρακτηριστικά</string>
     <string name="installerx_dynamic_feature">Χαρακτηριστικό "%s"</string>
     <string name="installerx_category_config_abi">Διαμόρφωση: Αρχιτεκτονική</string>
-    <string name="installerx_category_config_abi_desc">Η συσκευή σας υποστηρίζει (από πιο προς λιγότερο προτιμώμενο): %s ",</string>
+    <string name="installerx_category_config_abi_desc">Η συσκευή σας υποστηρίζει (από πιο προς λιγότερο προτιμώμενο): %s </string>
     <string name="installerx_split_config_abi_for_base">Κώδικας %s για το βασικό APK</string>
     <string name="installerx_split_config_abi_for_module">Κώδικας %1$s για το χαρακτηριστικό "%2$s"</string>
     <string name="installerx_category_config_locale">Διαμόρφωση: Τοπικές ρυθμίσεις</string>

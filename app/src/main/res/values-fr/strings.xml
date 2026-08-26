@@ -323,9 +323,9 @@
 
     <string name="apply">Appliquer</string>
     <string name="settings_category_main_languages">Langues</string>
-    <string name="settings_main_app_language">Langue de l\\'application</string>
-    <string name="eula_load_error">Échec du chargement de l\\'accord de licence.</string>
-    <string name="settings_main_root_unavailable">L\\'accès root n\\'est pas disponible sur cet appareil.</string>
-    <string name="settings_main_shizuku_unavailable">Shizuku n\\'est pas disponible ou l\\'autorisation n\\'a pas été accordée.</string>
+    <string name="settings_main_app_language">Langue de l\'application</string>
+    <string name="eula_load_error">Échec du chargement de l\'accord de licence.</string>
+    <string name="settings_main_root_unavailable">L\'accès root n\'est pas disponible sur cet appareil.</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku n\'est pas disponible ou l\'autorisation n\'a pas été accordée.</string>
 
 </resources>
