@@ -262,7 +262,6 @@ Please read the [Contributing Guide](CONTRIBUTING.md) before opening an issue or
 ## Documentation
 
 - [Changelog](CHANGELOG.md) — version history and changes for each release.
-- [Translation Guide](TRANSLATION.md) — instructions for translators and contributors working on BAI translations.
 - [`.apks` Metadata Format](META-FORMAT.md) — documentation for BAI's exported `.apks` metadata.
 - [Contributing Guide](CONTRIBUTING.md) — contribution and pull request guidelines.
 
