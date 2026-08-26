@@ -1,6 +1,6 @@
-![BAI Banner](assets/BAI%20Banner.png)
-
 # Bundle APKs Installer (BAI)
+
+![BAI Banner](assets/BAI%20Banner.png)
 
 **BAI (Bundle APKs Installer)** is an Android application for installing and backing up APK packages, including split APK bundles commonly distributed through Android App Bundles.
 
@@ -134,19 +134,19 @@ git clone https://github.com/Sumon-Kayal/BAI.git
 cd BAI
 ```
 
-2. Make the Gradle Wrapper executable if necessary:
+1. Make the Gradle Wrapper executable if necessary:
 
 ```bash
 chmod +x gradlew
 ```
 
-3. Build a release APK:
+1. Build a release APK:
 
 ```bash
 ./gradlew assembleRelease
 ```
 
-4. Or build a debug APK:
+1. Or build a debug APK:
 
 ```bash
 ./gradlew assembleDebug
@@ -168,13 +168,13 @@ git clone https://github.com/Sumon-Kayal/BAI.git
 cd BAI
 ```
 
-2. Build a release APK:
+1. Build a release APK:
 
 ```powershell
 .\gradlew.bat assembleRelease
 ```
 
-3. Or build a debug APK:
+1. Or build a debug APK:
 
 ```powershell
 .\gradlew.bat assembleDebug
@@ -193,7 +193,7 @@ You can also open the cloned repository directly in Android Studio.
 
 Allow Android Studio to sync the Gradle project and install any missing Android SDK components requested by the project. Then use **Build → Make Project** or the Gradle tasks to build the application.
 
-### Build a specific ABI
+### ABI-specific outputs
 
 Release and debug builds are configured for:
 
