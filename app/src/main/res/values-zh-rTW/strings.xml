@@ -247,7 +247,7 @@
     <string name="sss_dont_replace_dots_title">不要將點替換為逗號</string>
     <string name="sss_dont_replace_dots_summary">在備份檔案名稱中</string>
     <string name="sss_custom_install_create_title">自訂 install-create 指令</string>
-    <string name="sss_custom_install_create_summary">將用於建立 Rooted 與 Shizuku 安裝器所需 pm 工作階段的自訂 install-create 指令，指令中除了用來分隔參數的空格外不得包含任何空格（'引號中的空格' 也會被分割為參數）。輸入 "null" 以停用</string>
+    <string name="sss_custom_install_create_summary">將用於建立 Rooted 與 Shizuku 安裝器所需 pm 工作階段的自訂 install-create 指令，指令中除了用來分隔參數的空格外不得包含任何空格（\'引號中的空格\' 也會被分割為參數）。輸入 \"null\" 以停用</string>
     <string name="sss_fake_backup_timestamp">偽造備份時間戳記</string>
     <string name="sss_fake_backup_timestamp_summary">為備份加上固定時間戳記（2000 年 1 月 1 日，00:00）。這會讓相同 APK 檔案的備份檔案雜湊值相同，但 BAI 將無從得知哪一份備份才是最新的</string>
     <string name="sss_test_crash">讓應用程式崩潰</string>
