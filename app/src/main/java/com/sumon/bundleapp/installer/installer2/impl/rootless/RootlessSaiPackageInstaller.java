@@ -35,13 +35,13 @@ public class RootlessSaiPackageInstaller extends BaseSaiPackageInstaller impleme
 
     private static RootlessSaiPackageInstaller sInstance;
 
-    private PackageInstaller mPackageInstaller;
-    private ExecutorService mExecutor = Executors.newFixedThreadPool(4);
+    private final PackageInstaller mPackageInstaller;
+    private final ExecutorService mExecutor = Executors.newFixedThreadPool(4);
     private final HandlerThread mWorkerThread = new HandlerThread("RootlessSaiPi Worker");
     private final Handler mWorkerHandler;
 
-    private ConcurrentHashMap<Integer, String> mAndroidPiSessionIdToSaiPiSessionId = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, String> mSessionIdToAppTempName = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, String> mAndroidPiSessionIdToSaiPiSessionId = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> mSessionIdToAppTempName = new ConcurrentHashMap<>();
 
     private final RootlessSaiPiBroadcastReceiver mBroadcastReceiver;
 

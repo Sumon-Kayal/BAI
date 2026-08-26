@@ -37,9 +37,9 @@ import java.util.regex.Pattern;
 public abstract class ShellSAIPackageInstaller extends SAIPackageInstaller {
     private static final String TAG = "ShellSAIPI";
 
-    private AtomicBoolean mIsAwaitingBroadcast = new AtomicBoolean(false);
+    private final AtomicBoolean mIsAwaitingBroadcast = new AtomicBoolean(false);
 
-    private BroadcastReceiver mPackageInstalledBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mPackageInstalledBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, intent.toString());
@@ -98,7 +98,7 @@ public abstract class ShellSAIPackageInstaller extends SAIPackageInstaller {
             Shell.Result installationResult = getShell().exec(new Shell.Command("pm", "install-commit", String.valueOf(sessionId)));
             if (!installationResult.isSuccessful()) {
                 mIsAwaitingBroadcast.set(false);
-                dispatchCurrentSessionUpdate(InstallationStatus.INSTALLATION_FAILED, getContext().getString(R.string.installer_error_shell, getInstallerName(), getSessionInfo(apkSource) + "\n\n" + installationResult.toString()));
+                dispatchCurrentSessionUpdate(InstallationStatus.INSTALLATION_FAILED, getContext().getString(R.string.installer_error_shell, getInstallerName(), getSessionInfo(apkSource) + "\n\n" + installationResult));
                 installationCompleted();
             }
         } catch (Exception e) {

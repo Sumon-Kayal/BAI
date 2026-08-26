@@ -18,8 +18,8 @@ import java.util.zip.ZipInputStream;
 
 public class ZipApkSource implements ZipBackedApkSource {
 
-    private Context mContext;
-    private FileDescriptor mZipFileDescriptor;
+    private final Context mContext;
+    private final FileDescriptor mZipFileDescriptor;
     private boolean mIsOpen;
     private int mSeenApkFiles = 0;
 
@@ -113,7 +113,7 @@ public class ZipApkSource implements ZipBackedApkSource {
      **/
     private static class ZipInputStreamWrapper extends InputStream {
 
-        private ZipInputStream mWrappedStream;
+        private final ZipInputStream mWrappedStream;
 
         private ZipInputStreamWrapper(ZipInputStream inputStream) {
             mWrappedStream = inputStream;

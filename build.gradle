@@ -8,14 +8,19 @@ buildscript {
             dirs 'libs'
         }
     }
-    dependencies {
-        // JCenter is permanently dead (shut down 2022); everything below now
-        // resolves from google()/mavenCentral()/jitpack.
-        classpath 'com.android.tools.build:gradle:9.2.0'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    dependencies {
+        // JCenter is permanently dead; everything below now
+        // resolves from google()/mavenCentral()/jitpack.
+        classpath libs.gradle
+
+        // NOTE: Do not place your application dependencies here;
+        // they belong in the individual module build.gradle files.
     }
+}
+
+plugins {
+    alias(libs.plugins.room) apply false
 }
 
 allprojects {

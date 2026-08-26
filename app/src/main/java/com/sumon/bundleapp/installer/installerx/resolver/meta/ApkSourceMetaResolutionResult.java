@@ -6,9 +6,9 @@ import com.sumon.bundleapp.installer.installerx.common.SplitApkSourceMeta;
 
 public class ApkSourceMetaResolutionResult {
 
-    private boolean mSuccessful;
-    private SplitApkSourceMeta mMeta;
-    private ApkSourceMetaResolutionError mError;
+    private final boolean mSuccessful;
+    private final SplitApkSourceMeta mMeta;
+    private final ApkSourceMetaResolutionError mError;
 
     private ApkSourceMetaResolutionResult(boolean successful, @Nullable SplitApkSourceMeta meta, @Nullable ApkSourceMetaResolutionError error) {
         mSuccessful = successful;

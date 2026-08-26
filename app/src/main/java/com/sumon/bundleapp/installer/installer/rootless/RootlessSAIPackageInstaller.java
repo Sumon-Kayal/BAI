@@ -31,7 +31,7 @@ public class RootlessSAIPackageInstaller extends SAIPackageInstaller {
     @SuppressLint("StaticFieldLeak")//This is application context, lul
     private static RootlessSAIPackageInstaller sInstance;
 
-    private BroadcastReceiver mFurtherInstallationEventsReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mFurtherInstallationEventsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             long sessionId = mSessionsMap.get(intent.getIntExtra(RootlessSAIPIService.EXTRA_SESSION_ID, -1), -1);
@@ -52,12 +52,12 @@ public class RootlessSAIPackageInstaller extends SAIPackageInstaller {
         }
     };
 
-    private PackageInstaller mPackageInstaller;
+    private final PackageInstaller mPackageInstaller;
 
     /**
      * Maps Android PackageInstaller session id to SAIPackageInstaller QueuedInstallation id
      */
-    private SparseLongArray mSessionsMap = new SparseLongArray();
+    private final SparseLongArray mSessionsMap = new SparseLongArray();
 
 
     public static RootlessSAIPackageInstaller getInstance(Context c) {

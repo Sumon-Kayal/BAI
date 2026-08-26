@@ -1,0 +1,45 @@
+[versions]
+appcompat = "1.8.0"
+documentfile = "1.1.0"
+flexbox = "3.0.0"
+glide = "5.0.9"
+gradle = "9.3.2"
+gradleToolchainsFoojayResolverConvention = "1.0.0"
+gson = "2.14.0"
+leakcanaryAndroid = "2.14"
+lifecycleCommonJava8 = "2.11.0"
+lifecycleExtensions = "2.2.0"
+material = "1.14.0"
+preference = "1.2.1"
+recyclerview = "1.4.0"
+room = "2.8.4"
+shimmer = "0.5.0"
+shizuku = "13.1.5"
+tooltips = "1.1.1"
+
+[libraries]
+aidl = { group = "dev.rikka.shizuku", name = "aidl", version.ref = "shizuku" }
+api = { group = "dev.rikka.shizuku", name = "api", version.ref = "shizuku" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
+flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanaryAndroid" }
+lifecycle-common-java8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycleCommonJava8" }
+lifecycle-extensions1 = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "lifecycleExtensions" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+provider = { group = "dev.rikka.shizuku", name = "provider", version.ref = "shizuku" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+shared = { group = "dev.rikka.shizuku", name = "shared", version.ref = "shizuku" }
+shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
+tooltips = { group = "com.tomergoldst.android", name = "tooltips", version.ref = "tooltips" }
+
+[plugins]
+foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradleToolchainsFoojayResolverConvention" }
+room = { id = "androidx.room", version.ref = "room" }

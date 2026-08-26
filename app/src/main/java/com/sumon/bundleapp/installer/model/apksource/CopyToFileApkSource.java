@@ -17,8 +17,8 @@ import java.io.OutputStream;
  */
 public class CopyToFileApkSource implements ApkSource {
 
-    private Context mContext;
-    private ApkSource mWrappedApkSource;
+    private final Context mContext;
+    private final ApkSource mWrappedApkSource;
 
     private File mTempDir;
     private File mCurrentApkFile;

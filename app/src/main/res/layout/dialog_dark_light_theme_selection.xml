@@ -27,8 +27,8 @@
                 android:layout_toStartOf="@id/tv_dl_theme_selection_light_theme"
                 android:padding="4dp"
                 android:scaleType="fitCenter"
-                android:tint="?colorAccent"
-                app:srcCompat="@drawable/ic_light_theme" />
+                app:srcCompat="@drawable/ic_light_theme"
+                app:tint="?colorAccent" />
 
             <TextView
                 android:id="@+id/tv_dl_theme_selection_light_theme"
@@ -72,8 +72,8 @@
                 android:layout_toStartOf="@id/tv_dl_theme_selection_dark_theme"
                 android:padding="4dp"
                 android:scaleType="fitCenter"
-                android:tint="?colorAccent"
-                app:srcCompat="@drawable/ic_dark_theme_2" />
+                app:srcCompat="@drawable/ic_dark_theme_2"
+                app:tint="?colorAccent" />
 
             <TextView
                 android:id="@+id/tv_dl_theme_selection_dark_theme"

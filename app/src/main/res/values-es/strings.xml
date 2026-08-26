@@ -173,7 +173,7 @@
     <string name="backup_restore_backup_hint">El respaldo se ha añadido a la cola de instalación</string>
     <string name="backup_incompatible_version_warning">La versión anterior de una aplicación no se puede instalar sobre una versión más reciente. Necesitas desinstalar la aplicación para poder restaurar esta copia de seguridad</string>
     <string name="backup_component_apk_files">Archivos APK</string>
-    <string name="backup_component_unknown">Unknown component with type \"%s\"</string>
+    <string name="backup_component_unknown">Componente desconocido con tipo \"%s\"</string>
     <string name="backup_lbs_provider_name">Almacenamiento local</string>
     <string name="backup_lbs_warning_no_dir">Por favor, seleccione un directorio para guardar los respaldos. Los archivos .apk exportados con BAI 3.10+ en la carpeta seleccionada serán indexados como copias de seguridad. El directorio por defecto para las copias de seguridad en versiones anteriores a BAI 4.0 solía ser Almacenamiento interno &gt; BAI</string>
     <string name="backup_lbs_select_dir">Seleccionar directorio</string>
@@ -218,21 +218,23 @@
     <string name="settings_main_installer_show_dialogs">Mostrar diálogos del instalador</string>
     <string name="settings_main_installer_show_dialogs_summary">Mostrar diálogos cuando la instalación falle o tenga éxito. Siempre puede abrir estos diálogos manualmente tocando la entrada de sesión de la instalación. Sólo afecta al nuevo instalador</string>
     <string name="settings_category_main_installer">Instalador</string>
-    <string name="settings_category_main_parser">Parser</string>
+    <string name="settings_category_main_parser">Analizador</string>
     <string name="settings_category_main_export">Respaldos</string>
     <string name="settings_category_main_other">Otro</string>
     <string name="settings_category_main_ui">UI</string>
     <string name="settings_main_ui_show_app_features">Mostrar características de la aplicación</string>
-    <string name="settings_main_ui_show_app_features_summary">Show contextual app feature badges on backup screen</string>
+    <string name="settings_main_ui_show_app_features_summary">Mostrar insignias contextuales de funciones de la app en la pantalla de copia de seguridad</string>
     <string name="settings_main_ui_theme">Tema</string>    <string name="settings_main_auto_theme">Tema automático</string>
     <string name="settings_main_auto_theme_summary">Cambia automáticamente entre temas claros y oscuros seleccionados dependiendo del tema del sistema</string>
     <string name="settings_main_auto_theme_picker">Elegir temas</string>
-    <string name="settings_main_auto_theme_picker_summary">Tema de luz actual: %s\nTema oscuro actual: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Tema de luz actual: %1$s\nTema oscuro actual: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Por favor, ten en cuenta que seguir el tema del sistema puede no funcionar correctamente en versiones Android inferiores a Q</string>
     <string name="settings_main_use_installerx">Modo Pro</string>
     <string name="settings_main_use_installerx_summary">Habilitar el modo del instalador Pro que le permite seleccionar partes para instalar desde un archivo .apks (u otros archivos con múltiples archivos APK). Por favor, tenga en cuenta que el modo Pro es experimental y puede que no funcione correctamente. Se agradecen los comentarios</string>
-    <string name="settings_main_backup_settings">Backup settings</string>
-    <string name="settings_main_backup_settings_summary">Tap to open backup settings</string>
+    <string name="settings_main_enable_analytics">Analítica</string>
+    <string name="settings_main_enable_analytics_summary">Permitir que BAI recopile datos analíticos como datos de uso de la app y errores. Puedes obtener más información sobre los datos recopilados en la Política de privacidad, que encontrarás en la pantalla Acerca de. Es posible que cambiar este ajuste no se aplique completamente hasta que reinicies BAI</string>
+    <string name="settings_main_backup_settings">Ajustes de copia de seguridad</string>
+    <string name="settings_main_backup_settings_summary">Toca para abrir los ajustes de copia de seguridad</string>
     <string name="settings_main_enable_apk_action_view">Habilitar la apertura de archivos .apk a través de BAI</string>
     <string name="settings_main_enable_apk_action_view_summary">Permite abrir archivos .apk vía BAI desde otras aplicaciones. Se puede desactivar ya que en algunas ROMs esta opción no te permite abrir archivos .apk</string>
     <string name="name_format_builder_title">Seleccionar partes a incluir en el nombre de la copia de seguridad</string>
@@ -294,9 +296,9 @@
     <string name="installerx_notice_no_code_for_feature">Hay algunas partes divididas en la configuración de la arquitectura para la característica \"%s\", pero ninguna de ellas es soportada por su dispositivo</string>
     <string name="installerx_notice_no_locale_for_base">Ninguna de las partes divididas de configuración regional para el APK base coincide con tu idioma</string>
     <string name="installerx_notice_no_locale_for_feature">Ninguna de las partes divididas de la configuración regional para la característica \"%s\" coincide con sus idiomas</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
+    <string name="installerx_notice_huge_app">Esta app es enorme (>150MB). Con apps enormes existe la posibilidad (cuanto mayor sea el tamaño de la app, mayor será) de que la instalación se quede colgada, pero la app seguirá ocupando espacio de almacenamiento que no podrás recuperar sin usar root o hacer un restablecimiento de fábrica</string>
     <string name="installerx_android_uri_host_file_too_big">El archivo es demasiado grande para copiar y su sistema no soporta la lectura de archivos SAF sin copiar</string>
-    <string name="installerx_thank_you_scoped_storage_very_cool">On Android 11 and up BAI requires storage permission to directly read files selected via system file picker due to scoped storage implementation making 0 sense. You can deny storage permission, but then BAI will have to copy selected files to parse them, BAI won\'t copy and parse large files.</string>
+    <string name="installerx_thank_you_scoped_storage_very_cool">En Android 11 y versiones posteriores, BAI requiere permiso de almacenamiento para leer directamente los archivos seleccionados mediante el selector de archivos del sistema, ya que la implementación del almacenamiento segmentado no tiene sentido. Puedes denegar el permiso de almacenamiento, pero entonces BAI tendrá que copiar los archivos seleccionados para analizarlos, y BAI no copiará ni analizará archivos grandes.</string>
     <string name="theme_sai">BAI</string>
     <string name="theme_ruby">Ruby</string>
     <string name="theme_rena">Rena</string>
@@ -318,4 +320,12 @@
     <string name="about_translate">Ayude a traducir BAI</string>
     <string name="about_privacy">Política de privacidad</string>
     <string name="about_eula">Acuerdo de Licencia de Usuario Final</string>
+
+    <string name="apply">Aplicar</string>
+    <string name="settings_category_main_languages">Idiomas</string>
+    <string name="settings_main_app_language">Idioma de la app</string>
+    <string name="eula_load_error">No se pudo cargar el acuerdo de licencia.</string>
+    <string name="settings_main_root_unavailable">El acceso root no está disponible en este dispositivo.</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku no está disponible o no se ha concedido el permiso.</string>
+
 </resources>

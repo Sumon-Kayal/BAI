@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="yes">Yes</string>
+    <string name="yes">はい</string>
     <string name="no">No</string>
     <string name="cancel">キャンセル</string>
     <string name="ok">OK</string>
@@ -9,7 +9,7 @@
     <string name="copy2">コピー</string>
     <string name="copied">コピー済み</string>
     <string name="dont_show_again">今後は表示しない</string>
-    <string name="warning">Warning</string>
+    <string name="warning">警告</string>
     <string name="filepicker_internal">アプリ内蔵</string>
     <string name="filepicker_saf">システム標準</string>
     <string name="permissions_required_storage">ストレージへのアクセスの許可が必要です。</string>
@@ -140,9 +140,9 @@
     <string name="backup_splits_loading">ロード中...</string>
     <string name="backup_filter">絞り込み</string>
     <string name="backup_filter_common_option_doesnt_matter">指定しない</string>
-    <string name="backup_filter_common_option_yes">Yes</string>
+    <string name="backup_filter_common_option_yes">はい</string>
     <string name="backup_filter_common_option_no">No</string>
-    <string name="backup_filter_split_apk">Split APK</string>
+    <string name="backup_filter_split_apk">分割 APK</string>
     <string name="backup_filter_system_app">システムアプリ</string>
     <string name="backup_filter_sort">並べ替え</string>
     <string name="backup_filter_sort_option_name">アプリ名</string>
@@ -154,13 +154,13 @@
     <string name="backup_filter_backup_status_option_higher_version">新しいバージョン</string>
     <string name="backup_filter_backup_status_option_lower_version">古いバージョン</string>
     <string name="backup_filter_backup_status_option_app_not_installed">未インストール</string>
-    <string name="backup_app_feature_split">Split APK</string>
+    <string name="backup_app_feature_split">分割 APK</string>
     <string name="backup_app_feature_system_app">システムアプリ</string>
     <string name="backup_app_feature_install_date">インストール日時: %s</string>
     <string name="backup_app_feature_update_date">更新日時: %s</string>
     <string name="backup_selection_cleared_notice">アプリリストが更新されたため、選択が解除されました</string>
-    <string name="backup_reindex">Reindex backups</string>
-    <string name="backup_indexing">Indexing backups (%1$d/%2$d)...</string>
+    <string name="backup_reindex">バックアップを再インデックス</string>
+    <string name="backup_indexing">バックアップをインデックス中 (%1$d/%2$d)...</string>
     <string name="backup_app_details_loading">ロード中...</string>
     <string name="backup_app_details_error">アプリの読み込みに失敗したか、アプリが削除されています</string>
     <string name="backup_app_details_backup">バックアップ</string>
@@ -171,19 +171,19 @@
     <string name="backup_app_details_backup_time">%s からバックアップ</string>
     <string name="backup_delete_backup_prompt">%s からバックアップを削除しますか？</string>
     <string name="backup_restore_backup_prompt">%s からバックアップを復元しますか？</string>
-    <string name="backup_restore_backup_hint">Backup has been added to installer queue</string>
+    <string name="backup_restore_backup_hint">バックアップがインストーラのキューに追加されました</string>
     <string name="backup_incompatible_version_warning">アプリの古いバージョンは、新しいバージョンに上書きインストールできません。このバックアップを復元するにはアプリを一旦削除する必要があります。</string>
     <string name="backup_component_apk_files">APKファイル</string>
-    <string name="backup_component_unknown">Unknown component with type \"%s\"</string>
+    <string name="backup_component_unknown">タイプが "%s" の不明なコンポーネント</string>
     <string name="backup_lbs_provider_name">ローカルストレージ</string>
     <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with BAI 3.10+ in the selected directory will be indexed as backups. Default directory for backups prior to BAI 4.0 used to be Internal Storage &gt; BAI</string>
     <string name="backup_lbs_select_dir">ディレクトリを選択</string>
-    <string name="backup_lbs_current_dir">Current backups directory: %s\n\nNote: BAI will only show backups from the currently selected directory.</string>
+    <string name="backup_lbs_current_dir">現在のバックアップディレクトリ: %s\n\n注意: BAIは現在選択されているディレクトリのバックアップのみを表示します。</string>
     <string name="backup_settings">バックアップの設定</string>
-    <string name="backup_open_app_in_system_settings">Open in system settings</string>
-    <string name="backup_open_app_in_system_settings_error">Unable to open app in system settings</string>
-    <string name="backup_export_apk">Export as a .apk file</string>
-    <string name="backup_export_apk_desc">Export a single selected part as a .apk file. Exported .apk files are not backups and won\'t be managed by BAI</string>
+    <string name="backup_open_app_in_system_settings">システム設定で開く</string>
+    <string name="backup_open_app_in_system_settings_error">システム設定でアプリを開けません</string>
+    <string name="backup_export_apk">.apk ファイルとしてエクスポート</string>
+    <string name="backup_export_apk_desc">選択した単一のパーツを .apk ファイルとしてエクスポートします。エクスポートされた .apk ファイルはバックアップではなく、BAI によって管理されません</string>
     <string name="settings_title">設定</string>
     <string name="settings_main_home_directory">ホームディレクトリ</string>
     <string name="settings_main_home_directory_summary">ファイル選択時に最初に開くディレクトリ\n現在の設定: %s</string>
@@ -207,14 +207,14 @@
     <string name="settings_main_installer_summary">BAIで使用するインストーラー\n現在の設定: %s</string>
     <string name="settings_main_installer_error_no_shizuku">Shizukuがインストールされていません。Google Playからインストールしてセットアップしてください。</string>
     <string name="settings_main_installer_error_shizuku_pre_m">BAIはAndroid6.0より前のOSではShizukuに対応していません。</string>
-    <string name="settings_main_backup_file_name_format">Backup file name</string>
-    <string name="settings_main_backup_file_name_format_summary">Backup file name format.\nCurrently: %s</string>
+    <string name="settings_main_backup_file_name_format">バックアップファイル名</string>
+    <string name="settings_main_backup_file_name_format_summary">バックアップファイル名の形式。\n現在: %s</string>
     <string name="settings_main_backup_backup_dir">バックアップファイルのディレクトリ</string>
     <string name="settings_main_backup_backup_dir_summary">バックアップを保存するディレクトリ。変更すると、BAIは選択したディレクトリ内の有効なバックアップを自動的にインデックスします。\n現在の設定: %s</string>
     <string name="settings_main_backup_backup_dir_dialog">使用するディレクトリ選択ダイアログ</string>
     <string name="settings_main_install_location">インストール先</string>
     <string name="settings_main_install_location_summary">アプリのインストール先\n現在の設定: %s</string>
-    <string name="settings_main_use_old_installer">Legacy installer</string>
+    <string name="settings_main_use_old_installer">レガシーインストーラ</string>
     <string name="settings_main_use_old_installer_summary">Legacy installerを使用します。変更時には、設定の適用のためBAIは再起動します(インストール中やバックアップ中には変更しないでください。イカれる恐れがあります)</string>
     <string name="settings_main_installer_show_dialogs">インストールダイアログを表示</string>
     <string name="settings_main_installer_show_dialogs_summary">インストールの成功及び失敗時にダイアログを表示します。ダイアログはインストールセッションのエントリーをタップすることでいつでも開けます。この設定は新しいインストーラーにのみ有効です。</string>
@@ -228,15 +228,17 @@
     <string name="settings_main_ui_theme">テーマ</string>    <string name="settings_main_auto_theme">オートテーマ</string>
     <string name="settings_main_auto_theme_summary">端末のテーマ設定によって、選択されたライトテーマとダークテーマを自動的に切り替えます</string>
     <string name="settings_main_auto_theme_picker">テーマを選択してください</string>
-    <string name="settings_main_auto_theme_picker_summary">現在の設定 \nライトテーマ: %s\nダークテーマ: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">現在の設定 \nライトテーマ: %1$s\nダークテーマ: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">端末のテーマ設定による切り替えはAndroid 10より前のバージョンのOSではうまく動かない場合があります</string>
     <string name="settings_main_use_installerx">Proモード</string>
     <string name="settings_main_use_installerx_summary">Proモードを有効にして、.apksファイル(または複数のAPKファイルをアーカイブしたその他のファイル)からインストールする部分を選択できるようにします。Proモードは試験的な機能で、適切に動かないことがある点に注意してください。フィードバックは歓迎します。</string>
+    <string name="settings_main_enable_analytics">アナリティクス</string>
+    <string name="settings_main_enable_analytics_summary">アプリの使用状況データやエラーなどのアナリティクスデータの収集を BAI に許可します。収集されるデータの詳細については、概要画面にあるプライバシーポリシーをご覧ください。この設定を変更しても、BAI を再起動するまで完全には適用されない場合があります</string>
     <string name="settings_main_backup_settings">バックアップの設定</string>
     <string name="settings_main_backup_settings_summary">タップしてバックアップの設定を開く</string>
-    <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
-    <string name="settings_main_enable_apk_action_view_summary">Support opening .apk files via BAI from other apps. Can be disabled since on some ROMs this setting being enabled doesn\'t let you open .apk files at all</string>
-    <string name="name_format_builder_title">Select parts to include in backup file name</string>
+    <string name="settings_main_enable_apk_action_view">BAI で .apk ファイルを開くことを有効化</string>
+    <string name="settings_main_enable_apk_action_view_summary">他のアプリから BAI 経由で .apk ファイルを開くことをサポートします。一部の ROM ではこの設定を有効にすると .apk ファイルをまったく開けなくなるため、無効にすることもできます</string>
+    <string name="name_format_builder_title">バックアップファイル名に含めるパーツを選択</string>
     <string name="name_format_builder_preview">プレビュー: %s</string>
     <string name="name_format_builder_preview_empty">一つ以上のパートを選択してください</string>
     <!-- These strings that start with "sss_" don't really have to be translated except for the warning maybe -->
@@ -244,15 +246,15 @@
     <string name="sss_warning_title"><b>警告</b></string>
     <string name="sss_warning_summary"><b>自分のしている操作の意味がわからないなら、ここにあるものには 絶 対 に 触れないこと。一部の設定はBAIに(場合によってはシステムの制御系にも) 壊滅的なダメージを与える恐れがあります。</b></string>
     <string name="sss_dont_replace_dots_title">ドット.をコンマ,で置き換えないこと</string>
-    <string name="sss_dont_replace_dots_summary">In backup file name</string>
+    <string name="sss_dont_replace_dots_summary">バックアップファイル名内</string>
     <string name="sss_custom_install_create_title">カスタムインストールコマンド</string>
     <string name="sss_custom_install_create_summary">RootedとShizuku installerのpm(パッケージマネージャー)セッションの作成に使うカスタムインストールコマンド。コマンドには、引数を区切る用途以外のスペースを含めてはいけません(\"括弧内 の スペース\"も引数を区切るものだと見做されます)。無効にするには「null」と入力してください。</string>
     <string name="sss_fake_backup_timestamp">バックアップのタイムスタンプを偽装する</string>
-    <string name="sss_fake_backup_timestamp_summary">Add constant timestamp (Jan 1 2000, 00:00) to backups. Makes hashes of backup files of the same APK files same. BAI will have no idea what backup is the latest one though</string>
-    <string name="sss_test_crash">Crash app</string>
+    <string name="sss_fake_backup_timestamp_summary">バックアップに固定タイムスタンプ (2000年1月1日 00:00) を追加します。同じ APK ファイルのバックアップファイルのハッシュが同じになります。ただし BAI はどのバックアップが最新か判断できなくなります</string>
+    <string name="sss_test_crash">アプリをクラッシュさせる</string>
     <string name="mi_continue_countdown">%d 秒後に続行できます。</string>
     <string name="mi_continue">続行</string>
-    <string name="mi_miui_version">MIUI version - %1$s (%2$d (%3$s))</string>
+    <string name="mi_miui_version">MIUI バージョン - %1$s (%2$d (%3$s))</string>
     <string name="mi_consequences">MIUIのバージョンによっては、MIUIの最適化をオフにしても何も起こらなかったり、アプリの権限がリセットされたり、何らかの想定外の結果が生じる場合があります。</string>    <string name="installerx_dialog_title">カスタムインストール</string>
     <string name="installerx_dialog_choose_filepicker">どの方法でインストールするファイルを選択しますか？</string>
     <string name="installerx_dialog_loading">APKを解析しています…</string>
@@ -295,9 +297,9 @@
     <string name="installerx_notice_no_code_for_feature">いくつかのアーキテクチャ構成の機能\"%s\"の分割APKがありますが、いずれもこのデバイスでサポートされていません</string>
     <string name="installerx_notice_no_locale_for_base">ベースのAPKの、お使いの言語に対応するローカライズ構成のパートがありません</string>
     <string name="installerx_notice_no_locale_for_feature">機能\"%s\"の、お使いの言語に対応するローカライズ構成のパートがありません</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
-    <string name="installerx_android_uri_host_file_too_big">File is too big to copy and your system doesn\'t support reading SAF files without copying</string>
-    <string name="installerx_thank_you_scoped_storage_very_cool">On Android 11 and up BAI requires storage permission to directly read files selected via system file picker due to scoped storage implementation making 0 sense. You can deny storage permission, but then BAI will have to copy selected files to parse them, BAI won\'t copy and parse large files.</string>
+    <string name="installerx_notice_huge_app">このアプリは非常に大きいです (>150MB)。大きなアプリの場合、インストールがハングする可能性があります (アプリサイズが大きいほど確率が高くなります) が、アプリはストレージ容量を占有し続け、root を使用するか初期化しないと復元できません</string>
+    <string name="installerx_android_uri_host_file_too_big">ファイルが大きすぎてコピーできず、お使いのシステムはコピーせずに SAF ファイルを読み取ることをサポートしていません</string>
+    <string name="installerx_thank_you_scoped_storage_very_cool">Android 11 以降では、スコープストレージの実装が全く意味をなさないため、BAI はシステムファイルピッカーで選択されたファイルを直接読み取るためにストレージ権限を必要とします。ストレージ権限を拒否することもできますが、その場合 BAI は選択されたファイルを解析するためにコピーする必要があり、BAI は大きなファイルをコピーおよび解析しません。</string>
     <string name="theme_sai">BAI</string>
     <string name="theme_ruby">Ruby</string>
     <string name="theme_rena">Rena</string>
@@ -305,7 +307,7 @@
     <string name="theme_amoled">Amoled</string>
     <string name="theme_pixel">Pixel</string>
     <string name="theme_sai_fdroid">BAI (F-Droid)</string>
-    <string name="theme_dark">Dark</string>
+    <string name="theme_dark">ダーク</string>
     <string name="theme_gold">Gold</string>
     <string name="theme_rena_light">Rena Light</string>
     <string name="theme_mint">Mint</string>
@@ -318,5 +320,13 @@
     <string name="about_source">GitHub</string>    <string name="about_licenses">ライセンス</string>
     <string name="about_translate">BAIの多言語化やりませんか？</string>
     <string name="about_privacy">プライバシーポリシー</string>
-    <string name="about_eula">End User License Agreement</string>
+    <string name="about_eula">エンドユーザーライセンス契約</string>
+
+    <string name="apply">適用</string>
+    <string name="settings_category_main_languages">言語</string>
+    <string name="settings_main_app_language">アプリの言語</string>
+    <string name="eula_load_error">ライセンス契約の読み込みに失敗しました。</string>
+    <string name="settings_main_root_unavailable">このデバイスでは root アクセスを利用できません。</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku が利用できないか、権限が付与されていません。</string>
+
 </resources>

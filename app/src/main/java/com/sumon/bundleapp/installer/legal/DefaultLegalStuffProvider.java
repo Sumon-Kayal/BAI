@@ -6,7 +6,7 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
 
     private static DefaultLegalStuffProvider sInstance;
 
-    private Context mContext;
+    private final Context mContext;
 
     public static synchronized DefaultLegalStuffProvider getInstance(Context context) {
         return sInstance != null ? sInstance : new DefaultLegalStuffProvider(context);
@@ -27,4 +27,14 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
     public String getPrivacyPolicyUrl() {
         return null;
     }
+    @Override
+    public boolean hasEula() {
+        return true;
+    }
+
+    @Override
+    public String getEulaUrl() {
+        return null;
+    }
 }
+

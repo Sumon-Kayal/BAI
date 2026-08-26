@@ -11,8 +11,8 @@ import com.sumon.bundleapp.installer.utils.Stopwatch;
 
 public class SaiPiSessionState implements Comparable<SaiPiSessionState> {
 
-    private String mSessionId;
-    private SaiPiSessionStatus mStatus;
+    private final String mSessionId;
+    private final SaiPiSessionStatus mStatus;
     private String mPackageName;
     private String mAppTempName;
     private PackageMeta mPackageMeta;
@@ -96,9 +96,7 @@ public class SaiPiSessionState implements Comparable<SaiPiSessionState> {
     @NonNull
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("SaiPiSessionState: sessionId=%s, status=%s", sessionId(), status()));
-        return sb.toString();
+        return String.format("SaiPiSessionState: sessionId=%s, status=%s", sessionId(), status());
     }
 
     @Override
@@ -107,7 +105,7 @@ public class SaiPiSessionState implements Comparable<SaiPiSessionState> {
     }
 
     public static class Builder {
-        private SaiPiSessionState mState;
+        private final SaiPiSessionState mState;
 
         public Builder(@NonNull String sessionId, @NonNull SaiPiSessionStatus status) {
             mState = new SaiPiSessionState(sessionId, status);

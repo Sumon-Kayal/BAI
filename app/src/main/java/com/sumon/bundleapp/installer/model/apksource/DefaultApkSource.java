@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DefaultApkSource implements ApkSource {
 
-    private List<FileDescriptor> mApkFileDescriptors;
+    private final List<FileDescriptor> mApkFileDescriptors;
     private FileDescriptor mCurrentApk;
 
     public DefaultApkSource(List<FileDescriptor> apkFileDescriptors) {

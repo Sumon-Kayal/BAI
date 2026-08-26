@@ -26,7 +26,7 @@ public class SaiExportedAppMeta2 {
 
     @SerializedName("meta_version")
     @Expose
-    private Long mMetaVersion = 2L;
+    private final Long mMetaVersion = 2L;
 
     @SerializedName("package")
     @Expose
@@ -161,11 +161,11 @@ public class SaiExportedAppMeta2 {
 
         @SerializedName("type")
         @Expose
-        private String mType;
+        private final String mType;
 
         @SerializedName("size")
         @Expose
-        private Long mSize;
+        private final Long mSize;
 
         private BackupComponent(String type, long size) {
             mType = type;

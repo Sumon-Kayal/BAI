@@ -41,12 +41,12 @@ import java.util.regex.Pattern;
 
 public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
 
-    private static Semaphore mSharedSemaphore = new Semaphore(1);
-    private AtomicBoolean mAwaitingBroadcast = new AtomicBoolean(false);
+    private static final Semaphore mSharedSemaphore = new Semaphore(1);
+    private final AtomicBoolean mAwaitingBroadcast = new AtomicBoolean(false);
 
-    private ExecutorService mExecutor = Executors.newFixedThreadPool(4);
-    private HandlerThread mWorkerThread = new HandlerThread("RootlessSaiPi Worker");
-    private Handler mWorkerHandler;
+    private final ExecutorService mExecutor = Executors.newFixedThreadPool(4);
+    private final HandlerThread mWorkerThread = new HandlerThread("RootlessSaiPi Worker");
+    private final Handler mWorkerHandler;
 
     private String mCurrentSessionId;
 
@@ -129,7 +129,7 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
                 String shortError = getContext().getString(R.string.installer_error_shell, getInstallerName(), getSessionInfo(apkSource) + "\n\n" + parseError(installationResult));
                 setSessionState(sessionId, new SaiPiSessionState.Builder(sessionId, SaiPiSessionStatus.INSTALLATION_FAILED)
                         .appTempName(appTempName)
-                        .error(shortError, shortError + "\n\n" + installationResult.toString())
+                        .error(shortError, shortError + "\n\n" + installationResult)
                         .build());
 
                 unlockInstallation();

@@ -227,10 +227,12 @@
     <string name="settings_main_ui_theme">主题</string>    <string name="settings_main_auto_theme">自动主题</string>
     <string name="settings_main_auto_theme_summary">根据系统主题，在选定的浅色和深色主题之间自动切换</string>
     <string name="settings_main_auto_theme_picker">选择主题</string>
-    <string name="settings_main_auto_theme_picker_summary">当前浅色主题: %s\n当前深色主题: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">当前浅色主题: %1$s\n当前深色主题: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">请注意，跟随系统主题可能在低于Android 10的版本上无法正常工作</string>
     <string name="settings_main_use_installerx">专业模式</string>
     <string name="settings_main_use_installerx_summary">启用安装程序的专业模式，该模式允许您从.apks文件（或具有多个APK文件的其他压缩文件）中选择要安装的部分。 请注意，专业模式是实验性的并且可能无法正常工作，欢迎反馈</string>
+    <string name="settings_main_enable_analytics">分析</string>
+    <string name="settings_main_enable_analytics_summary">允许BAI收集分析数据，例如应用使用情况数据和错误。 您可以在关于界面的“隐私政策”中找到更多将被收集 的数据。 在重新启动BAI之前，更改此设置可能无法即时生效。</string>
     <string name="settings_main_backup_settings">备份设置</string>
     <string name="settings_main_backup_settings_summary">点击打开备份设置</string>
     <string name="settings_main_enable_apk_action_view">允许通过 BAI 打开 .apk 文件</string>
@@ -294,7 +296,7 @@
     <string name="installerx_notice_no_code_for_feature">特征模块\"%s\"有一些架构配置拆分部件，但其中没有一个是您的设备所支持的</string>
     <string name="installerx_notice_no_locale_for_base">基础APK的区域配置拆分部分与您的语言不匹配</string>
     <string name="installerx_notice_no_locale_for_feature">%s功能的区域配置拆分部分与您的语言不匹配</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
+    <string name="installerx_notice_huge_app">此应用体积巨大（>150MB）。对于大型应用，安装可能会卡住（应用越大，概率越高），但仍会占用存储空间，除非使用 root 或恢复出厂设置，否则无法回收该空间。</string>
     <string name="installerx_android_uri_host_file_too_big">文件过大，无法复制，你的系统不支持在不复制的情况下读取 SAF 文件</string>
     <string name="installerx_thank_you_scoped_storage_very_cool">在Android 11和更高版本上，由于毫无意义的分区存存储实现， BAI 需要存储权限来直接读取通过系统文件选择器选择的文件。你可以拒绝存储权限，但是 BAI 将不得不复制所选文件来解析它们，BAI 不会复制和解析大文件。</string>
     <string name="theme_sai">默认 BAI</string>
@@ -318,4 +320,12 @@
     <string name="about_translate">帮助翻译BAI</string>
     <string name="about_privacy">隐私政策</string>
     <string name="about_eula">最终用户许可协议</string>
+
+    <string name="apply">应用</string>
+    <string name="settings_category_main_languages">语言</string>
+    <string name="settings_main_app_language">应用语言</string>
+    <string name="eula_load_error">加载许可协议失败。</string>
+    <string name="settings_main_root_unavailable">此设备上不可用 root 访问权限。</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku 不可用或未授予权限。</string>
+
 </resources>
