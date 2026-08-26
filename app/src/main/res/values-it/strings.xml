@@ -231,6 +231,8 @@
     <string name="settings_main_auto_theme_pre_q_warning">Si prega di notare che l\'automazione del cambio tema in base all\'impostazione di sistema potrebbe non funzionare correttamente su versioni inferiori ad Android 10</string>
     <string name="settings_main_use_installerx">Modalità pro</string>
     <string name="settings_main_use_installerx_summary">La modalità installazione Pro permette la selezione di parti da un file .apks (o altri archivi con APK multipli). Ricorda che la modalità Pro è sperimentale e potrebbe non funzionare correttamente, si accettano suggerimenti</string>
+    <string name="settings_main_enable_analytics">Analisi</string>
+    <string name="settings_main_enable_analytics_summary">Consenti a BAI di raccogliere dati di analisi come i dati di utilizzo delle app e sugli errori. Puoi scoprire di più sui dati raccolti nell\'Informativa sulla Privacy a schermo. Cambiare questa impostazione potrebbero non essere applicate fino al riavvio di BAI</string>
     <string name="settings_main_backup_settings">Impostazioni di backup</string>
     <string name="settings_main_backup_settings_summary">Tocca per aprire le impostazioni di backup</string>
     <string name="settings_main_enable_apk_action_view">Attiva l\'apertura dei file .apk tramite BAI</string>

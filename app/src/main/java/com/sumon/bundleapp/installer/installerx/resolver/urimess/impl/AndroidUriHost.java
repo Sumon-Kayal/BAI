@@ -27,7 +27,7 @@ import java.util.Objects;
 public class AndroidUriHost implements UriHost {
     private static final long MAX_FILE_LENGTH_FOR_COPY = 1024 * 1024 * 100;
 
-    private Context mContext;
+    private final Context mContext;
 
     public AndroidUriHost(Context context) {
         mContext = context;
@@ -71,7 +71,7 @@ public class AndroidUriHost implements UriHost {
 
     private class ProcSelfFdUriAsFile implements UriAsFile {
 
-        private ParcelFileDescriptor mFd;
+        private final ParcelFileDescriptor mFd;
 
         private ProcSelfFdUriAsFile(Uri uri) throws Exception {
             mFd = mContext.getContentResolver().openFileDescriptor(uri, "r");
@@ -93,7 +93,7 @@ public class AndroidUriHost implements UriHost {
 
     private class CopyFileUriAsFile implements UriAsFile {
 
-        private File mTempFile;
+        private final File mTempFile;
 
         private CopyFileUriAsFile(Uri uri, long maxFileLength) throws Exception {
             if (SafUtils.getFileLengthFromContentUri(mContext, uri) > maxFileLength) {

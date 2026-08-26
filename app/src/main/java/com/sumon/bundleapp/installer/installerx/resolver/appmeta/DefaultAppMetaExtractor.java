@@ -15,7 +15,7 @@ import com.sumon.bundleapp.installer.utils.Utils;
 public class DefaultAppMetaExtractor implements AppMetaExtractor {
     private static final String TAG = "DefaultAppMetaExtractor";
 
-    private Context mContext;
+    private final Context mContext;
 
     public DefaultAppMetaExtractor(Context context) {
         mContext = context.getApplicationContext();

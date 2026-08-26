@@ -17,8 +17,8 @@ public class NotificationHelper {
 
     private static NotificationHelper sInstance;
 
-    private NotificationManagerCompat mNotificationManager;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final NotificationManagerCompat mNotificationManager;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private long mLastNotificationTime = 0;
 

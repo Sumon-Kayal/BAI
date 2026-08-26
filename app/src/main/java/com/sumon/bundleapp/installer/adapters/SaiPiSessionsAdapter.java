@@ -21,8 +21,8 @@ import java.util.List;
 
 public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdapter.ViewHolder> {
 
-    private Context mContext;
-    private LayoutInflater mInflater;
+    private final Context mContext;
+    private final LayoutInflater mInflater;
 
     private List<SaiPiSessionState> mSessions;
 
@@ -81,12 +81,12 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ViewGroup mContainer;
-        private ShimmerFrameLayout mShimmer;
-        private TextView mName;
-        private TextView mStatus;
-        private ImageView mAppIcon;
-        private ImageView mActionIcon;
+        private final ViewGroup mContainer;
+        private final ShimmerFrameLayout mShimmer;
+        private final TextView mName;
+        private final TextView mStatus;
+        private final ImageView mAppIcon;
+        private final ImageView mActionIcon;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);

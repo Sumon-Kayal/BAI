@@ -109,8 +109,8 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center"
-            android:tint="?colorAccent"
-            app:srcCompat="@drawable/ic_warning" />
+            app:srcCompat="@drawable/ic_warning"
+            app:tint="?colorAccent" />
 
         <TextView
             android:id="@+id/tv_backup_dialog_error"

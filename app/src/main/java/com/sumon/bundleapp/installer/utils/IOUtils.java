@@ -143,7 +143,7 @@ public class IOUtils {
      * @throws IOException
      */
     public static byte[] hashStream(InputStream inputStream, MessageDigest messageDigest) throws IOException {
-        try (DigestInputStream digestInputStream = new DigestInputStream(inputStream, messageDigest);) {
+        try (DigestInputStream digestInputStream = new DigestInputStream(inputStream, messageDigest)) {
             byte[] buffer = new byte[1024 * 64];
             int read;
             while ((read = digestInputStream.read(buffer)) > 0) {

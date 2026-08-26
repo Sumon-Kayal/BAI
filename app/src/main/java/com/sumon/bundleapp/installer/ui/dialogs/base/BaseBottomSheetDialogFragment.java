@@ -85,8 +85,7 @@ public class BaseBottomSheetDialogFragment extends BottomSheetDialogFragment {
     }
 
     protected void revealBottomSheet() {
-        FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        BottomSheetBehavior<FrameLayout> bottomSheetBehavior = mDialog.getBehavior();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 

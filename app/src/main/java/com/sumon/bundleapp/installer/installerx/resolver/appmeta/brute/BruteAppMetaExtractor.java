@@ -38,7 +38,7 @@ public class BruteAppMetaExtractor implements AppMetaExtractor {
     private static final String TAG = "BruteAppMetaExtractor";
     private static final String HASH_ALGORITHM = "SHA-256";
 
-    private Context mContext;
+    private final Context mContext;
 
     private static final Map<String, Object> mHashLocks = new HashMap<>();
 

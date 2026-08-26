@@ -29,7 +29,7 @@ public class MiuiWarningDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+        return new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.installer_miui_warning_title)
                 .setMessage(R.string.installer_miui_warning_message)
                 .setPositiveButton(R.string.installer_miui_warning_open_dev_settings, (d, w) -> {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sumon.bundleapp.installer.adapters.LicensesAdapter;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 import com.sumon.bundleapp.installer.viewmodels.LicensesViewModel;
 
 public class LicensesActivity extends ThemedActivity {
@@ -20,6 +21,8 @@ public class LicensesActivity extends ThemedActivity {
         setContentView(R.layout.activity_licenses);
 
         RecyclerView recyclerView = findViewById(R.id.rv_licenses);
+
+        InsetsUtils.applySystemBarInsetsAsPadding(recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 16);

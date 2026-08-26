@@ -18,8 +18,8 @@ public class SignerApkSource implements ApkSource {
     private static final String FILE_NAME_PAST = "testkey.past";
     private static final String FILE_NAME_PRIVATE_KEY = "testkey.pk8";
 
-    private ApkSource mWrappedApkSource;
-    private Context mContext;
+    private final ApkSource mWrappedApkSource;
+    private final Context mContext;
     private boolean mIsPrepared;
     private PseudoApkSigner mApkSigner;
     private File mTempDir;

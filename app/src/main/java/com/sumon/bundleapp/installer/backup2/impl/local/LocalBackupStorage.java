@@ -22,12 +22,12 @@ import java.util.List;
 public class LocalBackupStorage extends ApksBackupStorage implements LocalBackupStorageProvider.OnConfigChangeListener {
     private static final String TAG = "LocalBackupStorage";
 
-    private LocalBackupStorageProvider mProvider;
+    private final LocalBackupStorageProvider mProvider;
 
-    private Context mContext;
+    private final Context mContext;
 
-    private HandlerThread mWorkerHandlerThread;
-    private Handler mWorkerHandler;
+    private final HandlerThread mWorkerHandlerThread;
+    private final Handler mWorkerHandler;
 
     LocalBackupStorage(LocalBackupStorageProvider provider, Context context) {
         super();
@@ -107,7 +107,7 @@ public class LocalBackupStorage extends ApksBackupStorage implements LocalBackup
                 continue;
 
             String docExt = Utils.getExtension(docName);
-            if (docExt == null || !docExt.toLowerCase().equals("apks"))
+            if (docExt == null || !docExt.equalsIgnoreCase("apks"))
                 continue;
 
             uris.add(namespaceUri(docFile.getUri()));

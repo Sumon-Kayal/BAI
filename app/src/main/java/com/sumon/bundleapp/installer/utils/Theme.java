@@ -43,13 +43,13 @@ public class Theme {
 
     private static Theme sInstance;
 
-    private Context mContext;
+    private final Context mContext;
 
-    private SharedPreferences mPrefs;
+    private final SharedPreferences mPrefs;
 
-    private List<ThemeDescriptor> mThemes;
+    private final List<ThemeDescriptor> mThemes;
 
-    private MutableLiveData<ThemeDescriptor> mLiveTheme = new MutableLiveData<>();
+    private final MutableLiveData<ThemeDescriptor> mLiveTheme = new MutableLiveData<>();
 
     private Mode mMode;
 
@@ -231,15 +231,15 @@ public class Theme {
     }
 
     public static class ThemeDescriptor {
-        private int mId;
+        private final int mId;
 
         @StyleRes
-        private int mTheme;
+        private final int mTheme;
 
-        private boolean mIsDark;
+        private final boolean mIsDark;
 
         @StringRes
-        private int mNameStringRes;
+        private final int mNameStringRes;
 
         private ThemeDescriptor(
                 int id,
@@ -273,11 +273,6 @@ public class Theme {
         public boolean equals(@Nullable Object obj) {
             return obj instanceof ThemeDescriptor
                     && ((ThemeDescriptor) obj).getId() == getId();
-        }
-
-        @Override
-        public int hashCode() {
-            return getId();
         }
     }
                                         }

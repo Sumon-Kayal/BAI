@@ -144,7 +144,7 @@ public class Utils {
         return typedValue.data;
     }
 
-    private static Handler sMainThreadHandler = new Handler(Looper.getMainLooper());
+    private static final Handler sMainThreadHandler = new Handler(Looper.getMainLooper());
 
     public static void onMainThread(Runnable r) {
         sMainThreadHandler.post(r);
@@ -285,7 +285,6 @@ public class Utils {
         } finally {
             if (bitmap != null)
                 bitmap.recycle();
-            ;
         }
 
     }

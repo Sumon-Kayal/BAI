@@ -149,10 +149,9 @@ public class PseudoApkSigner {
     private String buildSignatureFile(String manifest) throws GeneralSecurityException {
         byte[] wholeFileDigest = MessageDigest.getInstance(HASH_ALGORITHM)
                 .digest(manifest.getBytes(StandardCharsets.UTF_8));
-        StringBuilder sb = new StringBuilder();
-        sb.append("Signature-Version: 1.0\r\n");
-        sb.append(HASH_ALGORITHM).append("-Digest-Manifest: ").append(base64(wholeFileDigest)).append("\r\n\r\n");
-        return sb.toString();
+        String sb = "Signature-Version: 1.0\r\n" +
+                HASH_ALGORITHM + "-Digest-Manifest: " + base64(wholeFileDigest) + "\r\n\r\n";
+        return sb;
     }
 
     private static String base64(byte[] bytes) {

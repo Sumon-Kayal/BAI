@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BackupNameFormatBuilder {
 
-    private List<Part> mParts = new ArrayList<>();
+    private final List<Part> mParts = new ArrayList<>();
 
     public BackupNameFormatBuilder(@Nullable Collection<Part> parts) {
         if (parts != null) {
