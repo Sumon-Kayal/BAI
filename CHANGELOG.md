@@ -5,9 +5,10 @@ All notable changes to BAI (Bundle APKs Installer) are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
 
-## [4.6.0] - 2026-08-27
+## [Unreleased]
 
-### Added
+### 4.6.0 (pending release)
+#### Added
 
 - Added BAI's independent application identity and packaging.
 - Added GitHub Actions workflows for BAI's build and release process.
@@ -26,7 +27,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
 - Added project-specific changelog and release documentation.
 - Added/updated project localization and language-selection support.
 
-### Changed
+#### Changed
 
 - Updated the Android build configuration for the current BAI development stack.
 - Updated the project to target Android API 36.
@@ -40,26 +41,26 @@ and this project follows [Semantic Versioning](https://semver.org/).
 - Updated documentation for building, contributing, translating, and releasing BAI.
 - Updated EULA/legal resource handling for the BAI fork.
 
-### Removed
+#### Removed
 
 - Removed/reworked upstream Google Play-specific project configuration that is not required for BAI's distribution model.
 - Removed/reworked upstream billing and donation-related integration where applicable.
 - Removed reliance on upstream project-specific release configuration.
 
-### Fixed
+#### Fixed
 
 - Fixed project/build configuration issues inherited from or exposed by the upstream project structure.
 - Fixed CI configuration for BAI's independent build and release process.
 - Fixed release packaging for the supported Android CPU architectures.
 - Fixed documentation that no longer matched BAI's build and release setup.
 
-### Security
+#### Security
 
 - Added CodeQL analysis to the CI pipeline.
 - Added automated dead-code checks to help identify unnecessary or unused code.
 - Updated the build/release configuration for BAI's independent distribution.
 
-### Compatibility
+#### Compatibility
 
 - Minimum Android version: **Android 6.0 (API 23)**
 - Target Android version: **API 36**
@@ -70,16 +71,10 @@ and this project follows [Semantic Versioning](https://semver.org/).
   - `x86`
   - `x86_64`
 
-### Credits
+#### Credits
 
 BAI is based on [SAI (Split APKs Installer)](https://github.com/Aefyr/SAI).
 
 The original SAI project provides the foundation for BAI's split-APK installation and backup functionality.
 
 ---
-
-## Unreleased
-
-Changes for the next release will be documented here.
-
-[4.6.0]: https://github.com/Sumon-Kayal/BAI/releases/tag/v4.6.0
