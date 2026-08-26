@@ -174,7 +174,7 @@
     <string name="backup_restore_backup_hint">バックアップがインストーラのキューに追加されました</string>
     <string name="backup_incompatible_version_warning">アプリの古いバージョンは、新しいバージョンに上書きインストールできません。このバックアップを復元するにはアプリを一旦削除する必要があります。</string>
     <string name="backup_component_apk_files">APKファイル</string>
-    <string name="backup_component_unknown">タイプが "%s" の不明なコンポーネント</string>
+    <string name="backup_component_unknown">タイプが \"%s\" の不明なコンポーネント</string>
     <string name="backup_lbs_provider_name">ローカルストレージ</string>
     <string name="backup_lbs_warning_no_dir">Please select a directory to store backups. .apks files exported with BAI 3.10+ in the selected directory will be indexed as backups. Default directory for backups prior to BAI 4.0 used to be Internal Storage &gt; BAI</string>
     <string name="backup_lbs_select_dir">ディレクトリを選択</string>
