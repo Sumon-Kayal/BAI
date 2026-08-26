@@ -9,7 +9,7 @@
     <string name="copy2">Copia</string>
     <string name="copied">Copiato</string>
     <string name="dont_show_again">Non mostrare più</string>
-    <string name="warning">Warning</string>
+    <string name="warning">Avviso</string>
     <string name="filepicker_internal">Selettore file interno</string>
     <string name="filepicker_saf">Selettore file di sistema</string>
     <string name="permissions_required_storage">BAI richiede l\'autorizzazione per accedere alla memoria</string>
@@ -227,7 +227,7 @@
     <string name="settings_main_ui_theme">Tema</string>    <string name="settings_main_auto_theme">Tema automatico</string>
     <string name="settings_main_auto_theme_summary">Passa automaticamente ai temi chiari o scuri selezionati a seconda del tema di sistema</string>
     <string name="settings_main_auto_theme_picker">Scegli temi</string>
-    <string name="settings_main_auto_theme_picker_summary">Tema chiaro attuale: %s\nTema scuro attuale: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Tema chiaro attuale: %1$s\nTema scuro attuale: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Si prega di notare che l\'automazione del cambio tema in base all\'impostazione di sistema potrebbe non funzionare correttamente su versioni inferiori ad Android 10</string>
     <string name="settings_main_use_installerx">Modalità pro</string>
     <string name="settings_main_use_installerx_summary">La modalità installazione Pro permette la selezione di parti da un file .apks (o altri archivi con APK multipli). Ricorda che la modalità Pro è sperimentale e potrebbe non funzionare correttamente, si accettano suggerimenti</string>
@@ -296,9 +296,9 @@
     <string name="installerx_notice_no_code_for_feature">Ci sono alcune parti suddivise di configurazioni architetturali per la funzionalità \"%s\", ma nessuna di esse è supportata dal tuo dispositivo</string>
     <string name="installerx_notice_no_locale_for_base">Nessuna configurazione locale delle parti suddivise per l\'APK base contiene la tua lingue</string>
     <string name="installerx_notice_no_locale_for_feature">Nessuna configurazione locale delle parti suddivise per la funzionalità \"%s\" corrisponde alla tua lungua</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
-    <string name="installerx_android_uri_host_file_too_big">File is too big to copy and your system doesn\'t support reading SAF files without copying</string>
-    <string name="installerx_thank_you_scoped_storage_very_cool">On Android 11 and up BAI requires storage permission to directly read files selected via system file picker due to scoped storage implementation making 0 sense. You can deny storage permission, but then BAI will have to copy selected files to parse them, BAI won\'t copy and parse large files.</string>
+    <string name="installerx_notice_huge_app">Questa app è enorme (>150MB). Con le app enormi c\'è una possibilità (più grande è la dimensione dell\'app, più è alta) che l\'installazione si blocchi ma l\'app occuperà comunque spazio di archiviazione che non potrai recuperare senza usare root o ripristinando i dati di fabbrica</string>
+    <string name="installerx_android_uri_host_file_too_big">Il file è troppo grande da copiare e il tuo sistema non supporta la lettura dei file SAF senza copiarli</string>
+    <string name="installerx_thank_you_scoped_storage_very_cool">Su Android 11 e superiori BAI richiede l\'autorizzazione di archiviazione per leggere direttamente i file selezionati tramite il selettore file di sistema perché l\'implementazione dello scoped storage non ha alcun senso. Puoi negare l\'autorizzazione di archiviazione, ma in tal caso BAI dovrà copiare i file selezionati per analizzarli, BAI non copierà e analizzerà i file di grandi dimensioni.</string>
     <string name="theme_sai">BAI</string>
     <string name="theme_ruby">Ruby</string>
     <string name="theme_rena">Rena</string>
@@ -320,4 +320,12 @@
     <string name="about_translate">Contribuisci alla traduzione di BAI</string>
     <string name="about_privacy">Informativa sulla Privacy</string>
     <string name="about_eula">Contratto di Licenza Utente</string>
+
+    <string name="apply">Applica</string>
+    <string name="settings_category_main_languages">Lingue</string>
+    <string name="settings_main_app_language">Lingua dell\\'app</string>
+    <string name="eula_load_error">Impossibile caricare l\\'accordo di licenza.</string>
+    <string name="settings_main_root_unavailable">L\\'accesso root non è disponibile su questo dispositivo.</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku non è disponibile o l\\'autorizzazione non è stata concessa.</string>
+
 </resources>
