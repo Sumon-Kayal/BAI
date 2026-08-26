@@ -9,7 +9,7 @@
     <string name="copy2">Köçür</string>
     <string name="copied">Köçürüldü</string>
     <string name="dont_show_again">Birdə göstərmə</string>
-    <string name="warning">Warning</string>
+    <string name="warning">Xəbərdarlıq</string>
     <string name="filepicker_internal">Daxili fayl götürmə</string>
     <string name="filepicker_saf">Sistem faylı götürmə</string>
     <string name="permissions_required_storage">BAI yaddaşdan istifadə üçün icazə istəyir</string>
@@ -141,7 +141,7 @@
     <string name="backup_filter_common_option_doesnt_matter">Fərqi yoxdur</string>
     <string name="backup_filter_common_option_yes">Bəli</string>
     <string name="backup_filter_common_option_no">Xeyr</string>
-    <string name="backup_filter_split_apk">Split APK</string>
+    <string name="backup_filter_split_apk">Bölünmüş APK</string>
     <string name="backup_filter_system_app">Sistem tətbiqi</string>
     <string name="backup_filter_sort">Nizamla</string>
     <string name="backup_filter_sort_option_name">Ad</string>
@@ -153,7 +153,7 @@
     <string name="backup_filter_backup_status_option_higher_version">Yuxarı versiya</string>
     <string name="backup_filter_backup_status_option_lower_version">Aşağı versiya</string>
     <string name="backup_filter_backup_status_option_app_not_installed">Qurulmamış</string>
-    <string name="backup_app_feature_split">Split APK</string>
+    <string name="backup_app_feature_split">Bölünmüş APK</string>
     <string name="backup_app_feature_system_app">Sistem tətbiqi</string>
     <string name="backup_app_feature_install_date">Quruldu: %s</string>
     <string name="backup_app_feature_update_date">Yeniləndi: %s</string>
@@ -227,7 +227,7 @@
     <string name="settings_main_ui_theme">Mövzu</string>    <string name="settings_main_auto_theme">Avto Mövzu</string>
     <string name="settings_main_auto_theme_summary">Sistem mövzusundan asılı olaraq işıqlı və qaranlıq mövzular arasında avtomatik keçiş et</string>
     <string name="settings_main_auto_theme_picker">Mövzuları seç</string>
-    <string name="settings_main_auto_theme_picker_summary">Hazırkı işıqlı mövzu: %s\nHazırkı qaranlıq mövzu: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Hazırkı işıqlı mövzu: %1$s\nHazırkı qaranlıq mövzu: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Xahiş edirik sistem mövzuları ilə keçiş etmək Android Q versiyasından aşağı olduqda düzgün işləməyə bilər</string>
     <string name="settings_main_use_installerx">Pro mod</string>
     <string name="settings_main_use_installerx_summary">Sizə hər hansı .apks faylından (yaxud digər çoxlu APK faylları arxivlərindən) hissələr seçib qurmağa imkan yaradan qurucu Pro modunu açın. Xahiş olunur Pro modun yoxlama halında olduğunu və düzgün işləməyə biləcəyini nəzərinizdə saxlayın</string>
@@ -235,8 +235,8 @@
     <string name="settings_main_enable_analytics_summary">BAI\'yə tətbiq istifadəsi məlumatı və xətalar kimi analitik məlumatları yığmağa icazə verin. Məxfilik Siyasəti\'ndə məlumatların yığılması barədə əlavə məlumat ala bilərsiniz. Bu seçimi dəyişmək BAI\'ni yenidən başladana qədər tam effekt verməyə bilər</string>
     <string name="settings_main_backup_settings">Nüsxə tənzimləmələri</string>
     <string name="settings_main_backup_settings_summary">Nüsxə tənzimləmələrini açmaq üçün toxun</string>
-    <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
-    <string name="settings_main_enable_apk_action_view_summary">Support opening .apk files via BAI from other apps. Can be disabled since on some ROMs this setting being enabled doesn\'t let you open .apk files at all</string>
+    <string name="settings_main_enable_apk_action_view">.apk fayllarını BAI vasitəsilə açmağı aktivləşdir</string>
+    <string name="settings_main_enable_apk_action_view_summary">Digər tətbiqlərdən .apk fayllarını BAI vasitəsilə açmağı dəstəkləyir. Bəzi ROM-larda bu ayarın aktiv olması .apk fayllarını ümumiyyətlə açmağa imkan vermədiyi üçün deaktiv edilə bilər</string>
     <string name="name_format_builder_title">Nüsxə faylının adına əlavə ediləcək hissələri seçin</string>
     <string name="name_format_builder_preview">Önbaxış: %s</string>
     <string name="name_format_builder_preview_empty">Xahiş olunur azı 1 hissə seçin</string>
@@ -296,9 +296,9 @@
     <string name="installerx_notice_no_code_for_feature">\"%s\" xüsusiyyəti üçün bəzi arxitektura konfiqurasiya split hissələri var, amma onlardan heç biri cihazınız tərəfindən dəstəklənmir</string>
     <string name="installerx_notice_no_locale_for_base">Baza APK üçün olan yerli konfiqurasiya split hissələrinin heç biri dilinizə uyğun gəlmir</string>
     <string name="installerx_notice_no_locale_for_feature">\"%s\" xüsusiyyəti üçün olan yerli konfiqurasiya split hissələrinin heç biri dilinizə uyğun gəlmir</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
-    <string name="installerx_android_uri_host_file_too_big">File is too big to copy and your system doesn\'t support reading SAF files without copying</string>
-    <string name="installerx_thank_you_scoped_storage_very_cool">On Android 11 and up BAI requires storage permission to directly read files selected via system file picker due to scoped storage implementation making 0 sense. You can deny storage permission, but then BAI will have to copy selected files to parse them, BAI won\'t copy and parse large files.</string>
+    <string name="installerx_notice_huge_app">Bu tətbiq çox böyükdür (>150MB). Böyük tətbiqlərdə quraşdırmanın donub qalma ehtimalı var (tətbiq nə qədər böyükdürsə, ehtimal bir o qədər yüksəkdir), lakin tətbiq yaddaş saxlama yerini tutmağa davam edəcək və siz root istifadə etmədən və ya zavod sıfırlaması etmədən bu yeri geri qaytara bilməyəcəksiniz</string>
+    <string name="installerx_android_uri_host_file_too_big">Fayl kopyalamaq üçün həddən artıq böyükdür və sisteminiz SAF fayllarını kopyalamadan oxumağı dəstəkləmir</string>
+    <string name="installerx_thank_you_scoped_storage_very_cool">Android 11 və yuxarısında BAI, scoped storage tətbiqinin heç bir məna kəsb etməməsi səbəbindən sistem fayl seçicisi ilə seçilmiş faylları birbaşa oxumaq üçün yaddaş icazəsi tələb edir. Yaddaş icazəsini rədd edə bilərsiniz, lakin o zaman BAI seçilmiş faylları təhlil etmək üçün kopyalamalı olacaq, BAI böyük faylları kopyalamayacaq və təhlil etməyəcək.</string>
     <string name="theme_sai">BAI</string>
     <string name="theme_ruby">Ruby</string>
     <string name="theme_rena">Rena</string>
@@ -320,4 +320,12 @@
     <string name="about_translate">BAI\'nin tərcüməsinə dəstək ol</string>
     <string name="about_privacy">Məxfilik Siyasəti</string>
     <string name="about_eula">İstifadəçi Lisenziya Razılaşması</string>
+
+    <string name="apply">Tətbiq et</string>
+    <string name="settings_category_main_languages">Dillər</string>
+    <string name="settings_main_app_language">Tətbiq dili</string>
+    <string name="eula_load_error">Lisenziya müqaviləsini yükləmək mümkün olmadı.</string>
+    <string name="settings_main_root_unavailable">Bu cihazda root girişi mövcud deyil.</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku mövcud deyil və ya icazə verilməyib.</string>
+
 </resources>

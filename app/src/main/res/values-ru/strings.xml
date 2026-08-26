@@ -227,7 +227,7 @@
     <string name="settings_main_ui_theme">Тема</string>    <string name="settings_main_auto_theme">Автоматическая тема</string>
     <string name="settings_main_auto_theme_summary">Автоматически переключаться между выбранными светлой и тёмной темой в зависимости от системной темы</string>
     <string name="settings_main_auto_theme_picker">Выбрать темы</string>
-    <string name="settings_main_auto_theme_picker_summary">Светлая тема: %s\nТемная тема: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Светлая тема: %1$s\nТемная тема: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Пожалуйста учтите, что следование системной теме может работать некорректно на Android ниже Q</string>
     <string name="settings_main_use_installerx">Режим Pro</string>
     <string name="settings_main_use_installerx_summary">Включить режим Pro в установщике, который позволяет выбрать части split APK перед установкой. Пожалуйста учтите, что режим Pro экспериментальный и может не работать как надо</string>
@@ -320,4 +320,12 @@
     <string name="about_translate">Помочь перевести BAI</string>
     <string name="about_privacy">Политика конфиденциальности</string>
     <string name="about_eula">Лицензионное соглашение</string>
+
+    <string name="apply">Применить</string>
+    <string name="settings_category_main_languages">Языки</string>
+    <string name="settings_main_app_language">Язык приложения</string>
+    <string name="eula_load_error">Не удалось загрузить лицензионное соглашение.</string>
+    <string name="settings_main_root_unavailable">Root-доступ недоступен на этом устройстве.</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku недоступен или разрешение не предоставлено.</string>
+
 </resources>

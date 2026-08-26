@@ -227,7 +227,7 @@
     <string name="settings_main_ui_theme">Tema</string>    <string name="settings_main_auto_theme">Tema automático</string>
     <string name="settings_main_auto_theme_summary">Alternar automaticamente entre os temas claros e escuros selecionados, dependendo do tema do sistema</string>
     <string name="settings_main_auto_theme_picker">Escolher temas</string>
-    <string name="settings_main_auto_theme_picker_summary">Tema claro atual: %s\nTema escuro atual: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Tema claro atual: %1$s\nTema escuro atual: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Por favor, note que seguir o tema do sistema pode não funcionar corretamente nas versões do Android inferiores ao Q</string>
     <string name="settings_main_use_installerx">Modo Pro</string>
     <string name="settings_main_use_installerx_summary">Habilitar o modo Pro do instalador permite você selecionar partes para instalar a partir de um arquivo .apks (ou outros arquivos com vários arquivos APK). Por favor, note que o modo Pro é experimental e que pode não funcionar corretamente, feedbacks são bem-vindos</string>
@@ -296,7 +296,7 @@
     <string name="installerx_notice_no_code_for_feature">Existem algumas partes da configuração da arquitetura para o recurso \"%s\", mas nenhuma delas é suportada pelo seu dispositivo</string>
     <string name="installerx_notice_no_locale_for_base">Nenhuma das configurações de localidade divididas para o APK base corresponde aos seus idiomas</string>
     <string name="installerx_notice_no_locale_for_feature">Nenhuma parte da configuração de código de idioma dividida para o recurso \"%s\" corresponde aos seus idiomas</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
+    <string name="installerx_notice_huge_app">Este app é enorme (>150MB). Com apps enormes há uma chance (quanto maior o tamanho do app, maior a chance) de que a instalação trave, mas o app ainda ocupará espaço de armazenamento que você não conseguirá recuperar sem usar root ou fazer um reset de fábrica</string>
     <string name="installerx_android_uri_host_file_too_big">O arquivo é muito grande para copiar e seu sistema não suporta a leitura de arquivos SAF sem copiar</string>
     <string name="installerx_thank_you_scoped_storage_very_cool">No Android 11 e no BAI requer permissão de armazenamento para ler diretamente os arquivos selecionados através do selecionador de arquivos devido ao escopo de implementação do armazenamento fazendo 0 sentido. Você pode recusar a permissão de armazenamento, mas então o BAI terá de copiar os arquivos selecionados para analisá-los, o BAI não copiará e analisará arquivos grandes.</string>
     <string name="theme_sai">BAI</string>
@@ -320,4 +320,12 @@
     <string name="about_translate">Ajuda para traduzir BAI</string>
     <string name="about_privacy">Política de Privacidade</string>
     <string name="about_eula">Contrato de licença de usuário final</string>
+
+    <string name="apply">Aplicar</string>
+    <string name="settings_category_main_languages">Idiomas</string>
+    <string name="settings_main_app_language">Idioma do app</string>
+    <string name="eula_load_error">Falha ao carregar o contrato de licença.</string>
+    <string name="settings_main_root_unavailable">O acesso root não está disponível neste dispositivo.</string>
+    <string name="settings_main_shizuku_unavailable">O Shizuku não está disponível ou a permissão não foi concedida.</string>
+
 </resources>

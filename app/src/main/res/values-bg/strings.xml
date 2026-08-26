@@ -155,7 +155,7 @@ BAI (Bundle APKs Installer) е инсталатор на приложения, �
     <string name="backup_filter_common_option_doesnt_matter">Без значение</string>
     <string name="backup_filter_common_option_yes">Да</string>
     <string name="backup_filter_common_option_no">не</string>
-    <string name="backup_filter_split_apk">Split APK</string>
+    <string name="backup_filter_split_apk">Разделен APK</string>
     <string name="backup_filter_system_app">Системно приложение</string>
     <string name="backup_filter_sort">Сортирай</string>
     <string name="backup_filter_sort_option_name">Име</string>
@@ -167,7 +167,7 @@ BAI (Bundle APKs Installer) е инсталатор на приложения, �
     <string name="backup_filter_backup_status_option_higher_version">По-висока версия</string>
     <string name="backup_filter_backup_status_option_lower_version">По-ниска версия</string>
     <string name="backup_filter_backup_status_option_app_not_installed">Не е инсталиран</string>
-    <string name="backup_app_feature_split">Split APK</string>
+    <string name="backup_app_feature_split">Разделен APK</string>
     <string name="backup_app_feature_system_app">Система приложение</string>
     <string name="backup_app_feature_install_date">Инсталирана: %s</string>
     <string name="backup_app_feature_update_date">Обновено: %s</string>
@@ -245,7 +245,7 @@ BAI (Bundle APKs Installer) е инсталатор на приложения, �
     <string name="settings_main_ui_theme">Тема</string>    <string name="settings_main_auto_theme">Автоматична тема</string>
     <string name="settings_main_auto_theme_summary">Автоматично превключване между избрани светла и тъмна теми в зависимост от тема на системата</string>
     <string name="settings_main_auto_theme_picker">Изберете теми</string>
-    <string name="settings_main_auto_theme_picker_summary">Текуща светла тема: %s\nТекуща тъмна тема: %s</string>
+    <string name="settings_main_auto_theme_picker_summary">Текуща светла тема: %1$s\nТекуща тъмна тема: %2$s</string>
     <string name="settings_main_auto_theme_pre_q_warning">Имайте предвид, че следвайки темата на системата може да не работи правилно на версии на Android по-ниски от Q</string>
     <string name="settings_main_use_installerx">Pro режим</string>
     <string name="settings_main_use_installerx_summary">Активирайте инсталационния Pro режим, който ви позволява да изберете части, които да инсталирате от .apks файл (или други архиви с множество APK файлове). Моля, обърнете внимание, че Pro режимът е експериментален и може да не работи правилно, обратната връзка е очаквана</string>
@@ -314,7 +314,7 @@ BAI (Bundle APKs Installer) е инсталатор на приложения, �
     <string name="installerx_notice_no_code_for_feature">Има някои архитектурни конфигурации в разделените части за функция \"%s\", но никой от тях не се поддържа от вашето устройство</string>
     <string name="installerx_notice_no_locale_for_base">Нито една от езиковите настройки не е разделена на части за базов APK файл, съответстващ на езиците Ви</string>
     <string name="installerx_notice_no_locale_for_feature">Никоя от регионалните конфигурации не е разделена на части за функция \"%s\" с вашите езици</string>
-    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
+    <string name="installerx_notice_huge_app">Това приложение е огромно (>150MB). При огромни приложения има вероятност (колкото по-голямо е приложението, толкова по-голяма) инсталацията да засече, но приложението пак ще заема място за съхранение, което няма да можете да освободите без root или чрез възстановяване на фабричните настройки</string>
     <string name="installerx_android_uri_host_file_too_big">Файлът е твърде голям за копиране и вашата система не поддържа четене на SAF файлове без копиране</string>
     <string name="installerx_thank_you_scoped_storage_very_cool">На Android 11 и по-нови, BAI изисква разрешение за съхранение за директно четени файлове, избрани чрез системния файлпикер. Може да откажете разрешение за съхранение, но тогава BAI ще трябва да анализира фйловете за копиране, BAI няма да копира и анализира големи файлове.</string>
     <string name="theme_sai">BAI</string>
@@ -338,4 +338,12 @@ BAI (Bundle APKs Installer) е инсталатор на приложения, �
     <string name="about_translate">Помогнете с превода на BAI</string>
     <string name="about_privacy">Политика за поверителност</string>
     <string name="about_eula">Лицензионно споразумение с краен потребител</string>
+
+    <string name="apply">Приложи</string>
+    <string name="settings_category_main_languages">Езици</string>
+    <string name="settings_main_app_language">Език на приложението</string>
+    <string name="eula_load_error">Неуспешно зареждане на лицензионното споразумение.</string>
+    <string name="settings_main_root_unavailable">Root достъпът не е наличен на това устройство.</string>
+    <string name="settings_main_shizuku_unavailable">Shizuku не е наличен или не е предоставено разрешение.</string>
+
 </resources>
