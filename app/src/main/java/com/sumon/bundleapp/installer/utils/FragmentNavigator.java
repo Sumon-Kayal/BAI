@@ -15,9 +15,9 @@ import androidx.fragment.app.FragmentTransaction;
  */
 public class FragmentNavigator {
 
-    private FragmentManager mFragmentManager;
-    private int mContainerId;
-    private FragmentFactory mFragmentFactory;
+    private final FragmentManager mFragmentManager;
+    private final int mContainerId;
+    private final FragmentFactory mFragmentFactory;
 
     private Fragment mCurrentFragment;
 

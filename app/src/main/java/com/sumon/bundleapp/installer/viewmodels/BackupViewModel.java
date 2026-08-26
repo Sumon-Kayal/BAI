@@ -39,24 +39,24 @@ import java.util.List;
 public class BackupViewModel extends AndroidViewModel {
     private static final String TAG = "BackupVM";
 
-    private SharedPreferences mFilterPrefs;
+    private final SharedPreferences mFilterPrefs;
 
-    private BackupManager mBackupManager;
-    private Observer<List<BackupApp>> mBackupRepoPackagesObserver;
+    private final BackupManager mBackupManager;
+    private final Observer<List<BackupApp>> mBackupRepoPackagesObserver;
 
     private ComplexFilterConfig mComplexFilterConfig;
     private final BackupCustomFilterFactory mFilterFactory = new BackupCustomFilterFactory();
 
     private String mCurrentSearchQuery = "";
 
-    private MutableLiveData<List<BackupApp>> mPackagesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<BackupApp>> mPackagesLiveData = new MutableLiveData<>();
 
-    private MutableLiveData<BackupPackagesFilterConfig> mBackupFilterConfig = new MutableLiveData<>();
+    private final MutableLiveData<BackupPackagesFilterConfig> mBackupFilterConfig = new MutableLiveData<>();
 
     private final SimpleKeyStorage<String> mKeyStorage = new SimpleKeyStorage<>();
     private final Selection<String> mSelection = new Selection<>(mKeyStorage);
 
-    private LiveFilterApplier<BackupApp> mLiveFilterApplier = new LiveFilterApplier<>();
+    private final LiveFilterApplier<BackupApp> mLiveFilterApplier = new LiveFilterApplier<>();
     private final Observer<List<BackupApp>> mLiveFilterObserver = (apps) -> {
         mPackagesLiveData.setValue(apps);
 
@@ -176,7 +176,7 @@ public class BackupViewModel extends AndroidViewModel {
 
     private static class SearchFilter implements CustomFilter<BackupApp> {
 
-        private String mQuery;
+        private final String mQuery;
 
         SearchFilter(String query) {
             mQuery = query;

@@ -12,9 +12,9 @@ import com.sumon.bundleapp.installer.backup2.impl.local.LocalBackupStorageProvid
 
 public class LocalBackupStorageSetupViewModel extends AndroidViewModel implements LocalBackupStorageProvider.OnConfigChangeListener {
 
-    private LocalBackupStorageProvider mProvider;
+    private final LocalBackupStorageProvider mProvider;
 
-    private MutableLiveData<Uri> mBackupDirUriLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Uri> mBackupDirUriLiveData = new MutableLiveData<>();
 
     public LocalBackupStorageSetupViewModel(@NonNull Application application) {
         super(application);

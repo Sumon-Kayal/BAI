@@ -32,12 +32,12 @@ public class DaoBackedBackupIndex implements BackupIndex {
 
     private static DaoBackedBackupIndex sInstance;
 
-    private Context mContext;
-    private AppDatabase mAppDb;
+    private final Context mContext;
+    private final AppDatabase mAppDb;
 
-    private BackupDao mDao;
+    private final BackupDao mDao;
 
-    private Set<File> mVacuumImmuneFiles = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<File> mVacuumImmuneFiles = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public static synchronized DaoBackedBackupIndex getInstance(Context context) {
         return sInstance != null ? sInstance : new DaoBackedBackupIndex(context);

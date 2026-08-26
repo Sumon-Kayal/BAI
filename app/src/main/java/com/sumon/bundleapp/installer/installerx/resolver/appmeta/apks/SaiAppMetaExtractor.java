@@ -23,7 +23,7 @@ import java.io.OutputStream;
 public class SaiAppMetaExtractor implements AppMetaExtractor {
     private static final String TAG = "SaiMetaExtractor";
 
-    private Context mContext;
+    private final Context mContext;
 
     public SaiAppMetaExtractor(Context context) {
         mContext = context.getApplicationContext();

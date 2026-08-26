@@ -28,8 +28,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:tint="?attr/colorAccent"
-                    app:srcCompat="@drawable/logo" />
+                    app:srcCompat="@drawable/logo"
+                    app:tint="?attr/colorAccent" />
 
                 <TextView
                     android:id="@+id/tv_about_app"

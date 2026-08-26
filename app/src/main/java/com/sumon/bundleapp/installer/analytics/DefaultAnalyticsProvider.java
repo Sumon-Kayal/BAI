@@ -6,7 +6,7 @@ public class DefaultAnalyticsProvider implements AnalyticsProvider {
 
     private static DefaultAnalyticsProvider sInstance;
 
-    private Context mContext;
+    private final Context mContext;
 
     public static synchronized DefaultAnalyticsProvider getInstance(Context context) {
         return sInstance != null ? sInstance : new DefaultAnalyticsProvider(context);

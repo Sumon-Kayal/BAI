@@ -21,9 +21,9 @@ public class MiEntryViewModel extends AndroidViewModel {
     private ScheduledFuture mTimerScheduledFuture;
 
     private int mCountdown = CONTINUE_DELAY_SECONDS;
-    private MutableLiveData<Integer> mCountdownLiveData = new MutableLiveData<>(CONTINUE_DELAY_SECONDS);
+    private final MutableLiveData<Integer> mCountdownLiveData = new MutableLiveData<>(CONTINUE_DELAY_SECONDS);
 
-    private AtomicBoolean mPaused = new AtomicBoolean(false);
+    private final AtomicBoolean mPaused = new AtomicBoolean(false);
 
     public MiEntryViewModel(@NonNull Application application) {
         super(application);

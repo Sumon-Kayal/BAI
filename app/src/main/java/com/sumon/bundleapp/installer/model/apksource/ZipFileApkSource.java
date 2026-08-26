@@ -24,8 +24,8 @@ import java.util.zip.ZipFile;
  */
 public class ZipFileApkSource implements ZipBackedApkSource {
 
-    private Context mContext;
-    private FileDescriptor mZipFileDescriptor;
+    private final Context mContext;
+    private final FileDescriptor mZipFileDescriptor;
 
     private File mTempFile;
     private ZipFile mZipFile;

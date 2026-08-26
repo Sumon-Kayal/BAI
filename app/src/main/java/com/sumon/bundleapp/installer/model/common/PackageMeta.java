@@ -74,7 +74,7 @@ public class PackageMeta implements Parcelable {
     }
 
     public static class Builder {
-        private PackageMeta mPackageMeta;
+        private final PackageMeta mPackageMeta;
 
         public Builder(String packageName) {
             mPackageMeta = new PackageMeta(packageName, "?");

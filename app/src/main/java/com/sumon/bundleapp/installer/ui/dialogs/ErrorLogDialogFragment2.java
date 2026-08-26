@@ -58,7 +58,7 @@ public class ErrorLogDialogFragment2 extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(mTitle)
                 .setMessage(mDisplayFullError ? mFullError : mErrorMessage)
                 .setPositiveButton(R.string.ok, null);

@@ -33,8 +33,8 @@ public class SplitApkSourceMetaAdapter extends SelectableAdapter<String, SplitAp
     public static final int VH_TYPE_CATEGORY = 2;
     public static final int VH_TYPE_SPLIT_PART = 3;
 
-    private Context mContext;
-    private LayoutInflater mInflater;
+    private final Context mContext;
+    private final LayoutInflater mInflater;
 
     private SplitApkSourceMeta mMeta;
     private List<Object> mFlattenedData;
@@ -167,9 +167,9 @@ public class SplitApkSourceMetaAdapter extends SelectableAdapter<String, SplitAp
 
     protected class HeaderViewHolder extends BaseViewHolder<SplitApkSourceMeta> {
 
-        private ImageView mAppIcon;
-        private TextView mAppTitle;
-        private TextView mAppVersion;
+        private final ImageView mAppIcon;
+        private final TextView mAppTitle;
+        private final TextView mAppVersion;
 
         public HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -209,7 +209,7 @@ public class SplitApkSourceMetaAdapter extends SelectableAdapter<String, SplitAp
 
     protected class NoticeViewHolder extends BaseViewHolder<Notice> {
 
-        private TextView mNoticeText;
+        private final TextView mNoticeText;
 
         private NoticeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -230,8 +230,8 @@ public class SplitApkSourceMetaAdapter extends SelectableAdapter<String, SplitAp
 
     protected class SplitCategoryViewHolder extends BaseViewHolder<SplitCategory> {
 
-        private TextView mTitle;
-        private TextView mDesc;
+        private final TextView mTitle;
+        private final TextView mDesc;
 
         private SplitCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -256,10 +256,10 @@ public class SplitApkSourceMetaAdapter extends SelectableAdapter<String, SplitAp
 
     protected class SplitPartViewHolder extends BaseViewHolder<SplitPart> {
 
-        private TextView mName;
-        private TextView mDescription;
+        private final TextView mName;
+        private final TextView mDescription;
 
-        private CheckBox mCheck;
+        private final CheckBox mCheck;
 
         private SplitPartViewHolder(@NonNull View itemView) {
             super(itemView);

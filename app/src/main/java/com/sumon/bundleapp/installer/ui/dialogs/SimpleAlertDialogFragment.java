@@ -52,7 +52,7 @@ public class SimpleAlertDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext())).setTitle(mTitle).setMessage(mMessage).setPositiveButton(R.string.ok, null).create();
+        return new MaterialAlertDialogBuilder(requireContext()).setTitle(mTitle).setMessage(mMessage).setPositiveButton(R.string.ok, null).create();
     }
 
     @Override

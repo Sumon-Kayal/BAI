@@ -56,17 +56,17 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
 
     private NotificationHelper mNotificationHelper;
 
-    private Map<String, BackupTaskInfo> mTasks = new ConcurrentHashMap<>();
-    private Map<String, BatchBackupTaskInfo> mBatchTasks = new ConcurrentHashMap<>();
+    private final Map<String, BackupTaskInfo> mTasks = new ConcurrentHashMap<>();
+    private final Map<String, BatchBackupTaskInfo> mBatchTasks = new ConcurrentHashMap<>();
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private HandlerThread mProgressHandlerThread;
     private Handler mProgressHandler;
 
     private BackupManager mBackupManager;
 
-    private Map<String, AtomicInteger> mStorageDependencies = new HashMap<>();
+    private final Map<String, AtomicInteger> mStorageDependencies = new HashMap<>();
 
     public static void enqueueBackup(Context c, String storageId, String taskToken) {
         Intent intent = new Intent(c, BackupService2.class);
@@ -139,8 +139,7 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
         if (config == null)
             return;
 
-        if (config instanceof SingleBackupTaskConfig) {
-            SingleBackupTaskConfig taskConfig = (SingleBackupTaskConfig) config;
+        if (config instanceof SingleBackupTaskConfig taskConfig) {
             mTasks.put(taskToken, new BackupTaskInfo(config.getBackupStorageId(), taskConfig.packageMeta(), taskToken, taskToken));
         } else if (config instanceof BatchBackupTaskConfig) {
             mBatchTasks.put(taskToken, new BatchBackupTaskInfo(config.getBackupStorageId(), taskToken, taskToken));
