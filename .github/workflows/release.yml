@@ -1,23 +1,23 @@
 name: "Release"
-
+ 
 on:
   push:
     tags:
       - "v*.*.*"
   workflow_dispatch:
-
+ 
 permissions:
   contents: write
-
+ 
 jobs:
   build-and-release:
     name: Build APKs and publish GitHub Release
     runs-on: ubuntu-latest
-
+ 
     steps:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
+ 
       - name: Set up JDK 17
         uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
         with:
@@ -25,7 +25,7 @@ jobs:
           java-version: '17'
           cache: 'gradle'
           verify-signature: true
-
+ 
       # Only runs when the BAI_KEYSTORE_BASE64 secret is set. Without it, the
       # build still produces unsigned app-<abi>-release-unsigned.apk files
       # (see below), so the workflow doesn't hard-fail just because signing
@@ -46,26 +46,33 @@ jobs:
           keyAlias=$BAI_KEY_ALIAS
           keyPassword=$BAI_KEY_PASSWORD
           EOF
-
+ 
       - name: Build release APKs
         run: |
           chmod +x ./gradlew
           ./gradlew assembleRelease --stacktrace --no-daemon
-
+ 
       # ABI splits produce one APK per architecture (armeabi-v7a, arm64-v8a,
       # x86, x86_64) instead of a single universal one - collect and rename
       # all of them.
       - name: Locate and rename APKs
         id: apk
+        env:
+          RELEASE_REF: ${{ github.ref_name }}
         run: |
           mkdir -p dist
           shopt -s nullglob
+          SAFE_RELEASE_REF=${RELEASE_REF//[^A-Za-z0-9._-]/-}
+          if [[ -z "$SAFE_RELEASE_REF" ]]; then
+            echo "The release ref does not contain a valid filename component" >&2
+            exit 1
+          fi
           for APK_PATH in app/build/outputs/apk/release/*.apk; do
             ABI=$(basename "$APK_PATH" .apk | sed -E 's/^app-//; s/-release(-unsigned)?$//')
-            cp "$APK_PATH" "dist/BAI-${{ github.ref_name }}-${ABI}.apk"
+            cp "$APK_PATH" "dist/BAI-${SAFE_RELEASE_REF}-${ABI}.apk"
           done
           echo "dir=dist" >> "$GITHUB_OUTPUT"
-
+ 
       # NOTE: not SHA-pinned - could not confirm the full commit hash for the
       # latest release via search in a prior session. Verify and pin this
       # yourself once you can browse the repo directly.
