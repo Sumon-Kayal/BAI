@@ -24,27 +24,33 @@ jobs:
           cache: 'gradle'
           verify-signature: true
 
-      - name: Build debug APK
+      - name: Build debug APKs
         run: |
           chmod +x ./gradlew
           ./gradlew assembleDebug --stacktrace --no-daemon
 
-      - name: Locate APK
+      # ABI splits produce one APK per architecture (armeabi-v7a, arm64-v8a,
+      # x86, x86_64) instead of a single universal one - collect and rename
+      # all of them.
+      - name: Locate and rename APKs
         id: apk
         run: |
-          APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
-          echo "path=$APK_PATH" >> "$GITHUB_OUTPUT"
-          echo "name=BAI-debug-${GITHUB_SHA::7}.apk" >> "$GITHUB_OUTPUT"
-
-      - name: Rename APK
-        run: cp "${{ steps.apk.outputs.path }}" "${{ steps.apk.outputs.name }}"
+          mkdir -p dist
+          shopt -s nullglob
+          SHORT_SHA="${GITHUB_SHA::7}"
+          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          for APK_PATH in app/build/outputs/apk/debug/*.apk; do
+            ABI=$(basename "$APK_PATH" .apk | sed -E 's/^app-//; s/-debug$//')
+            cp "$APK_PATH" "dist/BAI-debug-${SHORT_SHA}-${ABI}.apk"
+          done
+          echo "dir=dist" >> "$GITHUB_OUTPUT"
 
       # Uploads to the Actions run itself - always works, no extra setup.
       - name: Upload as workflow artifact
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
-          name: ${{ steps.apk.outputs.name }}
-          path: ${{ steps.apk.outputs.name }}
+          name: BAI-debug-${{ steps.apk.outputs.short_sha }}
+          path: ${{ steps.apk.outputs.dir }}/*.apk
           retention-days: 14
 
       # Debug builds are auto-signed with the built-in Android debug keystore,
@@ -57,7 +63,7 @@ jobs:
         with:
           tag_name: debug-latest
           name: "Debug build (${{ github.ref_name }} @ ${{ github.sha }})"
-          files: ${{ steps.apk.outputs.name }}
+          files: ${{ steps.apk.outputs.dir }}/*.apk
           prerelease: true
           generate_release_notes: false
           fail_on_unmatched_files: true

@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build-and-release:
-    name: Build APK and publish GitHub Release
+    name: Build APKs and publish GitHub Release
     runs-on: ubuntu-latest
 
     steps:
@@ -27,8 +27,9 @@ jobs:
           verify-signature: true
 
       # Only runs when the BAI_KEYSTORE_BASE64 secret is set. Without it, the
-      # build still produces an unsigned app-release-unsigned.apk (see below),
-      # so the workflow doesn't hard-fail just because signing isn't set up yet.
+      # build still produces unsigned app-<abi>-release-unsigned.apk files
+      # (see below), so the workflow doesn't hard-fail just because signing
+      # isn't set up yet.
       - name: Decode signing keystore
         if: ${{ env.HAS_KEYSTORE == 'true' }}
         env:
@@ -46,20 +47,24 @@ jobs:
           keyPassword=$BAI_KEY_PASSWORD
           EOF
 
-      - name: Build release APK
+      - name: Build release APKs
         run: |
           chmod +x ./gradlew
           ./gradlew assembleRelease --stacktrace --no-daemon
 
-      - name: Locate APK
+      # ABI splits produce one APK per architecture (armeabi-v7a, arm64-v8a,
+      # x86, x86_64) instead of a single universal one - collect and rename
+      # all of them.
+      - name: Locate and rename APKs
         id: apk
         run: |
-          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
-          echo "path=$APK_PATH" >> "$GITHUB_OUTPUT"
-          echo "name=BAI-${{ github.ref_name }}.apk" >> "$GITHUB_OUTPUT"
-
-      - name: Rename APK for release
-        run: cp "${{ steps.apk.outputs.path }}" "${{ steps.apk.outputs.name }}"
+          mkdir -p dist
+          shopt -s nullglob
+          for APK_PATH in app/build/outputs/apk/release/*.apk; do
+            ABI=$(basename "$APK_PATH" .apk | sed -E 's/^app-//; s/-release(-unsigned)?$//')
+            cp "$APK_PATH" "dist/BAI-${{ github.ref_name }}-${ABI}.apk"
+          done
+          echo "dir=dist" >> "$GITHUB_OUTPUT"
 
       # NOTE: not SHA-pinned - could not confirm the full commit hash for the
       # latest release via search in a prior session. Verify and pin this
@@ -67,6 +72,6 @@ jobs:
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          files: ${{ steps.apk.outputs.name }}
+          files: ${{ steps.apk.outputs.dir }}/*.apk
           generate_release_notes: true
           fail_on_unmatched_files: true
