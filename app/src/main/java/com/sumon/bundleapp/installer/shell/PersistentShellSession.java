@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 class PersistentShellSession {
 
     /** Echoed after every command to mark where its output ends and carry the exit code. */
-    private static final String MARKER = "__SAI_CMD_DONE__";
+    private static final String MARKER = "__BAI_CMD_DONE__";
 
     private final String mTag;
     private final ProcessFactory mProcessFactory;
