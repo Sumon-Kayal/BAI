@@ -140,13 +140,13 @@ cd BAI
 chmod +x gradlew
 ```
 
-1. Build a release APK:
+1. Build a release APKs:
 
 ```bash
 ./gradlew assembleRelease
 ```
 
-1. Or build a debug APK:
+1. Or build a debug APKs:
 
 ```bash
 ./gradlew assembleDebug
