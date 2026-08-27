@@ -75,7 +75,7 @@ android {
 /*
  * Room schema export configuration.
  *
- * Room 2.7.2 exports database schemas during compilation.
+ * Room 2.8.4 exports database schemas during compilation.
  * The generated JSON files are written to app/schemas/.
  */
 room {
@@ -112,7 +112,7 @@ dependencies {
     implementation libs.shimmer
 
     // Room
-    def room_version = "2.7.2"
+    def room_version = "2.8.4"
     implementation libs.room.runtime
     annotationProcessor libs.room.compiler
 
