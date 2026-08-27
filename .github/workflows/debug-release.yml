@@ -29,9 +29,6 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleDebug --stacktrace --no-daemon
 
-      # ABI splits produce one APK per architecture (armeabi-v7a, arm64-v8a,
-      # x86, x86_64) instead of a single universal one - collect and rename
-      # all of them.
       - name: Locate and rename APKs
         id: apk
         run: |
@@ -52,12 +49,7 @@ jobs:
           name: BAI-debug-${{ steps.apk.outputs.short_sha }}
           path: ${{ steps.apk.outputs.dir }}/*.apk
           retention-days: 14
-
-      # Debug builds are auto-signed with the built-in Android debug keystore,
-      # so this is installable right away without any signing secrets - good
-      # for quick test installs, not for public distribution (see release.yml
-      # for the properly-signed path). Publishes to a single rolling
-      # "debug-latest" pre-release so there's always one stable download link.
+          
       - name: Publish rolling debug pre-release
         uses: softprops/action-gh-release@v3
         with:
