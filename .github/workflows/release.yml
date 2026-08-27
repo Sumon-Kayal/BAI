@@ -26,10 +26,6 @@ jobs:
           cache: 'gradle'
           verify-signature: true
  
-      # Only runs when the BAI_KEYSTORE_BASE64 secret is set. Without it, the
-      # build still produces unsigned app-<abi>-release-unsigned.apk files
-      # (see below), so the workflow doesn't hard-fail just because signing
-      # isn't set up yet.
       - name: Decode signing keystore
         if: ${{ env.HAS_KEYSTORE == 'true' }}
         env:
@@ -52,9 +48,6 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleRelease --stacktrace --no-daemon
  
-      # ABI splits produce one APK per architecture (armeabi-v7a, arm64-v8a,
-      # x86, x86_64) instead of a single universal one - collect and rename
-      # all of them.
       - name: Locate and rename APKs
         id: apk
         env:
@@ -69,6 +62,17 @@ jobs:
           fi
           for APK_PATH in app/build/outputs/apk/release/*.apk; do
             ABI=$(basename "$APK_PATH" .apk | sed -E 's/^app-//; s/-release(-unsigned)?$//')
+            cp "$APK_PATH" "dist/BAI-${SAFE_RELEASE_REF}-${ABI}.apk"
+          done
+          echo "dir=dist" >> "$GITHUB_OUTPUT"
+ 
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: ${{ steps.apk.outputs.dir }}/*.apk
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+ame "$APK_PATH" .apk | sed -E 's/^app-//; s/-release(-unsigned)?$//')
             cp "$APK_PATH" "dist/BAI-${SAFE_RELEASE_REF}-${ABI}.apk"
           done
           echo "dir=dist" >> "$GITHUB_OUTPUT"
