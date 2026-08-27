@@ -26,7 +26,7 @@ jobs:
       matrix:
         include:
           - language: java
-            build-mode: none
+            build-mode: manual
 
     steps:
       - name: Checkout repository
@@ -45,6 +45,12 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
+          queries: security-extended
+
+      - name: Build (Gradle)
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
