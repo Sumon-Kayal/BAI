@@ -8,6 +8,7 @@ and this project follows [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### 4.6.0 (pending release)
+
 #### Added
 
 - Added BAI's independent application identity and packaging.
