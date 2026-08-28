@@ -63,8 +63,6 @@ It can install multiple APKs as a single application package and provides severa
 - Light and dark themes.
 - Android TV/Leanback launcher support.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Installation Methods
 
 BAI can use different installation backends depending on the device and configuration:
@@ -74,8 +72,6 @@ BAI can use different installation backends depending on the device and configur
 - **Root/shell:** Available on devices where the required shell/root access is present.
 
 The available method can vary by Android version, ROM, device configuration, and installed services.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Supported Android Versions
 
@@ -96,8 +92,6 @@ x86_64
 
 There is no universal APK in the CI builds.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## State of BAI
 
 BAI is a maintained fork of [SAI (Split APKs Installer)](https://github.com/Aefyr/SAI). Development on upstream SAI has slowed considerably, with its author indicating that future updates there will likely be limited to occasional bug fixes — BAI continues active development on top of that codebase.
@@ -105,8 +99,6 @@ BAI is a maintained fork of [SAI (Split APKs Installer)](https://github.com/Aefy
 BAI uses SAI's installer and backup code as its foundation while carrying its own package name, build system, translations, UI changes, and maintenance work.
 
 If you are looking for a dedicated Android backup solution rather than an installer, the original SAI project recommends applications such as [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) and [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## What's Different From Upstream SAI
 
@@ -120,8 +112,6 @@ If you are looking for a dedicated Android backup solution rather than an instal
 - **Vendored dependencies:** `flexfilter` and `pseudoapksigner` are included in the source tree instead of being fetched from JitPack.
 - **CI security scanning:** CodeQL runs through `.github/workflows/codeql.yml`.
 - **ABI-specific releases:** CI produces separate APKs for `armeabi-v7a`, `arm64-v8a`, `x86`, and `x86_64`.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Download
 
@@ -160,8 +150,6 @@ Debug APKs are:
 - published to the rolling `debug-latest` GitHub pre-release.
 
 Debug builds are intended for testing and development rather than normal public distribution.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Building From Source
 
@@ -264,8 +252,6 @@ x86_64
 
 The exact APK filenames may vary depending on the Gradle configuration. Check the corresponding `app/build/outputs/apk/` directory after the build.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Release CI
 
 The repository contains separate workflows for different build and maintenance tasks:
@@ -281,8 +267,6 @@ The repository contains separate workflows for different build and maintenance t
 The release and debug workflows must be started manually in GitHub Actions. For
 a release build, provide the existing version tag to build in the `release_tag`
 input; the debug workflow builds the selected branch or ref.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Translations
 
@@ -315,8 +299,6 @@ BAI includes a per-app language selector and currently ships resources for 20 la
 </details>
 
 Translations are maintained through the project's translation workflow. Please see the contribution documentation before editing translated resources manually.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Exported `.apks` Metadata
 
