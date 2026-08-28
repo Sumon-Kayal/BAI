@@ -27,7 +27,7 @@ BAI 4.6.0 is based on SAI `master` (versionCode 60, versionName "4.5") and estab
 
 ### Changed
 
-- **Identity**: `applicationId`/`namespace` `com.aefyr.sai` → `com.sumon.bundleapp.installer`; app name "SAI" → "BAI", full name "Split APKs Installer" → "Bundle APKs Installer". Every in-app string mentioning "SAI" was updated to "BAI" across **all 20 translated languages**, not just English.
+- **Identity**: `applicationId`/`namespace` `com.aefyr.sai` → `com.sumon.bundleapp.installer`; app name "SAI" → "BAI", full name "Split APKs Installer" → "Bundle APKs Installer". All user-facing branding strings were updated from "SAI" to "BAI" across **all 20 translated languages**; attribution text retains "SAI" to credit the upstream project.
 - **Source layout**: 238 of the app's 251 Java files moved from `com/aefyr/sai/*` to `com/sumon/bundleapp/installer/*`; the two vendored libraries kept their original `com.aefyr.*` packages (see **Removed**).
 - **Attribution**: About screen now reads "Maintained by Sumon Kayal / Forked from SAI by polychromaticfox"; source link now points to `github.com/Sumon-Kayal/BAI`; translation link now points to a GitHub branch instead of Crowdin.
 - SAI's two Google Play/F-Droid product flavors (`normal`, `fdroid`) collapsed into a single unified build target.
