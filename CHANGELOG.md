@@ -50,7 +50,7 @@ BAI 4.6.0 is based on SAI `master` (versionCode 60, versionName "4.5") and estab
 
 ### Fixed
 
-- Added `android:exported="true"` to `MainActivity` and `ApkActionViewProxyActivity` — required on Android 12+ for components with intent filters; without it they fail to launch.
+- Added `android:exported="true"` to `MainActivity` and `ApkActionViewProxyActivity` — with target SDK 36, omitting it on components with intent filters can cause manifest merging to fail and prevent installation on Android 12+.
 - Added `android:foregroundServiceType="dataSync"` to the backup service plus the matching `FOREGROUND_SERVICE_DATA_SYNC` permission, required from Android 14+.
 - Added the `POST_NOTIFICATIONS` permission — without it, backup-progress notifications silently never appeared on Android 13+.
 - Added the `QUERY_ALL_PACKAGES` permission — without it, the app's core purpose of listing installed apps for backup silently returned almost nothing on Android 11+.
