@@ -31,9 +31,11 @@ public class PermissionsUtils {
     public static final int REQUEST_CODE_NOTIFICATIONS = 4242;
 
     /**
-     * API 33+ made POST_NOTIFICATIONS a runtime permission. Without this,
-     * every notification the app posts (backup progress, etc.) is silently
-     * dropped - no crash, just nothing shown to the user.
+     * Checks whether notification permission is available and requests it when needed.
+     *
+     * @param a the activity used to request notification permission
+     * @return {@code true} if notifications are permitted or the platform does not require runtime notification permission,
+     *         {@code false} otherwise
      */
     public static boolean checkAndRequestNotificationPermission(Activity a) {
         if (Build.VERSION.SDK_INT < 33)
@@ -42,6 +44,12 @@ public class PermissionsUtils {
         return checkAndRequestPermissions(a, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATIONS);
     }
 
+    /**
+     * Checks whether notification permission is granted and requests it when required.
+     *
+     * @param f the fragment requesting notification permission
+     * @return {@code true} if notification permission is granted or the device runs Android below API 33, {@code false} otherwise
+     */
     public static boolean checkAndRequestNotificationPermission(Fragment f) {
         if (Build.VERSION.SDK_INT < 33)
             return true;
@@ -49,6 +57,14 @@ public class PermissionsUtils {
         return checkAndRequestPermissions(f, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATIONS);
     }
 
+    /**
+     * Checks whether all specified permissions are granted and requests them when necessary.
+     *
+     * @param a           the activity used to check and request permissions
+     * @param permissions the permissions to check
+     * @param requestCode the request code for the permission request
+     * @return {@code true} if all permissions are granted or the platform does not require runtime permissions, {@code false} if a request was initiated
+     */
     private static boolean checkAndRequestPermissions(Activity a, String[] permissions, int requestCode) {
         if (Build.VERSION.SDK_INT < 23)
             return true;

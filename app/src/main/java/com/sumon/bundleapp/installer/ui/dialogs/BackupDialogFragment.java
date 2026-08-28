@@ -61,6 +61,9 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
         return inflater.inflate(R.layout.dialog_backup, container, false);
     }
 
+    /**
+     * Configures the backup dialog content and observes backup configuration state.
+     */
     @Override
     protected void onContentViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setTitle(R.string.backup_dialog_title);
@@ -120,6 +123,13 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
         mViewModel.getIsApkExportEnabled().observe(this, apkExportSwitch::setChecked);
     }
 
+    /**
+     * Enqueues the backup when the notification permission request is granted.
+     *
+     * @param requestCode the permission request identifier
+     * @param permissions the permissions included in the result
+     * @param grantResults the grant results for the requested permissions
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -133,6 +143,9 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
         }
     }
 
+    /**
+     * Enqueues the configured backup and closes the dialog.
+     */
     private void enqueueBackup() {
         mViewModel.enqueueBackup();
         dismiss();
