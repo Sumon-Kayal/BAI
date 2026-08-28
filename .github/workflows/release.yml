@@ -1,11 +1,13 @@
 name: "Release"
  
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
- 
+    inputs:
+      release_tag:
+        description: "Git tag to build and publish"
+        required: true
+        type: string
+
 permissions:
   contents: write
  
@@ -16,10 +18,12 @@ jobs:
  
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.release_tag }}
  
       - name: Set up JDK 17
-        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -58,7 +62,7 @@ jobs:
       - name: Locate and rename APKs
         id: apk
         env:
-          RELEASE_REF: ${{ github.ref_name }}
+          RELEASE_REF: ${{ inputs.release_tag }}
         run: |
           mkdir -p dist
           shopt -s nullglob
@@ -73,12 +77,10 @@ jobs:
           done
           echo "dir=dist" >> "$GITHUB_OUTPUT"
  
-      # NOTE: not SHA-pinned - could not confirm the full commit hash for the
-      # latest release via search in a prior session. Verify and pin this
-      # yourself once you can browse the repo directly.
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         with:
+          tag_name: ${{ inputs.release_tag }}
           files: ${{ steps.apk.outputs.dir }}/*.apk
           generate_release_notes: true
           fail_on_unmatched_files: true
