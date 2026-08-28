@@ -2,6 +2,7 @@ package com.sumon.bundleapp.installer.ui.dialogs;
 
 import com.sumon.bundleapp.installer.R;
 
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -124,9 +125,12 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PermissionsUtils.REQUEST_CODE_NOTIFICATIONS
+                && permissions.length > 0
                 && grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                && Manifest.permission.POST_NOTIFICATIONS.equals(permissions[0])
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             enqueueBackup();
+        }
     }
 
     private void enqueueBackup() {
