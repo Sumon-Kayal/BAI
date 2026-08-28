@@ -47,7 +47,7 @@ It can install multiple APKs as a single application package and provides severa
 - [EULA](#eula)
 - [License](#license)
 
-## ✨ Features
+## Features
 
 - Install split APKs and APK bundles as a single application.
 - Install `.apk`, `.apks`, `.apkm`, and supported ZIP-based APK collections.
@@ -65,7 +65,7 @@ It can install multiple APKs as a single application package and provides severa
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## ⚙️ Installation Methods
+## Installation Methods
 
 BAI can use different installation backends depending on the device and configuration:
 
@@ -77,13 +77,13 @@ The available method can vary by Android version, ROM, device configuration, and
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 📱 Supported Android Versions
+## Supported Android Versions
 
 - **Minimum:** Android 6.0 (API 23)
 - **Target:** Android 16 (API 36)
 - **Compile SDK:** Android API 37
 
-## 🏗️ Supported CPU Architectures
+## Supported CPU Architectures
 
 Release and debug builds are generated separately for these ABIs:
 
@@ -98,7 +98,7 @@ There is no universal APK in the CI builds.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🔀 State of BAI
+## State of BAI
 
 BAI is a maintained fork of [SAI (Split APKs Installer)](https://github.com/Aefyr/SAI). Development on upstream SAI has slowed considerably, with its author indicating that future updates there will likely be limited to occasional bug fixes — BAI continues active development on top of that codebase.
 
@@ -108,7 +108,7 @@ If you are looking for a dedicated Android backup solution rather than an instal
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🆚 What's Different From Upstream SAI
+## What's Different From Upstream SAI
 
 - **Separate package name:** `com.sumon.bundleapp.installer`, allowing BAI to coexist with the original SAI.
 - **GitHub Releases distribution:** BAI is distributed from this repository instead of through Google Play or F-Droid.
@@ -123,7 +123,7 @@ If you are looking for a dedicated Android backup solution rather than an instal
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## ⬇️ Download
+## Download
 
 The latest public builds are available from the repository's [GitHub Releases](https://github.com/Sumon-Kayal/BAI/releases/latest).
 
@@ -163,7 +163,7 @@ Debug builds are intended for testing and development rather than normal public 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🛠️ Building From Source
+## Building From Source
 
 ### Requirements
 
@@ -266,7 +266,7 @@ The exact APK filenames may vary depending on the Gradle configuration. Check th
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🔄 Release CI
+## Release CI
 
 The repository contains separate workflows for different build and maintenance tasks:
 
@@ -284,7 +284,7 @@ input; the debug workflow builds the selected branch or ref.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🌐 Translations
+## Translations
 
 BAI includes a per-app language selector and currently ships resources for 20 languages.
 
@@ -318,31 +318,31 @@ Translations are maintained through the project's translation workflow. Please s
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 📦 Exported `.apks` Metadata
+## Exported `.apks` Metadata
 
 BAI adds metadata to `.apks` files it exports.
 
 The format is documented in [META-FORMAT.md](META-FORMAT.md).
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome.
 
 Please read the [Contributing Guide](CONTRIBUTING.md) before opening an issue or pull request.
 
-## 📚 Documentation
+## Documentation
 
 - [Changelog](CHANGELOG.md) — version history and changes for each release.
 - [`.apks` Metadata Format](META-FORMAT.md) — documentation for BAI's exported `.apks` metadata.
 - [Contributing Guide](CONTRIBUTING.md) — contribution and pull request guidelines.
 
-## 📜 EULA
+## EULA
 
 By using Bundle APKs Installer (BAI), you agree to the terms in the [End-User License Agreement](EULA.md).
 
 Please read the EULA before installing or distributing the application.
 
-## 📄 License
+## License
 
 BAI is licensed under the [GNU General Public License v3.0](LICENSE).
 
