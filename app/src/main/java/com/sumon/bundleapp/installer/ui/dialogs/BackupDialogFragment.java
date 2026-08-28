@@ -62,7 +62,7 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
     }
 
     /**
-     * Configures the backup dialog content and observes backup configuration state.
+     * Configures the backup dialog controls and observes backup configuration state.
      */
     @Override
     protected void onContentViewCreated(View view, @Nullable Bundle savedInstanceState) {
