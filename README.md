@@ -350,6 +350,4 @@ BAI is licensed under the [GNU General Public License v3.0](LICENSE).
 
 <div align="center">
 
-Made with ❤️ by <a href="https://github.com/Sumon-Kayal">Sumon Kayal</a>
-
 </div>
