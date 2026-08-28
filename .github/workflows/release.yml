@@ -1,11 +1,8 @@
 name: "Release"
  
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
- 
+
 permissions:
   contents: write
  
@@ -16,10 +13,10 @@ jobs:
  
     steps:
       - name: Checkout repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@v7.0.1 # v7.0.0
  
       - name: Set up JDK 17
-        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+        uses: actions/setup-java@v5.6.0 # v5.5.0
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -73,11 +70,8 @@ jobs:
           done
           echo "dir=dist" >> "$GITHUB_OUTPUT"
  
-      # NOTE: not SHA-pinned - could not confirm the full commit hash for the
-      # latest release via search in a prior session. Verify and pin this
-      # yourself once you can browse the repo directly.
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@v3.0.2
         with:
           files: ${{ steps.apk.outputs.dir }}/*.apk
           generate_release_notes: true
