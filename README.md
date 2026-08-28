@@ -1,20 +1,51 @@
 # Bundle APKs Installer (BAI)
 
-![BAI Banner](assets/BAI%20Banner.png)
+<a name="readme-top"></a>
+
+<div align="center">
+
+<img src="assets/BAI%20Banner.png" alt="BAI Banner">
+
+<p><b>Install and back up split APKs and Android App Bundles — with rootless, root/shell, or Shizuku support.</b></p>
+
+<p>
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License"></a>
+<a href="https://github.com/Sumon-Kayal/BAI/releases/latest"><img src="https://img.shields.io/github/v/release/Sumon-Kayal/BAI" alt="Release"></a>
+<a href="https://github.com/Sumon-Kayal/BAI/releases"><img src="https://img.shields.io/github/downloads/Sumon-Kayal/BAI/total" alt="Downloads"></a>
+<a href="https://github.com/Sumon-Kayal/BAI/releases/latest"><img src="https://img.shields.io/badge/Download-GitHub_Releases-2ea44f?logo=github&logoColor=white" alt="Download"></a>
+</p>
+
+<p>
+<a href="https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml"><img src="https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml/badge.svg" alt="Dead Code Check"></a>
+<a href="https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml"><img src="https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml/badge.svg" alt="CodeQL"></a>
+<a href="https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml"><img src="https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml/badge.svg" alt="Debug Release"></a>
+</p>
+
+</div>
+
+> **Note:** BAI is distributed through this repository's [GitHub Releases](https://github.com/Sumon-Kayal/BAI/releases/latest) — it is not published on Google Play or F-Droid.
 
 **BAI (Bundle APKs Installer)** is an Android application for installing and backing up APK packages, including split APK bundles commonly distributed through Android App Bundles.
 
 It can install multiple APKs as a single application package and provides several installation backends, including the standard Android package installer, root/shell-based installation, and Shizuku where available.
 
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/Sumon-Kayal/BAI)](https://github.com/Sumon-Kayal/BAI/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Sumon-Kayal/BAI/total)](https://github.com/Sumon-Kayal/BAI/releases)
-[![Download](https://img.shields.io/badge/Download-GitHub_Releases-2ea44f?logo=github&logoColor=white)](https://github.com/Sumon-Kayal/BAI/releases/latest)
-[![Dead Code Check](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml)
-[![CodeQL](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml)
-[![Debug Release](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/debug-release.yml)
+## 📋 Table of Contents
 
-> BAI is distributed through this repository's GitHub Releases and is not published on Google Play or F-Droid.
+- [Features](#features)
+- [Installation Methods](#installation-methods)
+- [Supported Android Versions](#supported-android-versions)
+- [Supported CPU Architectures](#supported-cpu-architectures)
+- [State of BAI](#state-of-bai)
+- [What's Different From Upstream SAI](#whats-different-from-upstream-sai)
+- [Download](#download)
+- [Building From Source](#building-from-source)
+- [Release CI](#release-ci)
+- [Translations](#translations)
+- [Exported `.apks` Metadata](#exported-apks-metadata)
+- [Contributing](#contributing)
+- [Documentation](#documentation)
+- [EULA](#eula)
+- [License](#license)
 
 ## Features
 
@@ -32,7 +63,7 @@ It can install multiple APKs as a single application package and provides severa
 - Light and dark themes.
 - Android TV/Leanback launcher support.
 
-## Installation methods
+## Installation Methods
 
 BAI can use different installation backends depending on the device and configuration:
 
@@ -42,13 +73,13 @@ BAI can use different installation backends depending on the device and configur
 
 The available method can vary by Android version, ROM, device configuration, and installed services.
 
-## Supported Android versions
+## Supported Android Versions
 
 - **Minimum:** Android 6.0 (API 23)
 - **Target:** Android 16 (API 36)
 - **Compile SDK:** Android API 37
 
-## Supported CPU architectures
+## Supported CPU Architectures
 
 Release and debug builds are generated separately for these ABIs:
 
@@ -63,13 +94,13 @@ There is no universal APK in the CI builds.
 
 ## State of BAI
 
-BAI is a maintained fork of [SAI (Split APKs Installer)](https://github.com/Aefyr/SAI).
+BAI is a maintained fork of [SAI (Split APKs Installer)](https://github.com/Aefyr/SAI). Development on upstream SAI has slowed considerably, with its author indicating that future updates there will likely be limited to occasional bug fixes — BAI continues active development on top of that codebase.
 
 BAI uses SAI's installer and backup code as its foundation while carrying its own package name, build system, translations, UI changes, and maintenance work.
 
 If you are looking for a dedicated Android backup solution rather than an installer, the original SAI project recommends applications such as [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) and [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
 
-## What's different from upstream SAI
+## What's Different From Upstream SAI
 
 - **Separate package name:** `com.sumon.bundleapp.installer`, allowing BAI to coexist with the original SAI.
 - **GitHub Releases distribution:** BAI is distributed from this repository instead of through Google Play or F-Droid.
@@ -86,11 +117,11 @@ If you are looking for a dedicated Android backup solution rather than an instal
 
 The latest public builds are available from the repository's [GitHub Releases](https://github.com/Sumon-Kayal/BAI/releases/latest).
 
-### Stable releases
+### Stable Releases
 
-Stable releases are created by manually starting the `release.yml` workflow.
-Set the required `release_tag` input to the Git tag to build and publish. The tag
-must match:
+Stable releases are created by manually running the `release.yml` workflow in
+GitHub Actions and providing an existing version tag in the `release_tag` input.
+Version tags use the pattern:
 
 ```text
 v*.*.*
@@ -106,9 +137,10 @@ The release workflow builds the four ABI-specific APKs and publishes them to the
 
 If release signing is configured with the repository's signing secrets, the release APKs are signed with that keystore. Otherwise, the workflow still completes and publishes the generated unsigned release APKs.
 
-### Debug builds
+### Debug Builds
 
-Manually start the `debug-release.yml` workflow to create a debug build.
+Debug builds are created by manually running the `debug-release.yml` workflow
+in GitHub Actions against the selected branch or ref.
 
 Debug APKs are:
 
@@ -119,7 +151,7 @@ Debug APKs are:
 
 Debug builds are intended for testing and development rather than normal public distribution.
 
-## Building from source
+## Building From Source
 
 ### Requirements
 
@@ -130,7 +162,8 @@ Debug builds are intended for testing and development rather than normal public 
 
 The project uses the Gradle Wrapper, so you do not need to install Gradle separately.
 
-### Linux
+<details>
+<summary><b>🐧 Linux</b></summary>
 
 1. Clone the repository:
 
@@ -164,7 +197,10 @@ app/build/outputs/apk/release/
 app/build/outputs/apk/debug/
 ```
 
-### Windows
+</details>
+
+<details>
+<summary><b>🪟 Windows</b></summary>
 
 1. Clone the repository:
 
@@ -192,13 +228,18 @@ app\build\outputs\apk\release\
 app\build\outputs\apk\debug\
 ```
 
-### Android Studio
+</details>
+
+<details>
+<summary><b>🤖 Android Studio</b></summary>
 
 You can also open the cloned repository directly in Android Studio.
 
 Allow Android Studio to sync the Gradle project and install any missing Android SDK components requested by the project. Then use **Build → Make Project** or the Gradle tasks to build the application.
 
-### ABI-specific outputs
+</details>
+
+### ABI-Specific Outputs
 
 Release and debug builds are configured for:
 
@@ -223,13 +264,16 @@ The repository contains separate workflows for different build and maintenance t
 | `Dead code check.yml` | Checks the project for unused/dead code |
 | `stale.yml` | Handles stale GitHub issues/PRs |
 
-Release builds require a manual `release.yml` workflow start. Set the required
-`release_tag` input to a version tag matching `v*.*.*`. Debug builds also require
-a manual `debug-release.yml` workflow start.
+The release and debug workflows must be started manually in GitHub Actions. For
+a release build, provide the existing version tag to build in the `release_tag`
+input; the debug workflow builds the selected branch or ref.
 
 ## Translations
 
-BAI includes a per-app language selector and currently ships resources for:
+BAI includes a per-app language selector and currently ships resources for 20 languages.
+
+<details>
+<summary>Show supported languages</summary>
 
 - Arabic
 - Azerbaijani
@@ -252,9 +296,11 @@ BAI includes a per-app language selector and currently ships resources for:
 - Ukrainian
 - Vietnamese
 
+</details>
+
 Translations are maintained through the project's translation workflow. Please see the contribution documentation before editing translated resources manually.
 
-## Exported `.apks` metadata
+## Exported `.apks` Metadata
 
 BAI adds metadata to `.apks` files it exports.
 
@@ -281,3 +327,9 @@ Please read the EULA before installing or distributing the application.
 ## License
 
 BAI is licensed under the [GNU General Public License v3.0](LICENSE).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<div align="center">
+
+</div>
