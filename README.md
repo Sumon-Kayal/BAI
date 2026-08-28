@@ -1,10 +1,10 @@
+# Bundle APKs Installer (BAI)
+
 <a name="readme-top"></a>
 
 <div align="center">
 
 <img src="assets/BAI%20Banner.png" alt="BAI Banner">
-
-<h1>Bundle APKs Installer (BAI)</h1>
 
 <p><b>Install and back up split APKs and Android App Bundles — with rootless, root/shell, or Shizuku support.</b></p>
 
@@ -47,7 +47,7 @@ It can install multiple APKs as a single application package and provides severa
 - [EULA](#eula)
 - [License](#license)
 
-## ✨ Features
+## Features
 
 - Install split APKs and APK bundles as a single application.
 - Install `.apk`, `.apks`, `.apkm`, and supported ZIP-based APK collections.
@@ -63,9 +63,7 @@ It can install multiple APKs as a single application package and provides severa
 - Light and dark themes.
 - Android TV/Leanback launcher support.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## ⚙️ Installation Methods
+## Installation Methods
 
 BAI can use different installation backends depending on the device and configuration:
 
@@ -75,15 +73,13 @@ BAI can use different installation backends depending on the device and configur
 
 The available method can vary by Android version, ROM, device configuration, and installed services.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 📱 Supported Android Versions
+## Supported Android Versions
 
 - **Minimum:** Android 6.0 (API 23)
 - **Target:** Android 16 (API 36)
 - **Compile SDK:** Android API 37
 
-## 🏗️ Supported CPU Architectures
+## Supported CPU Architectures
 
 Release and debug builds are generated separately for these ABIs:
 
@@ -96,9 +92,7 @@ x86_64
 
 There is no universal APK in the CI builds.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 🔀 State of BAI
+## State of BAI
 
 BAI is a maintained fork of [SAI (Split APKs Installer)](https://github.com/Aefyr/SAI). Development on upstream SAI has slowed considerably, with its author indicating that future updates there will likely be limited to occasional bug fixes — BAI continues active development on top of that codebase.
 
@@ -106,9 +100,7 @@ BAI uses SAI's installer and backup code as its foundation while carrying its ow
 
 If you are looking for a dedicated Android backup solution rather than an installer, the original SAI project recommends applications such as [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) and [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 🆚 What's Different From Upstream SAI
+## What's Different From Upstream SAI
 
 - **Separate package name:** `com.sumon.bundleapp.installer`, allowing BAI to coexist with the original SAI.
 - **GitHub Releases distribution:** BAI is distributed from this repository instead of through Google Play or F-Droid.
@@ -121,15 +113,15 @@ If you are looking for a dedicated Android backup solution rather than an instal
 - **CI security scanning:** CodeQL runs through `.github/workflows/codeql.yml`.
 - **ABI-specific releases:** CI produces separate APKs for `armeabi-v7a`, `arm64-v8a`, `x86`, and `x86_64`.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## ⬇️ Download
+## Download
 
 The latest public builds are available from the repository's [GitHub Releases](https://github.com/Sumon-Kayal/BAI/releases/latest).
 
 ### Stable Releases
 
-Stable releases are created by pushing a tag matching:
+Stable releases are created by manually running the `release.yml` workflow in
+GitHub Actions and providing an existing version tag in the `release_tag` input.
+Version tags use the pattern:
 
 ```text
 v*.*.*
@@ -147,7 +139,8 @@ If release signing is configured with the repository's signing secrets, the rele
 
 ### Debug Builds
 
-Every push can trigger the debug-release workflow.
+Debug builds are created by manually running the `debug-release.yml` workflow
+in GitHub Actions against the selected branch or ref.
 
 Debug APKs are:
 
@@ -158,9 +151,7 @@ Debug APKs are:
 
 Debug builds are intended for testing and development rather than normal public distribution.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 🛠️ Building From Source
+## Building From Source
 
 ### Requirements
 
@@ -261,9 +252,7 @@ x86_64
 
 The exact APK filenames may vary depending on the Gradle configuration. Check the corresponding `app/build/outputs/apk/` directory after the build.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 🔄 Release CI
+## Release CI
 
 The repository contains separate workflows for different build and maintenance tasks:
 
@@ -275,11 +264,11 @@ The repository contains separate workflows for different build and maintenance t
 | `Dead code check.yml` | Checks the project for unused/dead code |
 | `stale.yml` | Handles stale GitHub issues/PRs |
 
-Release builds are triggered automatically by version tags matching `v*.*.*`, and the release workflow can also be started manually.
+The release and debug workflows must be started manually in GitHub Actions. For
+a release build, provide the existing version tag to build in the `release_tag`
+input; the debug workflow builds the selected branch or ref.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 🌐 Translations
+## Translations
 
 BAI includes a per-app language selector and currently ships resources for 20 languages.
 
@@ -311,40 +300,36 @@ BAI includes a per-app language selector and currently ships resources for 20 la
 
 Translations are maintained through the project's translation workflow. Please see the contribution documentation before editing translated resources manually.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 📦 Exported `.apks` Metadata
+## Exported `.apks` Metadata
 
 BAI adds metadata to `.apks` files it exports.
 
 The format is documented in [META-FORMAT.md](META-FORMAT.md).
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome.
 
 Please read the [Contributing Guide](CONTRIBUTING.md) before opening an issue or pull request.
 
-## 📚 Documentation
+## Documentation
 
 - [Changelog](CHANGELOG.md) — version history and changes for each release.
 - [`.apks` Metadata Format](META-FORMAT.md) — documentation for BAI's exported `.apks` metadata.
 - [Contributing Guide](CONTRIBUTING.md) — contribution and pull request guidelines.
 
-## 📜 EULA
+## EULA
 
 By using Bundle APKs Installer (BAI), you agree to the terms in the [End-User License Agreement](EULA.md).
 
 Please read the EULA before installing or distributing the application.
 
-## 📄 License
+## License
 
 BAI is licensed under the [GNU General Public License v3.0](LICENSE).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <div align="center">
-
-Made with ❤️ by <a href="https://github.com/Sumon-Kayal">Sumon Kayal</a>
 
 </div>
