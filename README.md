@@ -85,7 +85,9 @@ The latest public builds are available from the repository's [GitHub Releases](h
 
 ### Stable releases
 
-Stable releases are created by pushing a tag matching:
+Stable releases are created by manually starting the `release.yml` workflow.
+Set the required `release_tag` input to the Git tag to build and publish. The tag
+must match:
 
 ```text
 v*.*.*
@@ -103,7 +105,7 @@ If release signing is configured with the repository's signing secrets, the rele
 
 ### Debug builds
 
-Every push can trigger the debug-release workflow.
+Manually start the `debug-release.yml` workflow to create a debug build.
 
 Debug APKs are:
 
@@ -218,7 +220,9 @@ The repository contains separate workflows for different build and maintenance t
 | `Dead code check.yml` | Checks the project for unused/dead code |
 | `stale.yml` | Handles stale GitHub issues/PRs |
 
-Release builds are triggered automatically by version tags matching `v*.*.*`, and the release workflow can also be started manually.
+Release builds require a manual `release.yml` workflow start. Set the required
+`release_tag` input to a version tag matching `v*.*.*`. Debug builds also require
+a manual `debug-release.yml` workflow start.
 
 ## Translations
 
