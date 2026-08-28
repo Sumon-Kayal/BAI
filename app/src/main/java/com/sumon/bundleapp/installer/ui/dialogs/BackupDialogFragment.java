@@ -2,12 +2,15 @@ package com.sumon.bundleapp.installer.ui.dialogs;
 
 import com.sumon.bundleapp.installer.R;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +20,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.sumon.bundleapp.installer.adapters.BackupSplitPartsAdapter;
 import com.sumon.bundleapp.installer.model.common.PackageMeta;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
+import com.sumon.bundleapp.installer.utils.PermissionsUtils;
 import com.sumon.bundleapp.installer.view.ViewSwitcherLayout;
 import com.sumon.bundleapp.installer.viewmodels.BackupDialogViewModel;
 
@@ -57,6 +61,9 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
         return inflater.inflate(R.layout.dialog_backup, container, false);
     }
 
+    /**
+     * Configures the backup dialog controls and observes backup configuration state.
+     */
     @Override
     protected void onContentViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setTitle(R.string.backup_dialog_title);
@@ -64,8 +71,8 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
         Button enqueueButton = getPositiveButton();
         enqueueButton.setText(R.string.backup_enqueue);
         enqueueButton.setOnClickListener((v) -> {
-            mViewModel.enqueueBackup();
-            dismiss();
+            if (PermissionsUtils.checkAndRequestNotificationPermission(this))
+                enqueueBackup();
         });
 
         Button cancelButton = getNegativeButton();
@@ -114,5 +121,33 @@ public class BackupDialogFragment extends BaseBottomSheetDialogFragment {
             apkExportContainer.setVisibility(available ? View.VISIBLE : View.GONE);
         });
         mViewModel.getIsApkExportEnabled().observe(this, apkExportSwitch::setChecked);
+    }
+
+    /**
+     * Enqueues the backup when the notification permission request is granted.
+     *
+     * @param requestCode the permission request identifier
+     * @param permissions the permissions included in the result
+     * @param grantResults the grant results for the requested permissions
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PermissionsUtils.REQUEST_CODE_NOTIFICATIONS
+                && permissions.length > 0
+                && grantResults.length > 0
+                && Manifest.permission.POST_NOTIFICATIONS.equals(permissions[0])
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            enqueueBackup();
+        }
+    }
+
+    /**
+     * Enqueues the configured backup and closes the dialog.
+     */
+    private void enqueueBackup() {
+        mViewModel.enqueueBackup();
+        dismiss();
     }
 }
