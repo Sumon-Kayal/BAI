@@ -6,7 +6,7 @@ This changelog documents BAI's divergence from the upstream SAI `master` branch,
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project follows [Semantic Versioning](https://semver.org/).
 
-## [4.6.0] - 2026-08-27
+## [4.6.0] - 2026-08-29
 
 BAI 4.6.0 is based on SAI `master` (versionCode 60, versionName "4.5") and establishes BAI as an independently maintained, independently branded fork, modernizes the build for current Android tooling, and removes every Google Play–specific code path.
 
