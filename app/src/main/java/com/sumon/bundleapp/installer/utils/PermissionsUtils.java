@@ -42,6 +42,13 @@ public class PermissionsUtils {
         return checkAndRequestPermissions(a, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATIONS);
     }
 
+    public static boolean checkAndRequestNotificationPermission(Fragment f) {
+        if (Build.VERSION.SDK_INT < 33)
+            return true;
+
+        return checkAndRequestPermissions(f, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATIONS);
+    }
+
     private static boolean checkAndRequestPermissions(Activity a, String[] permissions, int requestCode) {
         if (Build.VERSION.SDK_INT < 23)
             return true;
