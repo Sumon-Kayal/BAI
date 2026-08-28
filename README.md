@@ -1,10 +1,10 @@
+# Bundle APKs Installer (BAI)
+
 <a name="readme-top"></a>
 
 <div align="center">
 
 <img src="assets/BAI%20Banner.png" alt="BAI Banner">
-
-<h1>Bundle APKs Installer (BAI)</h1>
 
 <p><b>Install and back up split APKs and Android App Bundles — with rootless, root/shell, or Shizuku support.</b></p>
 
@@ -129,7 +129,9 @@ The latest public builds are available from the repository's [GitHub Releases](h
 
 ### Stable Releases
 
-Stable releases are created by pushing a tag matching:
+Stable releases are created by manually running the `release.yml` workflow in
+GitHub Actions and providing an existing version tag in the `release_tag` input.
+Version tags use the pattern:
 
 ```text
 v*.*.*
@@ -147,7 +149,8 @@ If release signing is configured with the repository's signing secrets, the rele
 
 ### Debug Builds
 
-Every push can trigger the debug-release workflow.
+Debug builds are created by manually running the `debug-release.yml` workflow
+in GitHub Actions against the selected branch or ref.
 
 Debug APKs are:
 
@@ -275,7 +278,9 @@ The repository contains separate workflows for different build and maintenance t
 | `Dead code check.yml` | Checks the project for unused/dead code |
 | `stale.yml` | Handles stale GitHub issues/PRs |
 
-Release builds are triggered automatically by version tags matching `v*.*.*`, and the release workflow can also be started manually.
+The release and debug workflows must be started manually in GitHub Actions. For
+a release build, provide the existing version tag to build in the `release_tag`
+input; the debug workflow builds the selected branch or ref.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
