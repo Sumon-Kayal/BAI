@@ -6,6 +6,9 @@
 
 It can install multiple APKs as a single application package and provides several installation backends, including the standard Android package installer, root/shell-based installation, and Shizuku where available.
 
+[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Sumon-Kayal/BAI)](https://github.com/Sumon-Kayal/BAI/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Sumon-Kayal/BAI/total)](https://github.com/Sumon-Kayal/BAI/releases)
 [![Download](https://img.shields.io/badge/Download-GitHub_Releases-2ea44f?logo=github&logoColor=white)](https://github.com/Sumon-Kayal/BAI/releases/latest)
 [![Dead Code Check](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/Dead%20code%20check.yml)
 [![CodeQL](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sumon-Kayal/BAI/actions/workflows/codeql.yml)
