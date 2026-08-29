@@ -334,6 +334,8 @@ Please read the EULA before installing or distributing the application.
 
 BAI is licensed under the [GNU General Public License v3.0](LICENSE).
 
+The BAI name, project identity, and branding are associated with the BAI project maintained by Sumon Kayal. Logo artwork was generated using Google Gemini.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <div align="center">
