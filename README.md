@@ -39,6 +39,7 @@ It can install multiple APKs as a single application package and provides severa
 - [What's Different From Upstream SAI](#whats-different-from-upstream-sai)
 - [Download](#download)
 - [Building From Source](#building-from-source)
+- [Release Signing](#release-signing)
 - [Release CI](#release-ci)
 - [Translations](#translations)
 - [Exported `.apks` Metadata](#exported-apks-metadata)
@@ -252,6 +253,10 @@ x86_64
 
 The exact APK filenames may vary depending on the Gradle configuration. Check the corresponding `app/build/outputs/apk/` directory after the build.
 
+## Release Signing
+
+See the [Release Signing Guide](SIGNING.md) for creating a personal release signing key and wiring it into the GitHub Actions release workflow.
+
 ## Release CI
 
 The repository contains separate workflows for different build and maintenance tasks:
@@ -260,13 +265,14 @@ The repository contains separate workflows for different build and maintenance t
 | --- | --- |
 | `release.yml` | Builds ABI-specific release APKs and publishes versioned GitHub Releases |
 | `debug-release.yml` | Builds and publishes the rolling `debug-latest` pre-release |
+| `test-debug-release.yml` | Builds a debug APK as a downloadable workflow artifact only, without publishing a release |
 | `codeql.yml` | Runs CodeQL security analysis |
 | `Dead code check.yml` | Checks the project for unused/dead code |
 | `stale.yml` | Handles stale GitHub issues/PRs |
 
 The release and debug workflows must be started manually in GitHub Actions. For
 a release build, provide the existing version tag to build in the `release_tag`
-input; the debug workflow builds the selected branch or ref.
+input; the debug workflows build the selected branch or ref.
 
 ## Translations
 
