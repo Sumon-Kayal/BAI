@@ -176,6 +176,7 @@ The exact location is not important. The important thing is:
 keytool -genkeypair \
   -v \
   -keystore ~/bai-keys/bai-release.jks \
+  -storetype JKS \
   -alias bai-release \
   -keyalg RSA \
   -keysize 4096 \
@@ -188,6 +189,7 @@ keytool -genkeypair \
 keytool -genkeypair `
   -v `
   -keystore "$HOME\bai-keys\bai-release.jks" `
+  -storetype JKS `
   -alias bai-release `
   -keyalg RSA `
   -keysize 4096 `
@@ -206,6 +208,8 @@ City / Locality
 State / Province
 Country code
 ```
+
+These commands explicitly create a JKS keystore. You may use different keystore and key passwords; save them as `BAI_KEYSTORE_PASSWORD` and `BAI_KEY_PASSWORD`, respectively.
 
 Example:
 
@@ -290,7 +294,7 @@ Second secure backup
 
 Do not rely on a single copy stored on one computer or phone.
 
-#### Never commit the keystore
+### Never commit the keystore
 
 Do not commit `bai-release.jks` or `keystore.properties` to Git.
 
@@ -326,6 +330,7 @@ For a copy in Android Downloads:
 
 ```bash
 mkdir -p /sdcard/Download/bai-keys
+cp ~/bai-keys/bai-release.jks /sdcard/Download/bai-keys/bai-release.jks
 ```
 
 Then:
@@ -476,7 +481,9 @@ def keystoreProperties = new Properties()
 def hasSigningConfig = keystorePropertiesFile.exists()
 
 if (hasSigningConfig) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    keystorePropertiesFile.withInputStream { input ->
+        keystoreProperties.load(input)
+    }
 }
 
 android {
@@ -573,7 +580,7 @@ There are multiple SHA-256 values you may encounter.
 ### JKS file SHA-256
 
 ```bash
-sha256sum bai-release.jks
+sha256sum ~/bai-keys/bai-release.jks
 ```
 
 This is the hash of the **entire JKS file**.
@@ -582,7 +589,7 @@ This is the hash of the **entire JKS file**.
 
 ```bash
 keytool -list -v \
-  -keystore bai-release.jks \
+  -keystore ~/bai-keys/bai-release.jks \
   -alias bai-release | grep SHA256
 ```
 
@@ -633,6 +640,7 @@ The same signing key can be used from Windows, macOS, Linux, Termux, and GitHub 
 keytool -genkeypair \
   -v \
   -keystore ~/bai-keys/bai-release.jks \
+  -storetype JKS \
   -alias bai-release \
   -keyalg RSA \
   -keysize 4096 \
@@ -657,8 +665,17 @@ keytool -list -v \
 
 ### Base64
 
+Linux / Termux:
+
 ```bash
 base64 -w 0 ~/bai-keys/bai-release.jks \
+  > ~/bai-keys/bai-release-base64.txt
+```
+
+macOS:
+
+```bash
+base64 ~/bai-keys/bai-release.jks | tr -d '\n' \
   > ~/bai-keys/bai-release-base64.txt
 ```
 
