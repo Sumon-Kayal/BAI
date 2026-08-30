@@ -71,6 +71,7 @@ jobs:
         env:
           RELEASE_REF: ${{ inputs.release_tag }}
         run: |
+          rm -rf dist
           mkdir -p dist
           shopt -s nullglob
           SAFE_RELEASE_REF=${RELEASE_REF//[^A-Za-z0-9._-]/-}
@@ -85,6 +86,9 @@ jobs:
           echo "dir=dist" >> "$GITHUB_OUTPUT"
  
       - name: Verify APK signatures
+        env:
+          BAI_KEY_ALIAS: ${{ secrets.BAI_KEY_ALIAS }}
+          BAI_KEYSTORE_PASSWORD: ${{ secrets.BAI_KEYSTORE_PASSWORD }}
         run: |
           set -e
           BUILD_TOOLS_DIR="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
@@ -93,11 +97,25 @@ jobs:
             exit 1
           fi
           APKSIGNER="$BUILD_TOOLS_DIR/apksigner"
+
+          if ! keytool -exportcert -alias "$BAI_KEY_ALIAS" -keystore release.keystore -storepass "$BAI_KEYSTORE_PASSWORD" > /tmp/expected_cert.der 2>/tmp/keytool_err.txt; then
+            echo "::error::Could not export certificate for alias '$BAI_KEY_ALIAS' from the release keystore."
+            cat /tmp/keytool_err.txt >&2
+            exit 1
+          fi
+          EXPECTED_SHA256="$(sha256sum /tmp/expected_cert.der | cut -d' ' -f1)"
+
           found=0
           while IFS= read -r -d '' APK_PATH; do
             found=1
             echo "Verifying: $APK_PATH"
-            "$APKSIGNER" verify --verbose "$APK_PATH"
+            APKSIGNER_OUTPUT="$("$APKSIGNER" verify --verbose --print-certs "$APK_PATH")"
+            echo "$APKSIGNER_OUTPUT"
+            ACTUAL_SHA256="$(grep -i 'certificate SHA-256 digest' <<< "$APKSIGNER_OUTPUT" | awk -F': ' '{print tolower($2)}')"
+            if ! grep -qx "$EXPECTED_SHA256" <<< "$ACTUAL_SHA256"; then
+              echo "::error::$APK_PATH is not signed with the expected release key (alias '$BAI_KEY_ALIAS')."
+              exit 1
+            fi
           done < <(find app/build/outputs/apk -type f -name '*.apk' -print0)
           if [ "$found" -eq 0 ]; then
             echo "::error::No APKs found to verify."
