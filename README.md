@@ -51,9 +51,8 @@ It can install multiple APKs as a single application package and provides severa
 
 ## Screenshots
 
-<div align="center">
-
-<img src="assets/Screenshots/001_Screenshot_2026-08-30-00-56-55-251_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 1">
+<details>
+<summary><b>App UI</b></summary><div align="center"><img src="assets/Screenshots/001_Screenshot_2026-08-30-00-56-55-251_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 1">
 <img src="assets/Screenshots/002_Screenshot_2026-08-30-00-57-01-433_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 2">
 <img src="assets/Screenshots/003_Screenshot_2026-08-30-00-57-06-305_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 3">
 <img src="assets/Screenshots/004_Screenshot_2026-08-30-00-57-15-393_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 4">
@@ -73,23 +72,11 @@ It can install multiple APKs as a single application package and provides severa
 <img src="assets/Screenshots/018_Screenshot_2026-08-30-00-59-49-248_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 18">
 <img src="assets/Screenshots/019_Screenshot_2026-08-30-00-59-54-959_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 19">
 <img src="assets/Screenshots/020_Screenshot_2026-08-30-01-00-06-213_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 20">
-<img src="assets/Screenshots/021_Screenshot_2026-08-30-01-00-10-699_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 21">
-
-</div>
-
-<details>
-<summary><b>Permission & setup screens</b></summary>
-
-<div align="center">
-
-<img src="assets/Screenshots/022_Screenshot_2026-08-30-01-00-25-851_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
+<img src="assets/Screenshots/021_Screenshot_2026-08-30-01-00-10-699_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 21"></div></details><details>
+<summary><b>Permission & setup screens</b></summary><div align="center"><img src="assets/Screenshots/022_Screenshot_2026-08-30-01-00-25-851_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
 <img src="assets/Screenshots/023_Screenshot_2026-08-30-01-00-34-101_com.google.android.permissioncontroller.jpg" width="200" alt="Android permission dialog">
 <img src="assets/Screenshots/024_Screenshot_2026-08-30-01-00-41-481_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
-<img src="assets/Screenshots/025_Screenshot_2026-08-30-01-00-47-416_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
-
-</div>
-
-</details>
+<img src="assets/Screenshots/025_Screenshot_2026-08-30-01-00-47-416_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen"></div></details>
 
 ## Features
 
