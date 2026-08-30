@@ -30,14 +30,21 @@ jobs:
           cache: 'gradle'
           verify-signature: true
  
-      # Only runs when the BAI_KEYSTORE_BASE64 secret is set. Without it, the
-      # build still produces unsigned app-<abi>-release-unsigned.apk files
-      # (see below), so the workflow doesn't hard-fail just because signing
-      # isn't set up yet.
-      - name: Decode signing keystore
-        if: ${{ env.HAS_KEYSTORE == 'true' }}
+      - name: Check signing secrets
         env:
-          HAS_KEYSTORE: ${{ secrets.BAI_KEYSTORE_BASE64 != '' }}
+          BAI_KEYSTORE_BASE64: ${{ secrets.BAI_KEYSTORE_BASE64 }}
+          BAI_KEYSTORE_PASSWORD: ${{ secrets.BAI_KEYSTORE_PASSWORD }}
+          BAI_KEY_ALIAS: ${{ secrets.BAI_KEY_ALIAS }}
+          BAI_KEY_PASSWORD: ${{ secrets.BAI_KEY_PASSWORD }}
+        run: |
+          test -n "$BAI_KEYSTORE_BASE64" || { echo "::error::BAI_KEYSTORE_BASE64 is missing"; exit 1; }
+          test -n "$BAI_KEYSTORE_PASSWORD" || { echo "::error::BAI_KEYSTORE_PASSWORD is missing"; exit 1; }
+          test -n "$BAI_KEY_ALIAS" || { echo "::error::BAI_KEY_ALIAS is missing"; exit 1; }
+          test -n "$BAI_KEY_PASSWORD" || { echo "::error::BAI_KEY_PASSWORD is missing"; exit 1; }
+          echo "Signing secrets are configured."
+
+      - name: Decode signing keystore
+        env:
           BAI_KEYSTORE_BASE64: ${{ secrets.BAI_KEYSTORE_BASE64 }}
           BAI_KEYSTORE_PASSWORD: ${{ secrets.BAI_KEYSTORE_PASSWORD }}
           BAI_KEY_ALIAS: ${{ secrets.BAI_KEY_ALIAS }}
@@ -50,7 +57,7 @@ jobs:
           keyAlias=$BAI_KEY_ALIAS
           keyPassword=$BAI_KEY_PASSWORD
           EOF
- 
+
       - name: Build release APKs
         run: |
           chmod +x ./gradlew
@@ -64,6 +71,7 @@ jobs:
         env:
           RELEASE_REF: ${{ inputs.release_tag }}
         run: |
+          rm -rf dist
           mkdir -p dist
           shopt -s nullglob
           SAFE_RELEASE_REF=${RELEASE_REF//[^A-Za-z0-9._-]/-}
@@ -77,6 +85,43 @@ jobs:
           done
           echo "dir=dist" >> "$GITHUB_OUTPUT"
  
+      - name: Verify APK signatures
+        env:
+          BAI_KEY_ALIAS: ${{ secrets.BAI_KEY_ALIAS }}
+          BAI_KEYSTORE_PASSWORD: ${{ secrets.BAI_KEYSTORE_PASSWORD }}
+        run: |
+          set -e
+          BUILD_TOOLS_DIR="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
+          if [ -z "$BUILD_TOOLS_DIR" ]; then
+            echo "::error::No Android build-tools directory found under \$ANDROID_HOME/build-tools."
+            exit 1
+          fi
+          APKSIGNER="$BUILD_TOOLS_DIR/apksigner"
+
+          if ! keytool -exportcert -alias "$BAI_KEY_ALIAS" -keystore release.keystore -storepass "$BAI_KEYSTORE_PASSWORD" > /tmp/expected_cert.der 2>/tmp/keytool_err.txt; then
+            echo "::error::Could not export certificate for alias '$BAI_KEY_ALIAS' from the release keystore."
+            cat /tmp/keytool_err.txt >&2
+            exit 1
+          fi
+          EXPECTED_SHA256="$(sha256sum /tmp/expected_cert.der | cut -d' ' -f1)"
+
+          found=0
+          while IFS= read -r -d '' APK_PATH; do
+            found=1
+            echo "Verifying: $APK_PATH"
+            APKSIGNER_OUTPUT="$("$APKSIGNER" verify --verbose --print-certs "$APK_PATH")"
+            echo "$APKSIGNER_OUTPUT"
+            ACTUAL_SHA256="$(grep -i 'certificate SHA-256 digest' <<< "$APKSIGNER_OUTPUT" | awk -F': ' '{print tolower($2)}')"
+            if ! grep -qx "$EXPECTED_SHA256" <<< "$ACTUAL_SHA256"; then
+              echo "::error::$APK_PATH is not signed with the expected release key (alias '$BAI_KEY_ALIAS')."
+              exit 1
+            fi
+          done < <(find app/build/outputs/apk -type f -name '*.apk' -print0)
+          if [ "$found" -eq 0 ]; then
+            echo "::error::No APKs found to verify."
+            exit 1
+          fi
+
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         with:
