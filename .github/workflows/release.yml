@@ -30,14 +30,21 @@ jobs:
           cache: 'gradle'
           verify-signature: true
  
-      # Only runs when the BAI_KEYSTORE_BASE64 secret is set. Without it, the
-      # build still produces unsigned app-<abi>-release-unsigned.apk files
-      # (see below), so the workflow doesn't hard-fail just because signing
-      # isn't set up yet.
-      - name: Decode signing keystore
-        if: ${{ env.HAS_KEYSTORE == 'true' }}
+      - name: Check signing secrets
         env:
-          HAS_KEYSTORE: ${{ secrets.BAI_KEYSTORE_BASE64 != '' }}
+          BAI_KEYSTORE_BASE64: ${{ secrets.BAI_KEYSTORE_BASE64 }}
+          BAI_KEYSTORE_PASSWORD: ${{ secrets.BAI_KEYSTORE_PASSWORD }}
+          BAI_KEY_ALIAS: ${{ secrets.BAI_KEY_ALIAS }}
+          BAI_KEY_PASSWORD: ${{ secrets.BAI_KEY_PASSWORD }}
+        run: |
+          test -n "$BAI_KEYSTORE_BASE64" || { echo "::error::BAI_KEYSTORE_BASE64 is missing"; exit 1; }
+          test -n "$BAI_KEYSTORE_PASSWORD" || { echo "::error::BAI_KEYSTORE_PASSWORD is missing"; exit 1; }
+          test -n "$BAI_KEY_ALIAS" || { echo "::error::BAI_KEY_ALIAS is missing"; exit 1; }
+          test -n "$BAI_KEY_PASSWORD" || { echo "::error::BAI_KEY_PASSWORD is missing"; exit 1; }
+          echo "Signing secrets are configured."
+
+      - name: Decode signing keystore
+        env:
           BAI_KEYSTORE_BASE64: ${{ secrets.BAI_KEYSTORE_BASE64 }}
           BAI_KEYSTORE_PASSWORD: ${{ secrets.BAI_KEYSTORE_PASSWORD }}
           BAI_KEY_ALIAS: ${{ secrets.BAI_KEY_ALIAS }}
@@ -50,7 +57,7 @@ jobs:
           keyAlias=$BAI_KEY_ALIAS
           keyPassword=$BAI_KEY_PASSWORD
           EOF
- 
+
       - name: Build release APKs
         run: |
           chmod +x ./gradlew
@@ -77,6 +84,26 @@ jobs:
           done
           echo "dir=dist" >> "$GITHUB_OUTPUT"
  
+      - name: Verify APK signatures
+        run: |
+          set -e
+          BUILD_TOOLS_DIR="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
+          if [ -z "$BUILD_TOOLS_DIR" ]; then
+            echo "::error::No Android build-tools directory found under \$ANDROID_HOME/build-tools."
+            exit 1
+          fi
+          APKSIGNER="$BUILD_TOOLS_DIR/apksigner"
+          found=0
+          while IFS= read -r -d '' APK_PATH; do
+            found=1
+            echo "Verifying: $APK_PATH"
+            "$APKSIGNER" verify --verbose "$APK_PATH"
+          done < <(find app/build/outputs/apk -type f -name '*.apk' -print0)
+          if [ "$found" -eq 0 ]; then
+            echo "::error::No APKs found to verify."
+            exit 1
+          fi
+
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         with:
