@@ -29,7 +29,7 @@
 
 It can install multiple APKs as a single application package and provides several installation backends, including the standard Android package installer, root/shell-based installation, and Shizuku where available.
 
-## Table of Contents
+## 📋 Table of Contents
 
 - [Screenshots](#screenshots)
 - [Features](#features)
@@ -52,31 +52,31 @@ It can install multiple APKs as a single application package and provides severa
 ## Screenshots
 
 <details>
-<summary><b>App UI</b></summary><div align="center"><img src="assets/Screenshots/001_Screenshot_2026-08-30-00-56-55-251_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 1">
-<img src="assets/Screenshots/002_Screenshot_2026-08-30-00-57-01-433_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 2">
-<img src="assets/Screenshots/003_Screenshot_2026-08-30-00-57-06-305_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 3">
-<img src="assets/Screenshots/004_Screenshot_2026-08-30-00-57-15-393_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 4">
-<img src="assets/Screenshots/005_Screenshot_2026-08-30-00-57-22-938_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 5">
-<img src="assets/Screenshots/006_Screenshot_2026-08-30-00-57-32-053_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 6">
-<img src="assets/Screenshots/007_Screenshot_2026-08-30-00-57-46-995_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 7">
-<img src="assets/Screenshots/008_Screenshot_2026-08-30-00-57-57-238_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 8">
-<img src="assets/Screenshots/009_Screenshot_2026-08-30-00-58-04-803_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 9">
-<img src="assets/Screenshots/010_Screenshot_2026-08-30-00-58-11-544_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 10">
-<img src="assets/Screenshots/011_Screenshot_2026-08-30-00-58-16-062_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 11">
-<img src="assets/Screenshots/012_Screenshot_2026-08-30-00-58-57-339_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 12">
-<img src="assets/Screenshots/013_Screenshot_2026-08-30-00-59-04-732_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 13">
-<img src="assets/Screenshots/014_Screenshot_2026-08-30-00-59-21-843_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 14">
-<img src="assets/Screenshots/015_Screenshot_2026-08-30-00-59-34-754_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 15">
-<img src="assets/Screenshots/016_Screenshot_2026-08-30-00-59-39-038_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 16">
-<img src="assets/Screenshots/017_Screenshot_2026-08-30-00-59-43-004_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 17">
-<img src="assets/Screenshots/018_Screenshot_2026-08-30-00-59-49-248_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 18">
-<img src="assets/Screenshots/019_Screenshot_2026-08-30-00-59-54-959_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 19">
-<img src="assets/Screenshots/020_Screenshot_2026-08-30-01-00-06-213_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 20">
-<img src="assets/Screenshots/021_Screenshot_2026-08-30-01-00-10-699_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 21"></div></details><details>
-<summary><b>Permission & setup screens</b></summary><div align="center"><img src="assets/Screenshots/022_Screenshot_2026-08-30-01-00-25-851_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
-<img src="assets/Screenshots/023_Screenshot_2026-08-30-01-00-34-101_com.google.android.permissioncontroller.jpg" width="200" alt="Android permission dialog">
-<img src="assets/Screenshots/024_Screenshot_2026-08-30-01-00-41-481_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
-<img src="assets/Screenshots/025_Screenshot_2026-08-30-01-00-47-416_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen"></div></details>
+<summary><b>App UI</b></summary><div align="center"><img src="assets/Screenshots/001_Screenshot_2026-08-30-00-56-55-251_com.sumon.bundleapp.installer.jpg" width="200" alt="Installer tab with no active sessions and an Install APKs button">
+<img src="assets/Screenshots/002_Screenshot_2026-08-30-00-57-01-433_com.sumon.bundleapp.installer.jpg" width="200" alt="Install source dialog: internal file picker vs system file picker">
+<img src="assets/Screenshots/003_Screenshot_2026-08-30-00-57-06-305_com.sumon.bundleapp.installer.jpg" width="200" alt="Internal file picker browsing storage to select APK files">
+<img src="assets/Screenshots/004_Screenshot_2026-08-30-00-57-15-393_com.sumon.bundleapp.installer.jpg" width="200" alt="Backup tab prompting to select a directory for backups">
+<img src="assets/Screenshots/005_Screenshot_2026-08-30-00-57-22-938_com.sumon.bundleapp.installer.jpg" width="200" alt="Backup directory picker dialog: internal vs system file picker">
+<img src="assets/Screenshots/006_Screenshot_2026-08-30-00-57-32-053_com.sumon.bundleapp.installer.jpg" width="200" alt="System file picker for choosing the backup directory">
+<img src="assets/Screenshots/007_Screenshot_2026-08-30-00-57-46-995_com.sumon.bundleapp.installer.jpg" width="200" alt="Settings: Languages and UI section with auto theme enabled">
+<img src="assets/Screenshots/008_Screenshot_2026-08-30-00-57-57-238_com.sumon.bundleapp.installer.jpg" width="200" alt="Settings: UI section with BAI (F-Droid) theme and app features enabled">
+<img src="assets/Screenshots/009_Screenshot_2026-08-30-00-58-04-803_com.sumon.bundleapp.installer.jpg" width="200" alt="Theme picker grid showing BAI, Ruby, Rena, Pixel, and other themes">
+<img src="assets/Screenshots/010_Screenshot_2026-08-30-00-58-11-544_com.sumon.bundleapp.installer.jpg" width="200" alt="Settings screen showing the full Languages and UI section">
+<img src="assets/Screenshots/011_Screenshot_2026-08-30-00-58-16-062_com.sumon.bundleapp.installer.jpg" width="200" alt="Dialog for picking separate light and dark themes">
+<img src="assets/Screenshots/012_Screenshot_2026-08-30-00-58-57-339_com.sumon.bundleapp.installer.jpg" width="200" alt="Installer backend dialog: Rootless, Rooted, or Shizuku">
+<img src="assets/Screenshots/013_Screenshot_2026-08-30-00-59-04-732_com.sumon.bundleapp.installer.jpg" width="200" alt="Install location dialog: system, internal, or external storage">
+<img src="assets/Screenshots/014_Screenshot_2026-08-30-00-59-21-843_com.sumon.bundleapp.installer.jpg" width="200" alt="File sorting options dialog in the file picker">
+<img src="assets/Screenshots/015_Screenshot_2026-08-30-00-59-34-754_com.sumon.bundleapp.installer.jpg" width="200" alt="Settings: Parser, Backup, and Other sections with About link">
+<img src="assets/Screenshots/016_Screenshot_2026-08-30-00-59-39-038_com.sumon.bundleapp.installer.jpg" width="200" alt="Backup tab prompting to select a backup directory">
+<img src="assets/Screenshots/017_Screenshot_2026-08-30-00-59-43-004_com.sumon.bundleapp.installer.jpg" width="200" alt="Backup directory picker dialog shown over the backup prompt">
+<img src="assets/Screenshots/018_Screenshot_2026-08-30-00-59-49-248_com.sumon.bundleapp.installer.jpg" width="200" alt="About screen with app version, credits, and GitHub/Licenses links">
+<img src="assets/Screenshots/019_Screenshot_2026-08-30-00-59-54-959_com.sumon.bundleapp.installer.jpg" width="200" alt="License viewer showing the GPL header and distribution terms">
+<img src="assets/Screenshots/020_Screenshot_2026-08-30-01-00-06-213_com.sumon.bundleapp.installer.jpg" width="200" alt="License viewer showing additional GPL permission clauses">
+<img src="assets/Screenshots/021_Screenshot_2026-08-30-01-00-10-699_com.sumon.bundleapp.installer.jpg" width="200" alt="License viewer showing project source code and contact links"></div></details><details>
+<summary><b>Permission & setup screens</b></summary><div align="center"><img src="assets/Screenshots/022_Screenshot_2026-08-30-01-00-25-851_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center app info page for BAI">
+<img src="assets/Screenshots/023_Screenshot_2026-08-30-01-00-34-101_com.google.android.permissioncontroller.jpg" width="200" alt="Android app permissions screen showing Storage allowed for BAI">
+<img src="assets/Screenshots/024_Screenshot_2026-08-30-01-00-41-481_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center behavior settings for BAI">
+<img src="assets/Screenshots/025_Screenshot_2026-08-30-01-00-47-416_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center detailed app info with version and install date"></div></details>
 
 ## Features
 
