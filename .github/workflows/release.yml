@@ -103,7 +103,7 @@ jobs:
             cat /tmp/keytool_err.txt >&2
             exit 1
           fi
-          EXPECTED_SHA256="$(sha256sum /tmp/expected_cert.der | awk '{print tolower($1)}')"
+          EXPECTED_SHA256="$(sha256sum /tmp/expected_cert.der | cut -d' ' -f1)"
 
           found=0
           while IFS= read -r -d '' APK_PATH; do
@@ -111,18 +111,11 @@ jobs:
             echo "Verifying: $APK_PATH"
             APKSIGNER_OUTPUT="$("$APKSIGNER" verify --verbose --print-certs "$APK_PATH")"
             echo "$APKSIGNER_OUTPUT"
-            # apksigner prints the digest colon-separated (F6:A0:1B:...);
-            # strip the colons so it can be compared with sha256sum's plain hex.
-            ACTUAL_SHA256="$(grep -i 'certificate SHA-256 digest' <<< "$APKSIGNER_OUTPUT" | head -n1 | sed 's/.*: //' | tr -d ':' | tr '[:upper:]' '[:lower:]')"
-            if [ -z "$ACTUAL_SHA256" ]; then
-              echo "::error::Could not extract certificate SHA-256 digest from $APK_PATH."
-              exit 1
-            fi
-            if [ "$EXPECTED_SHA256" != "$ACTUAL_SHA256" ]; then
+            ACTUAL_SHA256="$(grep -i 'certificate SHA-256 digest' <<< "$APKSIGNER_OUTPUT" | awk -F': ' '{print tolower($2)}')"
+            if ! grep -qx "$EXPECTED_SHA256" <<< "$ACTUAL_SHA256"; then
               echo "::error::$APK_PATH is not signed with the expected release key (alias '$BAI_KEY_ALIAS')."
               exit 1
             fi
-            echo "Signature verified: $APK_PATH"
           done < <(find app/build/outputs/apk -type f -name '*.apk' -print0)
           if [ "$found" -eq 0 ]; then
             echo "::error::No APKs found to verify."
