@@ -2,7 +2,7 @@
 
 All notable changes to BAI (Bundle APKs Installer) are documented in this file.
 
-This changelog documents BAI's divergence from the upstream SAI `master` branch, verified by a direct file-by-file comparison of the two source trees (506 files in SAI vs. 478 in BAI).
+This changelog documents BAI's divergence from the upstream SAI `master` branch, verified by a direct file-by-file comparison of the two source trees (506 files in SAI vs. 479 in BAI).
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project follows [Semantic Versioning](https://semver.org/).
 
@@ -19,9 +19,11 @@ BAI 4.6.0 is based on SAI `master` (versionCode 60, versionName "4.5") and estab
 - **Per-architecture release builds** via `splits { abi { ... } }`: `armeabi-v7a`, `arm64-v8a`, `x86`, `x86_64`, with `universalApk false`.
 - **Room schema export**: `room { schemaDirectory "$projectDir/schemas" }`, producing `schemas/com.sumon.bundleapp.installer.common.AppDatabase/1.json`.
 - **Version catalog**: `gradle/libs.versions.toml` centralizing every dependency and plugin version; `gradle/gradle-daemon-jvm.properties` pinning the Gradle daemon's JDK.
+- **Persistent Shizuku shell session**: a new package-private `PersistentShellSession` keeps one long-lived shell process open and feeds commands into it, instead of paying a fresh `su`/Shizuku process-start cost on every command; commands that pipe data through stdin still fall back to a dedicated one-off process, since the session's stdin is reserved for the command protocol.
+- **`InsetsUtils`**: a new edge-to-edge inset helper (padding and margin variants, plus an IME-aware bottom-padding variant) needed now that the app targets API 35+, which stops auto-insetting content under the system bars; applied to the main bottom navigation bar, the About screen, and the Licenses screen.
 - New user-facing status strings: `settings_main_root_unavailable`, `settings_main_shizuku_unavailable`, and `eula_load_error`.
 - `CHANGELOG.md` (this file).
-- README rewritten from a 23-line stub into a 335-line document (table of contents, Features, Installation Methods, Supported Android Versions/Architectures, "What's Different From Upstream SAI", Download, Building From Source for Linux/Windows/Android Studio, Release CI, Translations, EULA); `CONTRIBUTING.md` expanded 18 → 62 lines, adding a Discussions section and more detail on bug/feature/code contributions.
+- README rewritten from a 23-line stub into a 373-line document (table of contents, Screenshots, Features, Installation Methods, Supported Android Versions/Architectures, "What's Different From Upstream SAI", Download, Building From Source for Linux/Windows/Android Studio, Release Signing, Release CI, Translations, Exported `.apks` Metadata, EULA); `CONTRIBUTING.md` expanded 18 → 62 lines, adding a Discussions section and more detail on bug/feature/code contributions.
 - Repo assets: `assets/BAI Banner.png`, `assets/Screenshots`.
 - `POST_NOTIFICATIONS` and `QUERY_ALL_PACKAGES` manifest permissions (see **Fixed**).
 
@@ -34,9 +36,13 @@ BAI 4.6.0 is based on SAI `master` (versionCode 60, versionName "4.5") and estab
 - **Build tooling**: Gradle 6.5 → 9.7.1; Android Gradle Plugin 4.1.2 → 9.3.2; Java source/target compatibility 8 → 17; `compileSdk` 29 → 37; `targetSdk` 29 → 36; `minSdk` 21 → 23; `versionCode` 60 → 61; `versionName` "4.5" → "4.6".
 - Dependency resolution: `jcenter()` → `mavenCentral()` (JCenter has been shut down); removed the dead `dl.bintray.com/rikkaw/Libraries` repo.
 - Dependency bumps: appcompat 1.2.0→1.8.0, documentfile 1.0.1→1.1.0, preference 1.1.1→1.2.1, recyclerview 1.1.0→1.4.0, Material Components 1.3.0-rc01→1.14.0, Glide 4.11.0→5.0.9, Gson 2.8.6→2.14.0, flexbox 2.0.1→3.0.0, Room 2.2.6→2.8.4, LeakCanary 2.3→2.14, Shizuku 11.0.1→13.1.5 (dependency group also migrated `rikka.shizuku` → `dev.rikka.shizuku`, adding the `shared` and `aidl` artifacts).
+- `ShizukuShell` now reaches Shizuku's `newProcess` reflectively (`Method.setAccessible`), since it's no longer part of the public API surface on the bumped 13.1.5 client — SAI's version called it directly.
 - Release packaging: single universal APK → separate per-ABI APKs.
 - Default ProGuard file: `proguard-android.txt` → `proguard-android-optimize.txt`.
 - `gradle.properties`: daemon heap `-Xmx1536m` → `-Xmx2560m`; dropped `android.enableJetifier` (no longer needed).
+- Backup dialog's APK-export toggle: `android.widget.Switch` → Material's `SwitchMaterial`.
+- About screen's EULA entry now opens the bundled `EulaActivity` directly instead of an external link.
+- General modernization pass alongside the Java 17 bump: several `switch` statements over `R.id` values (navigation and menu handling) converted to `if`/`else if` chains, more fields marked `final`, and Java 16+ pattern-matching `instanceof` used in a handful of resolver/postprocessor classes.
 - Cosmetic/attribute updates across roughly 15 layout files (icon-tint syntax moved to `app:tint`, minor gravity/spacing tweaks).
 
 ### Removed
@@ -52,15 +58,19 @@ BAI 4.6.0 is based on SAI `master` (versionCode 60, versionName "4.5") and estab
 
 - Added `android:exported="true"` to `MainActivity` and `ApkActionViewProxyActivity` — with target SDK 36, omitting it on components with intent filters can cause manifest merging to fail and prevent installation on Android 12+.
 - Added `android:foregroundServiceType="dataSync"` to the backup service plus the matching `FOREGROUND_SERVICE_DATA_SYNC` permission, required from Android 14+.
-- Added the `POST_NOTIFICATIONS` permission — without it, backup-progress notifications silently never appeared on Android 13+.
+- Added the `POST_NOTIFICATIONS` permission — without it, backup-progress notifications silently never appeared on Android 13+ — and actually request it at runtime via the new `PermissionsUtils.checkAndRequestNotificationPermission()` (called at app launch and again right before a backup is enqueued, auto-starting the backup once the permission is granted).
 - Added the `QUERY_ALL_PACKAGES` permission — without it, the app's core purpose of listing installed apps for backup silently returned almost nothing on Android 11+.
 - Added the `namespace` declaration and `buildFeatures { buildConfig true }`, both required by current AGP now that the manifest `package` attribute and implicit BuildConfig generation are no longer sufficient.
 - Fixed a string-formatting bug in `settings_main_auto_theme_picker_summary`: two unindexed `%s` placeholders replaced with positional `%1$s`/`%2$s`.
+- Worked around a known AOSP memory leak (`Activity$1#this$0` via `IRequestFinishCallback$Stub`, introduced in Android Q — [issuetracker.google.com/issues/139738913](https://issuetracker.google.com/issues/139738913)): `MainActivity` now overrides `onBackPressed()` to call `finishAfterTransition()` directly when it's the task root with an empty fragment back stack.
+- The runtime-registered package-change receiver now calls `ContextCompat.registerReceiver(..., RECEIVER_EXPORTED)` instead of the legacy `Context.registerReceiver(...)` — required from Android 13+, where the unqualified call throws a `SecurityException` once the app targets API 33 or above.
+- Theme-mode preference reading now falls back to the default mode instead of crashing if the stored value is invalid or unrecognized.
 
 ### Security
 
 - Added CodeQL static analysis, running on every push/PR and weekly on a schedule.
 - Added an automated dead-code-check workflow.
+- Hardened `stale.yml`: `actions/stale` pinned to a commit SHA instead of the mutable `v1` tag (now effectively v10), and the workflow declares explicit `issues: write` / `pull-requests: write` permissions instead of relying on the default token scope.
 
 ### Compatibility
 
