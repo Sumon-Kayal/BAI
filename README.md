@@ -92,6 +92,7 @@ It can install multiple APKs as a single application package and provides severa
 - System file picker support for files stored on external storage.
 - Per-app language selection from **Settings → Languages**.
 - Light and dark themes.
+- Edge-to-edge display that insets content properly around the system bars.
 - Android TV/Leanback launcher support.
 
 ## Installation Methods
@@ -140,6 +141,7 @@ If you are looking for a dedicated Android backup solution rather than an instal
 - **Offline EULA:** The EULA is bundled with the application and can be displayed without a network request.
 - **Per-app language selector:** Languages can be selected from the application's Settings instead of relying only on the system language.
 - **Modern Android build:** BAI currently uses Android Gradle Plugin 9.3.2, Gradle 9.7.1, JDK 17, compile SDK 37, and target SDK 36 while retaining a minimum SDK of 23.
+- **Faster Shizuku-based operations:** commands run through Shizuku reuse a single long-lived shell session instead of starting a new process for every command.
 - **Vendored dependencies:** `flexfilter` and `pseudoapksigner` are included in the source tree instead of being fetched from JitPack.
 - **CI security scanning:** CodeQL runs through `.github/workflows/codeql.yml`.
 - **ABI-specific releases:** CI produces separate APKs for `armeabi-v7a`, `arm64-v8a`, `x86`, and `x86_64`.
