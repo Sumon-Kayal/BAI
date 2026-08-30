@@ -31,6 +31,7 @@ It can install multiple APKs as a single application package and provides severa
 
 ## 📋 Table of Contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Installation Methods](#installation-methods)
 - [Supported Android Versions](#supported-android-versions)
@@ -48,7 +49,49 @@ It can install multiple APKs as a single application package and provides severa
 - [EULA](#eula)
 - [License](#license)
 
-## Features
+## 📸 Screenshots
+
+<div align="center">
+
+<img src="assets/Screenshots/001_Screenshot_2026-08-30-00-56-55-251_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 1">
+<img src="assets/Screenshots/002_Screenshot_2026-08-30-00-57-01-433_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 2">
+<img src="assets/Screenshots/003_Screenshot_2026-08-30-00-57-06-305_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 3">
+<img src="assets/Screenshots/004_Screenshot_2026-08-30-00-57-15-393_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 4">
+<img src="assets/Screenshots/005_Screenshot_2026-08-30-00-57-22-938_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 5">
+<img src="assets/Screenshots/006_Screenshot_2026-08-30-00-57-32-053_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 6">
+<img src="assets/Screenshots/007_Screenshot_2026-08-30-00-57-46-995_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 7">
+<img src="assets/Screenshots/008_Screenshot_2026-08-30-00-57-57-238_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 8">
+<img src="assets/Screenshots/009_Screenshot_2026-08-30-00-58-04-803_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 9">
+<img src="assets/Screenshots/010_Screenshot_2026-08-30-00-58-11-544_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 10">
+<img src="assets/Screenshots/011_Screenshot_2026-08-30-00-58-16-062_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 11">
+<img src="assets/Screenshots/012_Screenshot_2026-08-30-00-58-57-339_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 12">
+<img src="assets/Screenshots/013_Screenshot_2026-08-30-00-59-04-732_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 13">
+<img src="assets/Screenshots/014_Screenshot_2026-08-30-00-59-21-843_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 14">
+<img src="assets/Screenshots/015_Screenshot_2026-08-30-00-59-34-754_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 15">
+<img src="assets/Screenshots/016_Screenshot_2026-08-30-00-59-39-038_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 16">
+<img src="assets/Screenshots/017_Screenshot_2026-08-30-00-59-43-004_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 17">
+<img src="assets/Screenshots/018_Screenshot_2026-08-30-00-59-49-248_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 18">
+<img src="assets/Screenshots/019_Screenshot_2026-08-30-00-59-54-959_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 19">
+<img src="assets/Screenshots/020_Screenshot_2026-08-30-01-00-06-213_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 20">
+<img src="assets/Screenshots/021_Screenshot_2026-08-30-01-00-10-699_com.sumon.bundleapp.installer.jpg" width="200" alt="BAI screenshot 21">
+
+</div>
+
+<details>
+<summary><b>Permission & setup screens</b></summary>
+
+<div align="center">
+
+<img src="assets/Screenshots/022_Screenshot_2026-08-30-01-00-25-851_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
+<img src="assets/Screenshots/023_Screenshot_2026-08-30-01-00-34-101_com.google.android.permissioncontroller.jpg" width="200" alt="Android permission dialog">
+<img src="assets/Screenshots/024_Screenshot_2026-08-30-01-00-41-481_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
+<img src="assets/Screenshots/025_Screenshot_2026-08-30-01-00-47-416_com.miui.securitycenter.jpg" width="200" alt="MIUI Security Center screen">
+
+</div>
+
+</details>
+
+## ✨ Features
 
 - Install split APKs and APK bundles as a single application.
 - Install `.apk`, `.apks`, `.apkm`, and supported ZIP-based APK collections.
@@ -64,7 +107,7 @@ It can install multiple APKs as a single application package and provides severa
 - Light and dark themes.
 - Android TV/Leanback launcher support.
 
-## Installation Methods
+## 📲 Installation Methods
 
 BAI can use different installation backends depending on the device and configuration:
 
@@ -74,13 +117,13 @@ BAI can use different installation backends depending on the device and configur
 
 The available method can vary by Android version, ROM, device configuration, and installed services.
 
-## Supported Android Versions
+## 🤖 Supported Android Versions
 
 - **Minimum:** Android 6.0 (API 23)
 - **Target:** Android 16 (API 36)
 - **Compile SDK:** Android API 37
 
-## Supported CPU Architectures
+## 🏗️ Supported CPU Architectures
 
 Release and debug builds are generated separately for these ABIs:
 
@@ -93,7 +136,7 @@ x86_64
 
 There is no universal APK in the CI builds.
 
-## State of BAI
+## 📌 State of BAI
 
 BAI is a maintained fork of [SAI (Split APKs Installer)](https://github.com/Aefyr/SAI). Development on upstream SAI has slowed considerably, with its author indicating that future updates there will likely be limited to occasional bug fixes — BAI continues active development on top of that codebase.
 
@@ -101,7 +144,7 @@ BAI uses SAI's installer and backup code as its foundation while carrying its ow
 
 If you are looking for a dedicated Android backup solution rather than an installer, the original SAI project recommends applications such as [OAndBackupX](https://f-droid.org/packages/com.machiav3lli.backup/) and [Swift Backup](https://play.google.com/store/apps/details?id=org.swiftapps.swiftbackup).
 
-## What's Different From Upstream SAI
+## 🔀 What's Different From Upstream SAI
 
 - **Separate package name:** `com.sumon.bundleapp.installer`, allowing BAI to coexist with the original SAI.
 - **GitHub Releases distribution:** BAI is distributed from this repository instead of through Google Play or F-Droid.
@@ -114,7 +157,7 @@ If you are looking for a dedicated Android backup solution rather than an instal
 - **CI security scanning:** CodeQL runs through `.github/workflows/codeql.yml`.
 - **ABI-specific releases:** CI produces separate APKs for `armeabi-v7a`, `arm64-v8a`, `x86`, and `x86_64`.
 
-## Download
+## 📥 Download
 
 The latest public builds are available from the repository's [GitHub Releases](https://github.com/Sumon-Kayal/BAI/releases/latest).
 
@@ -152,7 +195,7 @@ Debug APKs are:
 
 Debug builds are intended for testing and development rather than normal public distribution.
 
-## Building From Source
+## 🔨 Building From Source
 
 ### Requirements
 
@@ -253,11 +296,11 @@ x86_64
 
 The exact APK filenames may vary depending on the Gradle configuration. Check the corresponding `app/build/outputs/apk/` directory after the build.
 
-## Release Signing
+## 🔑 Release Signing
 
 See the [Release Signing Guide](SIGNING.md) for creating a personal release signing key and wiring it into the GitHub Actions release workflow.
 
-## Release CI
+## ⚙️ Release CI
 
 The repository contains separate workflows for different build and maintenance tasks:
 
@@ -270,11 +313,9 @@ The repository contains separate workflows for different build and maintenance t
 | `Dead code check.yml` | Checks the project for unused/dead code |
 | `stale.yml` | Handles stale GitHub issues/PRs |
 
-The release and debug workflows must be started manually in GitHub Actions. For
-a release build, provide the existing version tag to build in the `release_tag`
-input; the debug workflows build the selected branch or ref.
+The release and debug workflows must be started manually in GitHub Actions. For a release build, provide the existing version tag to build in the `release_tag` input; the debug workflows build the selected branch or ref.
 
-## Translations
+## 🌐 Translations
 
 BAI includes a per-app language selector and currently ships resources for 20 languages.
 
@@ -306,31 +347,31 @@ BAI includes a per-app language selector and currently ships resources for 20 la
 
 Translations are maintained through the project's translation workflow. Please see the contribution documentation before editing translated resources manually.
 
-## Exported `.apks` Metadata
+## 📦 Exported `.apks` Metadata
 
 BAI adds metadata to `.apks` files it exports.
 
 The format is documented in [META-FORMAT.md](META-FORMAT.md).
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome.
 
 Please read the [Contributing Guide](CONTRIBUTING.md) before opening an issue or pull request.
 
-## Documentation
+## 📚 Documentation
 
 - [Changelog](CHANGELOG.md) — version history and changes for each release.
 - [`.apks` Metadata Format](META-FORMAT.md) — documentation for BAI's exported `.apks` metadata.
 - [Contributing Guide](CONTRIBUTING.md) — contribution and pull request guidelines.
 
-## EULA
+## 📜 EULA
 
 By using Bundle APKs Installer (BAI), you agree to the terms in the [End-User License Agreement](EULA.md).
 
 Please read the EULA before installing or distributing the application.
 
-## License
+## ⚖️ License
 
 BAI is licensed under the [GNU General Public License v3.0](LICENSE).
 
