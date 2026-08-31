@@ -2,9 +2,7 @@ package com.sumon.bundleapp.installer.installerx.resolver.urimess.impl;
 
 import com.sumon.bundleapp.installer.R;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -53,12 +51,11 @@ public class AndroidUriHost implements UriHost {
         try {
             return new ProcSelfFdUriAsFile(uri);
         } catch (Exception e) {
-            boolean hasReadExternalStoragePermission = true;
-            if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
-                hasReadExternalStoragePermission = mContext.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            }
-
-            Logs.logException(new IOException(String.format("Unable to use /proc/self/fd, READ_EXTERNAL_STORAGE permission = %s", hasReadExternalStoragePermission)));
+            Logs.logException(new IOException(String.format(
+                    "Unable to use /proc/self/fd for URI; external storage manager = %s",
+                    Build.VERSION.SDK_INT < Build.VERSION_CODES.R
+                            || android.os.Environment.isExternalStorageManager()
+            )));
             return new CopyFileUriAsFile(uri, MAX_FILE_LENGTH_FOR_COPY);
         }
     }
