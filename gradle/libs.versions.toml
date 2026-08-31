@@ -14,7 +14,7 @@ material = "1.14.0"
 preference = "1.2.1"
 recyclerview = "1.4.0"
 room = "2.8.4"
-shimmer = "0.5.0"
+shimmer = "1.0.0"
 shizuku = "13.1.5"
 tooltips = "1.1.1"
 
@@ -38,7 +38,7 @@ recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 shared = { group = "dev.rikka.shizuku", name = "shared", version.ref = "shizuku" }
-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
+shimmer = { group = "io.github.usefulness", name = "shimmer-android-core", version.ref = "shimmer" }
 tooltips = { group = "com.tomergoldst.android", name = "tooltips", version.ref = "tooltips" }
 
 apksig = { group = "com.android.tools.build", name = "apksig", version.ref = "apksig" }
