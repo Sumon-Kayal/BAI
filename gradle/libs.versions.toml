@@ -1,5 +1,6 @@
 [versions]
 appcompat = "1.8.0"
+apksig = "9.2.1"
 documentfile = "1.1.0"
 flexbox = "3.0.0"
 glide = "5.0.9"
@@ -39,6 +40,8 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 shared = { group = "dev.rikka.shizuku", name = "shared", version.ref = "shizuku" }
 shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
 tooltips = { group = "com.tomergoldst.android", name = "tooltips", version.ref = "tooltips" }
+
+apksig = { group = "com.android.tools.build", name = "apksig", version.ref = "apksig" }
 
 [plugins]
 foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradleToolchainsFoojayResolverConvention" }

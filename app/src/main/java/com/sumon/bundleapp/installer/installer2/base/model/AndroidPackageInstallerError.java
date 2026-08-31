@@ -1,11 +1,10 @@
 package com.sumon.bundleapp.installer.installer2.base.model;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 
 import androidx.annotation.StringRes;
 
+import com.sumon.bundleapp.installer.R;
 
 /**
  * Errors were scraped from here - https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/content/pm/PackageManager.java;l=989;bpv=0;bpt=1

@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.fragments;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.BackupAppDetailsAdapter;
 import com.sumon.bundleapp.installer.adapters.selection.Selection;
 import com.sumon.bundleapp.installer.adapters.selection.SimpleKeyStorage;
@@ -30,6 +29,7 @@ import com.sumon.bundleapp.installer.utils.Utils;
 import com.sumon.bundleapp.installer.view.coolbar.Coolbar;
 import com.sumon.bundleapp.installer.viewmodels.BackupManageAppViewModel;
 import com.sumon.bundleapp.installer.viewmodels.factory.BackupManageAppViewModelFactory;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 
 public class BackupManageAppFragment extends SaiBaseFragment implements BackupAppDetailsAdapter.ActionDelegate {
     private static final String TAG = "BackupManageAppFragment";
@@ -67,9 +67,11 @@ public class BackupManageAppFragment extends SaiBaseFragment implements BackupAp
         moreOptionsButton.setOnClickListener(this::showMenu);
 
         RecyclerView recycler = findViewById(R.id.rv_backup_app_details);
+        InsetsUtils.applyTopInsetAsMargin(coolbar);
+        InsetsUtils.applyBottomInsetAsPadding(recycler);
         recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        BackupAppDetailsAdapter detailsAdapter = new BackupAppDetailsAdapter(requireContext(), new Selection<>(new SimpleKeyStorage()), this, this);
+        BackupAppDetailsAdapter detailsAdapter = new BackupAppDetailsAdapter(requireContext(), new Selection<>(new SimpleKeyStorage<>()), this, this);
         recycler.setAdapter(detailsAdapter);
 
         mViewModel.getDetails().observe(getViewLifecycleOwner(), details -> {
@@ -130,7 +132,7 @@ public class BackupManageAppFragment extends SaiBaseFragment implements BackupAp
 
     @Override
     public void deleteApp(BackupApp backupApp) {
-        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+        Intent intent = new Intent(Intent.ACTION_DELETE);
         intent.setData(new Uri.Builder().scheme("package").opaquePart(backupApp.packageMeta().packageName).build());
         startActivity(intent);
     }

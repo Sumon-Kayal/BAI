@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-
     <string name="app_name" translatable="false">BAI</string>
     <string name="app_name_full" translatable="false">Bundle APKs Installer</string>
-
     <string name="yes">Yes</string>
     <string name="apply">Apply</string>
     <string name="no">No</string>
@@ -15,22 +13,19 @@
     <string name="copied">Copied</string>
     <string name="dont_show_again">Don\'t show again</string>
     <string name="warning">Warning</string>
-
     <string name="filepicker_internal">Internal file picker</string>
     <string name="filepicker_saf">System file picker</string>
-
     <string name="permissions_required_storage">BAI requires permission to access storage</string>
     <string name="permissions_required_shizuku">BAI requires permission to use Shizuku Server</string>
-
     <string name="main_installer">Installer</string>
     <string name="main_backup">Backup</string>
     <string name="main_navigation_disabled">Unable to perform open with during ongoing installation</string>
-
     <string name="installer_installation_confirmation">Install \"%s\"?</string>
     <string name="installer_installation_failed">App not installed</string>
     <string name="installer_installation_in_progress">Installing…</string>
     <string name="installer_install_apks">Install APKs</string>
-    <string name="installer_help"><b>What is BAI?</b>\nBAI (Bundle APKs Installer) is an app that lets you install multiple APKs as if it was a single package. This is useful for installing apps that are distributed as App Bundles since Android provides no built-in way to install them from sources other than Google Play.\n\n<b>How to use BAI?</b>\nClick \"Install APKs\" button and select base APK and additional configuration-specific APKs or a ZIP archive that contains all required APKs, then click \"Select\" button to start installation process.\n\n<b>.apks</b>\nYou can rename a .zip archive that contains .apk files to .apks (e.g.: somesplitapp.zip -> somesplitapp.apks), so it can be opened with BAI from other apps.\n\n<b>Installing apps from external storage</b>\nYou can long click install button to select files via system file picker that supports external storage.</string>
+    <string name="installer_help">
+        <b>What is BAI?</b>\nBAI (Bundle APKs Installer) is an app that lets you install multiple APKs as if it was a single package. This is useful for installing apps that are distributed as App Bundles since Android provides no built-in way to install them from sources other than Google Play.\n\n<b>How to use BAI?</b>\nClick \"Install APKs\" button and select base APK and additional configuration-specific APKs or a ZIP archive that contains all required APKs, then click \"Select\" button to start installation process.\n\n<b>.apks</b>\nYou can rename a .zip archive that contains .apk files to .apks (e.g.: somesplitapp.zip -&gt; somesplitapp.apks), so it can be opened with BAI from other apps.\n\n<b>Installing apps from external storage</b>\nYou can long click install button to select files via system file picker that supports external storage.</string>
     <string name="installer_pick_apks">Select files to install</string>
     <string name="installer_app_installed">App installed</string>
     <string name="installer_open">Open</string>
@@ -58,7 +53,8 @@
     <string name="installer_select_theme">Select theme</string>
     <string name="installer_device">Device</string>
     <string name="installer_miui_warning_title">MIUI detected</string>
-    <string name="installer_miui_warning_message"><b>Seriously, read this one-time warning!</b>\n\nSorry for taking your time, but I\'m really tired of people with MIUI who have been skipping the previous version of this warning.\n\nLooks like your device is running MIUI. MIUI is known for breaking standard Android API features and a lot of BAI users have reported installations failing on MIUI for no reason with \"Installation failed\". Usually it can be fixed by disabling MIUI optimizations in developer settings, which I suggest you should do.\n\nOf course you can try using BAI without disabling MIUI optimization, but if it doesn\'t work, try disabling it before complaining to me about failed installations. If your MIUI version doesn\'t have that toggle or it doesn\'t help, there\'s nothing I can do.\n\nThis issue is supposed to be fixed on MIUI 20.2.20 and up (xiaomi.eu and eu-based ROMs).</string>
+    <string name="installer_miui_warning_message">
+        <b>Seriously, read this one-time warning!</b>\n\nSorry for taking your time, but I\'m really tired of people with MIUI who have been skipping the previous version of this warning.\n\nLooks like your device is running MIUI. MIUI is known for breaking standard Android API features and a lot of BAI users have reported installations failing on MIUI for no reason with \"Installation failed\". Usually it can be fixed by disabling MIUI optimizations in developer settings, which I suggest you should do.\n\nOf course you can try using BAI without disabling MIUI optimization, but if it doesn\'t work, try disabling it before complaining to me about failed installations. If your MIUI version doesn\'t have that toggle or it doesn\'t help, there\'s nothing I can do.\n\nThis issue is supposed to be fixed on MIUI 20.2.20 and up (xiaomi.eu and eu-based ROMs).</string>
     <string name="installer_miui_warning_open_dev_settings">Open developer settings</string>
     <string name="installer_miui_warning_oof">Unable to open developer settings. You can try opening them manually, google how to do that.</string>
     <string name="installer_unknown_app">Unknown app</string>
@@ -122,7 +118,6 @@
     <string name="installer_rootless_error2_install_failed_other_staged_session_in_progress">There\'s already a package installer session being committed for this package name</string>
     <string name="installer_rootless_error2_install_failed_multipackage_inconsistency">One of the child package installer sessions does not match the parent package installer session in respect to staged or rollback enabled parameters</string>
     <string name="installer_rootless_error2_install_failed_wrong_installed_version">Required version of an already installed package doesn\'t match the actual version of the installed package</string>
-
     <string name="backup_backup">Backup</string>
     <string name="backup_batch_backup">Batch backup</string>
     <string name="backup_backup_export_in_progress_2">Backup in progress, %d tasks remaining</string>
@@ -136,7 +131,9 @@
     <string name="backup_search_hint">Search apps</string>
     <string name="backup_search_splits_only">Split APKs only</string>
     <string name="backup_search_show_system_apps">Show system apps</string>
-    <string name="backup_warning"><b>Managed backups are currently in beta, please report issues in BAI\'s GitHub repo (you can find the link on about screen)</b>\n\n<b>Backup files format</b>\nBAI backups apps as .apks files (which are just ZIP archives with .apk files) with some meta information added to the archive (such as app name and icon). Backed up .apks files can still be installed as normal .apks files (because they are normal .apks files, except for some additional files in the archive which are ignored by installer)\n\n<b>What is backed up</b>\nCurrently BAI backups only apps APK files (no data/obb/etc)\n\n<b>External changes to backup directory</b>\nBAI doesn\'t automatically keep track of external changes done to files in the backup directory. If you\'ve changed them outside of BAI, use reindex option in 3-dots menu at the top right of backup screen to rescan backups directory.\n\n<b>You can always open this help from the 3-dots menu at the top right of backup screen</b></string>
+    <string name="backup_warning">
+        <b>Managed backups are currently in beta, please report issues in BAI\'s GitHub repo (you can find the link on about screen)</b>\n\n<b>Backup files format</b>\nBAI backups apps as .apks files (which are just ZIP archives with .apk files) with some meta information added to the archive (such as app name and icon). Backed up .apks files can still be installed as normal .apks files (because they are normal .apks files, except for some additional files in the archive which are ignored by installer)\n\n<b>What is backed up</b>\nCurrently BAI backups only apps APK files (no data/obb/etc)\n\n<b>External changes to backup directory</b>\nBAI doesn\'t automatically keep track of external changes done to files in the backup directory. If you\'ve changed them outside of BAI, use reindex option in 3-dots menu at the top right of backup screen to rescan backups directory.\n\n<b>You can always open this help from the 3-dots menu at the top right of backup screen</b>
+    </string>
     <string name="backup_export_all_splits">Backup all split APKs</string>
     <string name="backup_export_all_splits_prompt">Do you want to backup all split APKs?</string>
     <string name="backup_export_selected_apps_prompt">Do you want to backup %d selected apps?</string>
@@ -191,7 +188,6 @@
     <string name="backup_open_app_in_system_settings_error">Unable to open app in system settings</string>
     <string name="backup_export_apk">Export as a .apk file</string>
     <string name="backup_export_apk_desc">Export a single selected part as a .apk file. Exported .apk files are not backups and won\'t be managed by BAI</string>
-
     <string name="settings_title">Settings</string>
     <string name="settings_category_main_languages">Languages</string>
     <string name="settings_main_app_language">App language</string>
@@ -249,14 +245,16 @@
     <string name="settings_main_backup_settings_summary">Tap to open backup settings</string>
     <string name="settings_main_enable_apk_action_view">Enable opening .apk files via BAI</string>
     <string name="settings_main_enable_apk_action_view_summary">Support opening .apk files via BAI from other apps. Can be disabled since on some ROMs this setting being enabled doesn\'t let you open .apk files at all</string>
-
     <string name="name_format_builder_title">Select parts to include in backup file name</string>
     <string name="name_format_builder_preview">Preview: %s</string>
     <string name="name_format_builder_preview_empty">Please select at least one part</string>
-
     <string name="sss">Super Secret Settings</string>
-    <string name="sss_warning_title"><b>WARNING</b></string>
-    <string name="sss_warning_summary"><b>Don\'t touch anything here unless you know what you\'re doing. Some options here can break BAI or even damage your system</b></string>
+    <string name="sss_warning_title">
+        <b>WARNING</b>
+    </string>
+    <string name="sss_warning_summary">
+        <b>Don\'t touch anything here unless you know what you\'re doing. Some options here can break BAI or even damage your system</b>
+    </string>
     <string name="sss_dont_replace_dots_title">Don\'t replace dots with commas</string>
     <string name="sss_dont_replace_dots_summary">In backup file name</string>
     <string name="sss_custom_install_create_title">Custom install-create command</string>
@@ -264,7 +262,6 @@
     <string name="sss_fake_backup_timestamp">Fake backup timestamp</string>
     <string name="sss_fake_backup_timestamp_summary">Add constant timestamp (Jan 1 2000, 00:00) to backups. Makes hashes of backup files of the same APK files same. BAI will have no idea what backup is the latest one though</string>
     <string name="sss_test_crash">Crash app</string>
-
     <string name="mi_continue_countdown">You can continue in %d s.</string>
     <string name="mi_continue">Continue</string>
     <string name="mi_miui_version">MIUI version - %1$s (%2$d (%3$s))</string>
@@ -297,9 +294,7 @@
     <string name="installerx_split_config_dpi_for_module">%1$s (%2$d DPI) resources for feature \"%3$s\"</string>
     <string name="installerx_category_unknown">Unknown</string>
     <string name="installerx_category_unknown_desc">Split APK parts with unknown purpose, please open an issue on BAI\'s GitHub and attach this APK or at least a screenshot of the part names if you encounter this. It is highly recommended to install these parts unless you know their exact purpose</string>
-
     <string name="installerx_default_mess_resolver_error_unknown_extension">Unexpected file extension: %s</string>
-
     <string name="installerx_dsas_meta_resolver_error_no_manifest">AndroidManifest.xml not found in an APK</string>
     <string name="installerx_dsas_meta_resolver_error_dup_manifest_entry">Found duplicate manifest entry in AndroidManifest.xml</string>
     <string name="installerx_dsas_meta_resolver_error_no_manifest_entry">Manifest entry was not found in AndroidManifest.xml</string>
@@ -308,17 +303,14 @@
     <string name="installerx_dsas_meta_resolver_error_multiple_base_apks">Found multiple base APK files</string>
     <string name="installerx_dsas_meta_resolver_error_no_apks">Source doesn\'t contain any APK files</string>
     <string name="installerx_dsas_meta_resolver_error_no_base_apk">Source doesn\'t contain base APK file</string>
-
     <string name="installerx_notice_xapk">BAI doesn\'t support extracting obb from XAPK, you\'ll have to do that manually</string>
     <string name="installerx_notice_no_code_for_base">There are some architecture configuration split parts for base APK, but none of them is supported by your device</string>
     <string name="installerx_notice_no_code_for_feature">There are some architecture configuration split parts for feature \"%s\", but none of them is supported by your device</string>
     <string name="installerx_notice_no_locale_for_base">None of locale configuration split parts for base APK match your languages</string>
     <string name="installerx_notice_no_locale_for_feature">None of locale configuration split parts for feature \"%s\" match your languages</string>
-    <string name="installerx_notice_huge_app">This app is huge (>150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
-
+    <string name="installerx_notice_huge_app">This app is huge (&gt;150MB). With huge apps there\'s a chance (the bigger the app size, the higher) that installation will hang but app will still take up storage space that you won\'t be able to reclaim without using root or doing factory reset</string>
     <string name="installerx_android_uri_host_file_too_big">File is too big to copy and your system doesn\'t support reading SAF files without copying</string>
     <string name="installerx_thank_you_scoped_storage_very_cool">On Android 11 and up BAI requires storage permission to directly read files selected via system file picker due to scoped storage implementation making 0 sense. You can deny storage permission, but then BAI will have to copy selected files to parse them, BAI won\'t copy and parse large files.</string>
-
     <string name="theme_sai">BAI</string>
     <string name="theme_ruby">Ruby</string>
     <string name="theme_rena">Rena</string>
@@ -331,15 +323,14 @@
     <string name="theme_rena_light">Rena Light</string>
     <string name="theme_mint">Mint</string>
     <string name="theme_fdroid_dark">F-Droid Dark</string>
-
     <string name="auto_theme_title">Select dark and light themes</string>
     <string name="auto_theme_light_theme">Light theme</string>
     <string name="auto_theme_dark_theme">Dark theme</string>
     <string name="auto_theme_selection_hint">Tap to change</string>
-
     <string name="about_author">Maintained by Sumon Kayal\nForked from SAI by polychromaticfox</string>
     <string name="about_source">GitHub</string>
-    <string name="about_source_link" translatable="false">https://github.com/Sumon-Kayal/BAI</string>    <string name="about_licenses">Licenses</string>
+    <string name="about_source_link" translatable="false">https://github.com/Sumon-Kayal/BAI</string>
+    <string name="about_licenses">Licenses</string>
     <string name="about_translate">Help to translate BAI</string>
     <string name="about_translate_link" translatable="false">https://github.com/Sumon-Kayal/BAI/tree/Translations</string>
     <string name="about_privacy">Privacy Policy</string>
@@ -347,5 +338,46 @@
     <string name="eula_load_error">Failed to load the license agreement.</string>
     <string name="settings_main_root_unavailable">Root access is not available on this device.</string>
     <string name="settings_main_shizuku_unavailable">Shizuku is not available or permission has not been granted.</string>
-
+    <string name="settings_main_donate">Support SAI</string>
+    <string name="donate_message_not_donated">Hello. As you know, SAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting SAI by making a donation. You will also get the legendary <b>SAI Gold</b> theme!</string>
+    <string name="donate_message_donated">Huge thanks for supporting SAI!\nDon\'t forget to check out your new <b>SAI Gold</b> theme</string>
+    <string name="donate_message_floss">Hello. You\'re using FLOSS version of SAI. As you know, SAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting SAI by making a donation.\n\nIn FLOSS version, the <b>FLOSS Gold</b> theme is available by default.</string>
+    <string name="donate_message_unknown_or_error">Unable to get donation status. Please make sure you have Google Play Services installed and try restarting your device.</string>
+    <string name="donate_message_pending">Your donation is pending. If it isn\'t applied automatically after you complete it, please restart SAI.</string>
+    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
+    <string name="donate_non_iap_yandex_desc">Basically CIS PayPal lol</string>
+    <string name="donate_non_iap_yandex_target" translatable="false">https://money.yandex.ru/to/410015319360538</string>
+    <string name="donate_billing_not_available">Unable to connect to Google Play. Please make sure you have Google Play Services installed and try restarting your device.</string>
+    <string name="donate_donate_only_theme">Donation required</string>
+    <string name="donate_dialog_close">Don\'t show again</string>
+    <string name="donate_dialog_go_to_donate_page">Go to donate screen</string>
+    <string name="donate_dialog_title">Donation</string>
+    <string name="about_donate">Donate</string>
+    <string name="about_donate_link" translatable="false">https://yasobe.ru/na/sai</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="android_storage_permission_message">Android 11 and above requires access to all files to function properly. Please click OK to go to system settings and grant this permission.</string>
+    <string name="storage_permission_denied_message">Access permission denied, the app may not work properly.</string>
+    <string name="install_permission_message">This app requires permission to install unknown apps in order to install APK files. Please click confirm to go to the settings page and enable this permission.</string>
+    <string name="install_permission_denied_message">Permission to install unknown apps was denied. APK files cannot be installed.</string>
+    <string name="settings_main_signature_schemes">Signature schemes</string>
+    <string name="settings_main_signature_schemes_summary">Which APK signature schemes to write when signing</string>
+    <string name="settings_main_signing_key">Signing key</string>
+    <string name="signing_schemes_v1">v1 (JAR signature)</string>
+    <string name="signing_schemes_v1_summary">This device never needs v1. Turn it on only if the signed APK will also be installed on Android 6 or older. It adds a digest for every file in the APK, which can grow it by around a megabyte.</string>
+    <string name="signing_schemes_v2">v2 (Android 7+)</string>
+    <string name="signing_schemes_v2_summary">Verified by every device this app runs on.</string>
+    <string name="signing_schemes_v3">v3 (Android 9+)</string>
+    <string name="signing_schemes_v3_summary">Supersedes v2 on Android 9 and above.</string>
+    <string name="signing_schemes_v3_unsupported">Not supported on this device</string>
+    <string name="signing_schemes_note">If the selection cannot produce an installable APK, SAI adds the missing scheme automatically.</string>
+    <string name="signing_key_fingerprint">Certificate SHA-256</string>
+    <string name="signing_key_none">No key yet, one is created the first time you sign something</string>
+    <string name="signing_key_regenerate">Generate new</string>
+    <string name="signing_key_import">Import a key</string>
+    <string name="signing_key_updated">Signing key updated</string>
+    <string name="signing_key_formats">Pick a keystore (.p12 / .pfx, and .bks or .jks where the device supports them), or select a PKCS#8 key (.pk8 or PEM) and an X.509 certificate (.pem or .der) together. A zip holding both works too.</string>
+    <string name="signing_key_regenerate_warning">APKs signed with a new key can no longer replace apps signed with the old one.</string>
+    <string name="signing_key_password">Password (leave empty if there is none)</string>
+    <string name="signing_key_imported">Key imported</string>
+    <string name="signing_key_error">Could not use the key: %s</string>
 </resources>

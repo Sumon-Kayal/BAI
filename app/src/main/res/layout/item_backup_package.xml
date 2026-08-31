@@ -54,7 +54,7 @@
                     android:id="@+id/tv_app_package"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="com.sumon.bundleapp.installer" />
+                    android:text="com.aefyr.sai" />
 
             </LinearLayout>
 
@@ -71,7 +71,7 @@
 
         </LinearLayout>
 
-        <com.sumon.bundleapp.installer.view.NonInteractiveRecyclerView
+        <com.aefyr.sai.view.NonInteractiveRecyclerView
             android:id="@+id/rv_backup_app_features"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

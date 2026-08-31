@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.backup2.impl.local.ui.fragments;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +10,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.impl.local.LocalBackupStorageProvider;
 import com.sumon.bundleapp.installer.backup2.impl.local.prefs.LocalBackupStoragePrefConstants;
 import com.sumon.bundleapp.installer.model.common.PackageMeta;
@@ -79,11 +78,9 @@ public class LocalBackupStorageSettingsFragment extends PreferenceFragmentCompat
         if (tag == null)
             return;
 
-        switch (tag) {
-            case "backup_dir":
-                mProvider.setBackupDirUri(dirUri);
-                updateBackupDirSummary();
-                break;
+        if (tag.equals("backup_dir")) {
+            mProvider.setBackupDirUri(dirUri);
+            updateBackupDirSummary();
         }
     }
 
@@ -92,11 +89,9 @@ public class LocalBackupStorageSettingsFragment extends PreferenceFragmentCompat
         if (tag == null)
             return;
 
-        switch (tag) {
-            case "backup_name_format_builder":
-                mProvider.setBackupNameFormat(format);
-                updateBackupNameFormatSummary();
-                break;
+        if (tag.equals("backup_name_format_builder")) {
+            mProvider.setBackupNameFormat(format);
+            updateBackupNameFormatSummary();
         }
     }
 }

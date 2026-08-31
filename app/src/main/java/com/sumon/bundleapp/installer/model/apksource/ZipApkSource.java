@@ -1,13 +1,13 @@
 package com.sumon.bundleapp.installer.model.apksource;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.model.filedescriptor.FileDescriptor;
+import com.sumon.bundleapp.installer.utils.IOUtils;
 import com.sumon.bundleapp.installer.utils.Utils;
 
 import java.io.IOException;
@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
+import java.util.Locale;
 
 public class ZipApkSource implements ZipBackedApkSource {
 
@@ -36,7 +37,7 @@ public class ZipApkSource implements ZipBackedApkSource {
     @Override
     public boolean nextApk() throws Exception {
         if (!mIsOpen) {
-            mZipInputStream = new ZipInputStream(mZipFileDescriptor.open());
+            mZipInputStream = new ZipInputStream(IOUtils.buffer(mZipFileDescriptor.open()));
             mWrappedStream = new ZipInputStreamWrapper(mZipInputStream);
             mIsOpen = true;
         }
@@ -45,12 +46,12 @@ public class ZipApkSource implements ZipBackedApkSource {
             try {
                 mCurrentZipEntry = mZipInputStream.getNextEntry();
             } catch (ZipException e) {
-                if (e.getMessage().equals("only DEFLATED entries can have EXT descriptor")) {
+                if ("only DEFLATED entries can have EXT descriptor".equals(e.getMessage())) {
                     throw new ZipException(mContext.getString(R.string.installer_recoverable_error_use_zipfile));
                 }
                 throw e;
             }
-        } while (mCurrentZipEntry != null && (mCurrentZipEntry.isDirectory() || !mCurrentZipEntry.getName().toLowerCase().endsWith(".apk")));
+        } while (mCurrentZipEntry != null && (mCurrentZipEntry.isDirectory() || !mCurrentZipEntry.getName().toLowerCase(Locale.ROOT).endsWith(".apk")));
 
         if (mCurrentZipEntry == null) {
             mZipInputStream.close();

@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.sumon.bundleapp.installer.R;
 
 public class OneTimeWarningDialogFragment extends DialogFragment {
     private static final String ARG_TITLE = "title";
@@ -76,7 +74,7 @@ public class OneTimeWarningDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new MaterialAlertDialogBuilder(requireContext())
+        return new AlertDialog.Builder(requireContext())
                 .setTitle(mTitle)
                 .setMessage(mMessage)
                 .setPositiveButton(R.string.dont_show_again, (d, w) -> requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit().putBoolean(mTag, true).apply())

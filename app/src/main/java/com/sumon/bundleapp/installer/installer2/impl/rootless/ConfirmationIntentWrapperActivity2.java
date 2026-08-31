@@ -5,19 +5,26 @@ import android.content.Intent;
 import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sumon.bundleapp.installer.utils.Logs;
+import androidx.core.content.IntentCompat;
 
 public class ConfirmationIntentWrapperActivity2 extends AppCompatActivity {
 
     private static final String EXTRA_CONFIRMATION_INTENT = "confirmation_intent";
     public static final String EXTRA_SESSION_ID = "session_id";
 
-    private static final int REQUEST_CODE_CONFIRM_INSTALLATION = 322;
-
     private boolean mFinishedProperly = false;
+
+    private final ActivityResultLauncher<Intent> mConfirmationLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                mFinishedProperly = true;
+                finish();
+            });
 
     private int mSessionId;
     private Intent mConfirmationIntent;
@@ -29,26 +36,16 @@ public class ConfirmationIntentWrapperActivity2 extends AppCompatActivity {
         Intent intent = getIntent();
 
         mSessionId = intent.getIntExtra(EXTRA_SESSION_ID, -1);
-        mConfirmationIntent = intent.getParcelableExtra(EXTRA_CONFIRMATION_INTENT);
+        mConfirmationIntent = IntentCompat.getParcelableExtra(intent, EXTRA_CONFIRMATION_INTENT, Intent.class);
 
         if (savedInstanceState == null) {
             try {
-                startActivityForResult(mConfirmationIntent, REQUEST_CODE_CONFIRM_INSTALLATION);
+                mConfirmationLauncher.launch(mConfirmationIntent);
             } catch (Exception e) {
                 Logs.logException(e);
-                sendErrorBroadcast(mSessionId, RootlessSaiPiBroadcastReceiver.STATUS_BAD_ROM);
+                sendErrorBroadcast(mSessionId);
                 finish();
             }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE_CONFIRM_INSTALLATION) {
-            mFinishedProperly = true;
-            finish();
         }
     }
 
@@ -70,9 +67,11 @@ public class ConfirmationIntentWrapperActivity2 extends AppCompatActivity {
         c.startActivity(intent);
     }
 
-    private void sendErrorBroadcast(int sessionID, int status) {
+    private void sendErrorBroadcast(int sessionID) {
         Intent statusIntent = new Intent(RootlessSaiPiBroadcastReceiver.ACTION_DELIVER_PI_EVENT);
-        statusIntent.putExtra(PackageInstaller.EXTRA_STATUS, status);
+        // The receiver is registered as not-exported, so the broadcast has to be explicit.
+        statusIntent.setPackage(getPackageName());
+        statusIntent.putExtra(PackageInstaller.EXTRA_STATUS, RootlessSaiPiBroadcastReceiver.STATUS_BAD_ROM);
         statusIntent.putExtra(PackageInstaller.EXTRA_SESSION_ID, sessionID);
 
         sendBroadcast(statusIntent);

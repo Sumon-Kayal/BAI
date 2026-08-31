@@ -6,17 +6,17 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
-import com.sumon.bundleapp.installer.utils.Utils;
+import androidx.core.os.ParcelCompat;
+import androidx.core.content.pm.PackageInfoCompat;
 
 public class PackageMeta implements Parcelable {
 
-    public String packageName;
+    public final String packageName;
     public String label;
     public boolean hasSplits;
     public boolean isSystemApp;
@@ -38,12 +38,12 @@ public class PackageMeta implements Parcelable {
         isSystemApp = in.readInt() == 1;
         versionCode = in.readLong();
         versionName = in.readString();
-        iconUri = in.readParcelable(Uri.class.getClassLoader());
+        iconUri = ParcelCompat.readParcelable(in, Uri.class.getClassLoader(), Uri.class);
         installTime = in.readLong();
         updateTime = in.readLong();
     }
 
-    public static final Creator<PackageMeta> CREATOR = new Creator<PackageMeta>() {
+    public static final Creator<PackageMeta> CREATOR = new Creator<>() {
         @Override
         public PackageMeta createFromParcel(Parcel in) {
             return new PackageMeta(in);
@@ -153,7 +153,7 @@ public class PackageMeta implements Parcelable {
                     .setLabel(applicationInfo.loadLabel(pm).toString())
                     .setHasSplits(applicationInfo.splitPublicSourceDirs != null && applicationInfo.splitPublicSourceDirs.length > 0)
                     .setIsSystemApp((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
-                    .setVersionCode(Utils.apiIsAtLeast(Build.VERSION_CODES.P) ? packageInfo.getLongVersionCode() : packageInfo.versionCode)
+                    .setVersionCode(PackageInfoCompat.getLongVersionCode(packageInfo))
                     .setVersionName(packageInfo.versionName)
                     .setIcon(applicationInfo.icon)
                     .setInstallTime(packageInfo.firstInstallTime)

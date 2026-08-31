@@ -67,8 +67,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 }
 
@@ -83,6 +83,8 @@ room {
 }
 
 dependencies {
+    // SAIR signing implementation
+    implementation libs.apksig
     // Memory leak detection (debug builds only)
     debugImplementation libs.leakcanary.android
 
@@ -91,6 +93,7 @@ dependencies {
             dir: 'libs',
             include: ['*.jar', '*.aar']
     )
+    implementation project(':libs:filepicker')
 
     // AndroidX
     implementation libs.appcompat

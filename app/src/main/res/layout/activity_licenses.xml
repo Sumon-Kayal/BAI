@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.sumon.bundleapp.installer.view.coolbar.Coolbar
+    <com.aefyr.sai.view.coolbar.Coolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="3dp"
@@ -13,6 +13,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_licenses"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

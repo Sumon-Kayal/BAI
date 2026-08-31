@@ -1,9 +1,8 @@
 package com.sumon.bundleapp.installer.installerx.postprocessing;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.installerx.common.MutableSplitCategory;
 import com.sumon.bundleapp.installer.installerx.common.MutableSplitPart;
 import com.sumon.bundleapp.installer.installerx.common.ParserContext;

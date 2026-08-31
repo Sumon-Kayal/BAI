@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,10 +11,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.utils.Logs;
+import androidx.core.os.BundleCompat;
 
 public class InstallationConfirmationDialogFragment extends DialogFragment {
     private static final String ARG_APKS_FILE = "file";
@@ -46,13 +45,13 @@ public class InstallationConfirmationDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args == null)
             return;
-        mApksFileUri = args.getParcelable(ARG_APKS_FILE);
+        mApksFileUri = BundleCompat.getParcelable(args, ARG_APKS_FILE, Uri.class);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new MaterialAlertDialogBuilder(getContext())
+        return new AlertDialog.Builder(requireContext())
                 .setMessage(getString(R.string.installer_installation_confirmation, getFileNameFromUri(mApksFileUri)))
                 .setPositiveButton(R.string.yes, (d, w) -> {
                     mListener.onConfirmed(mApksFileUri);
@@ -82,7 +81,7 @@ public class InstallationConfirmationDialogFragment extends DialogFragment {
         String[] pathParts = uri.getPath().split("/");
         String fallbackName = pathParts[pathParts.length - 1];
 
-        try (Cursor cursor = getContext().getContentResolver().query(uri, new String[]{MediaStore.MediaColumns.DISPLAY_NAME}, null, null, null)) {
+        try (Cursor cursor = requireContext().getContentResolver().query(uri, new String[]{MediaStore.MediaColumns.DISPLAY_NAME}, null, null, null)) {
             if (cursor == null)
                 return fallbackName;
 

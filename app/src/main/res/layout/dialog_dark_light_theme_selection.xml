@@ -21,14 +21,15 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:importantForAccessibility="no"
                 android:id="@+id/iv_dark_light_theme_selection_light_theme_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_toStartOf="@id/tv_dl_theme_selection_light_theme"
                 android:padding="4dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_light_theme"
-                app:tint="?colorAccent" />
+                app:tint="?colorAccent"
+                app:srcCompat="@drawable/ic_light_theme" />
 
             <TextView
                 android:id="@+id/tv_dl_theme_selection_light_theme"
@@ -43,7 +44,7 @@
 
         </RelativeLayout>
 
-        <com.sumon.bundleapp.installer.view.ThemeView
+        <com.aefyr.sai.view.ThemeView
             android:id="@+id/themeview_dl_selection_light"
             style="@style/ThemeView.Normal.Interactive"
             android:layout_width="match_parent"
@@ -66,14 +67,15 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:importantForAccessibility="no"
                 android:id="@+id/iv_dark_light_theme_selection_dark_theme_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_toStartOf="@id/tv_dl_theme_selection_dark_theme"
                 android:padding="4dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_dark_theme_2"
-                app:tint="?colorAccent" />
+                app:tint="?colorAccent"
+                app:srcCompat="@drawable/ic_dark_theme_2" />
 
             <TextView
                 android:id="@+id/tv_dl_theme_selection_dark_theme"
@@ -88,7 +90,7 @@
 
         </RelativeLayout>
 
-        <com.sumon.bundleapp.installer.view.ThemeView
+        <com.aefyr.sai.view.ThemeView
             android:id="@+id/themeview_dl_selection_dark"
             style="@style/ThemeView.Normal.Interactive"
             android:layout_width="match_parent"

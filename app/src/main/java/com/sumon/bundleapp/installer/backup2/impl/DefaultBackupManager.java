@@ -8,7 +8,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -16,7 +15,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -39,7 +37,6 @@ import com.sumon.bundleapp.installer.model.apksource.ApkSource;
 import com.sumon.bundleapp.installer.model.common.PackageMeta;
 import com.sumon.bundleapp.installer.utils.PreferencesHelper;
 import com.sumon.bundleapp.installer.utils.Stopwatch;
-import com.sumon.bundleapp.installer.utils.Utils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -52,6 +49,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import androidx.core.content.pm.PackageInfoCompat;
+import androidx.core.content.ContextCompat;
 
 public class DefaultBackupManager implements BackupManager, BackupStorage.Observer, BackupIndex.BackupIconProvider {
     private static final String TAG = "DefaultBackupManager";
@@ -105,7 +104,7 @@ public class DefaultBackupManager implements BackupManager, BackupStorage.Observ
             public void onReceive(Context context, Intent intent) {
                 updateAppInAppList(Objects.requireNonNull(intent.getData()).getSchemeSpecificPart());
             }
-        }, packagesStuffIntentFilter, null, mWorkerHandler, ContextCompat.RECEIVER_EXPORTED);
+        }, packagesStuffIntentFilter, null, mWorkerHandler, ContextCompat.RECEIVER_NOT_EXPORTED);
 
         mWorkerHandler.post(this::fetchPackages);
 
@@ -252,12 +251,14 @@ public class DefaultBackupManager implements BackupManager, BackupStorage.Observ
         Map<String, PackageMeta> packages = new HashMap<>();
         for (PackageInfo packageInfo : packageInfos) {
             ApplicationInfo applicationInfo = packageInfo.applicationInfo;
+            if (applicationInfo == null)
+                continue;
 
             PackageMeta packageMeta = new PackageMeta.Builder(applicationInfo.packageName)
                     .setLabel(applicationInfo.loadLabel(pm).toString())
                     .setHasSplits(applicationInfo.splitPublicSourceDirs != null && applicationInfo.splitPublicSourceDirs.length > 0)
                     .setIsSystemApp((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
-                    .setVersionCode(Utils.apiIsAtLeast(Build.VERSION_CODES.P) ? packageInfo.getLongVersionCode() : packageInfo.versionCode)
+                    .setVersionCode(PackageInfoCompat.getLongVersionCode(packageInfo))
                     .setVersionName(packageInfo.versionName)
                     .setIcon(applicationInfo.icon)
                     .setInstallTime(packageInfo.firstInstallTime)
@@ -383,8 +384,6 @@ public class DefaultBackupManager implements BackupManager, BackupStorage.Observ
                 mApps.put(packageMeta.packageName, new BackupAppImpl(packageMeta, true, BackupStatus.NO_BACKUP));
             }
 
-            mAppsLiveData.postValue(new ArrayList<>(mApps.values()));
-            notifyAppInvalidated(pkg);
         } else {
             Backup backup = mIndex.getLatestBackupForPackage(pkg);
             if (backup != null) {
@@ -393,9 +392,9 @@ public class DefaultBackupManager implements BackupManager, BackupStorage.Observ
                 mApps.remove(pkg);
             }
 
-            mAppsLiveData.postValue(new ArrayList<>(mApps.values()));
-            notifyAppInvalidated(pkg);
         }
+        mAppsLiveData.postValue(new ArrayList<>(mApps.values()));
+        notifyAppInvalidated(pkg);
     }
 
     private void enforceWorkerThread() {
@@ -444,33 +443,24 @@ public class DefaultBackupManager implements BackupManager, BackupStorage.Observ
         return mStorage.getBackupIcon(backup.iconUri());
     }
 
-    private static class BackupAppImpl implements BackupApp {
-
-        private final PackageMeta mPackageMeta;
-        private final boolean mIsInstalled;
-        private final BackupStatus mBackupStatus;
-
-        private BackupAppImpl(PackageMeta packageMeta, boolean isInstalled, BackupStatus backupStatus) {
-            mPackageMeta = packageMeta;
-            mIsInstalled = isInstalled;
-            mBackupStatus = backupStatus;
-        }
+    private record BackupAppImpl(PackageMeta mPackageMeta, boolean mIsInstalled,
+                                 BackupStatus mBackupStatus) implements BackupApp {
 
         @Override
-        public PackageMeta packageMeta() {
-            return mPackageMeta;
-        }
+            public PackageMeta packageMeta() {
+                return mPackageMeta;
+            }
 
-        @Override
-        public boolean isInstalled() {
-            return mIsInstalled;
-        }
+            @Override
+            public boolean isInstalled() {
+                return mIsInstalled;
+            }
 
-        @Override
-        public BackupStatus backupStatus() {
-            return mBackupStatus;
+            @Override
+            public BackupStatus backupStatus() {
+                return mBackupStatus;
+            }
         }
-    }
 
     /**
      * Observers are called on {@link #mWorkerHandler}
@@ -483,33 +473,24 @@ public class DefaultBackupManager implements BackupManager, BackupStorage.Observ
 
     }
 
-    private static class BackupAppDetailsImpl implements BackupAppDetails {
-
-        private final State mState;
-        private final BackupApp mApp;
-        private final List<Backup> mBackups;
-
-        private BackupAppDetailsImpl(State state, BackupApp app, List<Backup> backups) {
-            mState = state;
-            mApp = app;
-            mBackups = backups;
-        }
+    private record BackupAppDetailsImpl(State mState, BackupApp mApp,
+                                        List<Backup> mBackups) implements BackupAppDetails {
 
         @Override
-        public State state() {
-            return mState;
-        }
+            public State state() {
+                return mState;
+            }
 
-        @Override
-        public BackupApp app() {
-            return mApp;
-        }
+            @Override
+            public BackupApp app() {
+                return mApp;
+            }
 
-        @Override
-        public List<Backup> backups() {
-            return mBackups;
+            @Override
+            public List<Backup> backups() {
+                return mBackups;
+            }
         }
-    }
 
     private class LiveAppDetails extends LiveData<BackupAppDetails> implements Observer<List<Backup>>, AppsObserver {
 

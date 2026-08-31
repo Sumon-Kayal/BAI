@@ -7,6 +7,7 @@ import android.os.Environment;
 import androidx.preference.PreferenceManager;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
+import com.sumon.bundleapp.installer.signing.SigningSchemes;
 
 public class PreferencesHelper {
     private static PreferencesHelper sInstance;
@@ -77,6 +78,15 @@ public class PreferencesHelper {
 
     public boolean shouldSignApks() {
         return mPrefs.getBoolean(PreferencesKeys.SIGN_APKS, false);
+    }
+
+    public SigningSchemes getSigningSchemes() {
+        return new SigningSchemes(mPrefs.getInt(PreferencesKeys.SIGNATURE_SCHEMES,
+                SigningSchemes.DEFAULT_SCHEMES));
+    }
+
+    public void setSigningSchemes(SigningSchemes schemes) {
+        mPrefs.edit().putInt(PreferencesKeys.SIGNATURE_SCHEMES, schemes.flags()).apply();
     }
 
     public void setShouldSignApks(boolean signApks) {

@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +8,10 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.utils.Utils;
 import com.sumon.bundleapp.installer.viewmodels.BatchBackupDialogViewModel;
 import com.sumon.bundleapp.installer.viewmodels.factory.BatchBackupDialogViewModelFactory;
@@ -78,7 +76,7 @@ public class BatchBackupDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog alertDialog = new MaterialAlertDialogBuilder(requireContext())
+        AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
                 .setMessage(getExportPromptText())
                 .setPositiveButton(R.string.yes, null)
                 .setNegativeButton(R.string.cancel, null)
@@ -93,9 +91,7 @@ public class BatchBackupDialogFragment extends DialogFragment {
         Button positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE);
         Button negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE);
 
-        positiveButton.setOnClickListener((v) -> {
-            enqueueBackup();
-        });
+        positiveButton.setOnClickListener((v) -> enqueueBackup());
 
         mViewModel.getIsPreparing().observe(this, (isPreparing) -> {
             positiveButton.setVisibility(isPreparing ? View.GONE : View.VISIBLE);

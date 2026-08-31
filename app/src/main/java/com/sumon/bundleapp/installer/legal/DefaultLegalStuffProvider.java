@@ -6,14 +6,12 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
 
     private static DefaultLegalStuffProvider sInstance;
 
-    private final Context mContext;
-
     public static synchronized DefaultLegalStuffProvider getInstance(Context context) {
         return sInstance != null ? sInstance : new DefaultLegalStuffProvider(context);
     }
 
     private DefaultLegalStuffProvider(Context context) {
-        mContext = context.getApplicationContext();
+        Context mContext = context.getApplicationContext();
 
         sInstance = this;
     }
@@ -27,6 +25,7 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
     public String getPrivacyPolicyUrl() {
         return null;
     }
+
     @Override
     public boolean hasEula() {
         return true;
@@ -34,7 +33,6 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
 
     @Override
     public String getEulaUrl() {
-        return null;
+        return "https://aefyr.github.io/sai/eula_en";
     }
 }
-

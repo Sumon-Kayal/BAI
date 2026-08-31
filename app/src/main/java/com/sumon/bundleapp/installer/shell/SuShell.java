@@ -16,24 +16,24 @@ public class SuShell implements Shell {
 
     private static SuShell sInstance;
 
+    private final PersistentShellSession mSession =
+            new PersistentShellSession(TAG, () -> Runtime.getRuntime().exec(new String[]{"su"}));
+
     public static SuShell getInstance() {
         synchronized (SuShell.class) {
-            return sInstance != null ? sInstance : new SuShell();
+            if (sInstance == null)
+                sInstance = new SuShell();
+
+            return sInstance;
         }
     }
 
     private SuShell() {
-        sInstance = this;
     }
 
     public boolean requestRoot() {
-        try {
-            return exec(new Command("exit")).isSuccessful();
-        } catch (Exception e) {
-            Log.w(TAG, "Unable to acquire root access: ");
-            Log.w(TAG, e);
-            return false;
-        }
+        // Verifying uid also proves the shell really is root, not just that su exists.
+        return mSession.ensureStarted(session -> session.exec(new Command("id", "-u")).out.trim().equals("0"));
     }
 
     @Override
@@ -57,32 +57,44 @@ public class SuShell implements Shell {
     }
 
     private Result execInternal(Command command, @Nullable InputStream inputPipe) {
+        if (inputPipe != null)
+            return execWithStdin(command, inputPipe);
+
+        if (!requestRoot())
+            return new Result(command, -1, "", "<!> SAI SuShell: unable to start su session");
+
+        try {
+            return mSession.exec(command);
+        } catch (Exception e) {
+            Log.w(TAG, "Session command failed, dropping session", e);
+            mSession.close();
+            return new Result(command, -1, "", "<!> SAI SuShell Java exception: " + Utils.throwableToString(e));
+        }
+    }
+
+    /**
+     * stdin is reserved for the session's command stream, so piping data needs its own process.
+     */
+    private Result execWithStdin(Command command, InputStream inputPipe) {
         StringBuilder stdOutSb = new StringBuilder();
         StringBuilder stdErrSb = new StringBuilder();
 
         try {
-            Command.Builder suCommand = new Command.Builder("su", "-c", command.toString());
-
-            Process process = Runtime.getRuntime().exec(suCommand.build().toStringArray());
-
+            Process process = Runtime.getRuntime().exec(new String[]{"su", "-c", command.toString()});
 
             Thread stdOutD = IOUtils.writeStreamToStringBuilder(stdOutSb, process.getInputStream());
             Thread stdErrD = IOUtils.writeStreamToStringBuilder(stdErrSb, process.getErrorStream());
 
-            if (inputPipe != null) {
-                try (OutputStream outputStream = process.getOutputStream(); InputStream inputStream = inputPipe) {
-                    IOUtils.copyStream(inputStream, outputStream);
-                } catch (Exception e) {
-                    stdOutD.interrupt();
-                    stdErrD.interrupt();
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        process.destroyForcibly();
-                    else
-                        process.destroy();
-
-                    throw new RuntimeException(e);
-                }
+            try (OutputStream outputStream = process.getOutputStream(); InputStream inputStream = inputPipe) {
+                IOUtils.copyStream(inputStream, outputStream);
+            } catch (Exception e) {
+                stdOutD.interrupt();
+                stdErrD.interrupt();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    process.destroyForcibly();
+                else
+                    process.destroy();
+                throw new RuntimeException(e);
             }
 
             process.waitFor();
@@ -91,9 +103,9 @@ public class SuShell implements Shell {
 
             return new Result(command, process.exitValue(), stdOutSb.toString().trim(), stdErrSb.toString().trim());
         } catch (Exception e) {
-            Log.w(TAG, "Unable execute command: ");
-            Log.w(TAG, e);
-            return new Result(command, -1, stdOutSb.toString().trim(), stdErrSb + "\n\n<!> SAI SuShell Java exception: " + Utils.throwableToString(e));
+            Log.w(TAG, "Unable to execute command", e);
+            return new Result(command, -1, stdOutSb.toString().trim(),
+                    stdErrSb + "\n\n<!> SAI SuShell Java exception: " + Utils.throwableToString(e));
         }
     }
 }

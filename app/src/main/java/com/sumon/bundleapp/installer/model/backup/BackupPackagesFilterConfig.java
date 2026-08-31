@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.model.backup;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -13,6 +11,7 @@ import com.aefyr.flexfilter.builtin.filter.sort.SortFilterConfig;
 import com.aefyr.flexfilter.builtin.filter.sort.SortFilterConfigOption;
 import com.aefyr.flexfilter.config.core.ComplexFilterConfig;
 import com.aefyr.flexfilter.config.core.FilterConfig;
+import com.sumon.bundleapp.installer.R;
 
 import java.util.ArrayList;
 
@@ -45,14 +44,12 @@ public class BackupPackagesFilterConfig {
         WHATEVER, YES, NO;
 
         public static SimpleFilterMode from(SingleChoiceFilterConfigOption option) {
-            switch (option.id()) {
-                case FILTER_MODE_YES:
-                    return SimpleFilterMode.YES;
-                case FILTER_MODE_NO:
-                    return SimpleFilterMode.NO;
-            }
+            return switch (option.id()) {
+                case FILTER_MODE_YES -> SimpleFilterMode.YES;
+                case FILTER_MODE_NO -> SimpleFilterMode.NO;
+                default -> SimpleFilterMode.WHATEVER;
+            };
 
-            return SimpleFilterMode.WHATEVER;
         }
     }
 
@@ -64,20 +61,18 @@ public class BackupPackagesFilterConfig {
         WHATEVER, NO_BACKUP, SAME_VERSION, HIGHER_VERSION, LOWER_VERSION, APP_NOT_INSTALLED;
 
         public static BackupStatusFilterMode from(SingleChoiceFilterConfigOption option) {
-            switch (option.id()) {
-                case FILTER_BACKUP_STATUS_MODE_NO_BACKUP:
-                    return BackupStatusFilterMode.NO_BACKUP;
-                case FILTER_BACKUP_STATUS_MODE_SAME_VERSION:
-                    return BackupStatusFilterMode.SAME_VERSION;
-                case FILTER_BACKUP_STATUS_MODE_HIGHER_VERSION:
-                    return BackupStatusFilterMode.HIGHER_VERSION;
-                case FILTER_BACKUP_STATUS_MODE_LOWER_VERSION:
-                    return BackupStatusFilterMode.LOWER_VERSION;
-                case FILTER_BACKUP_STATUS_MODE_APP_NOT_INSTALLED:
-                    return BackupStatusFilterMode.APP_NOT_INSTALLED;
-            }
+            return switch (option.id()) {
+                case FILTER_BACKUP_STATUS_MODE_NO_BACKUP -> BackupStatusFilterMode.NO_BACKUP;
+                case FILTER_BACKUP_STATUS_MODE_SAME_VERSION -> BackupStatusFilterMode.SAME_VERSION;
+                case FILTER_BACKUP_STATUS_MODE_HIGHER_VERSION ->
+                        BackupStatusFilterMode.HIGHER_VERSION;
+                case FILTER_BACKUP_STATUS_MODE_LOWER_VERSION ->
+                        BackupStatusFilterMode.LOWER_VERSION;
+                case FILTER_BACKUP_STATUS_MODE_APP_NOT_INSTALLED ->
+                        BackupStatusFilterMode.APP_NOT_INSTALLED;
+                default -> BackupStatusFilterMode.WHATEVER;
+            };
 
-            return BackupStatusFilterMode.WHATEVER;
         }
     }
 
@@ -92,7 +87,7 @@ public class BackupPackagesFilterConfig {
     public BackupPackagesFilterConfig(ComplexFilterConfig config) {
         for (FilterConfig filterConfig : config.filters()) {
             if (filterConfig instanceof SingleChoiceFilterConfig) {
-                switch (filterConfig.id()) {
+                switch (((SingleChoiceFilterConfig) filterConfig).id()) {
                     case FILTER_SPLIT:
                         mSplitApkFilter = SimpleFilterMode.from(((SingleChoiceFilterConfig) filterConfig).getSelectedOption());
                         break;

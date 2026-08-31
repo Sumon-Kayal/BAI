@@ -1,27 +1,20 @@
 package com.sumon.bundleapp.installer.installer2.base.model;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 
+import com.sumon.bundleapp.installer.R;
 
 public enum SaiPiSessionStatus {
     CREATED, QUEUED, INSTALLING, INSTALLATION_SUCCEED, INSTALLATION_FAILED;
 
     public String getReadableName(Context c) {
-        switch (this) {
-            case CREATED:
-                return c.getString(R.string.installer_state_created);
-            case QUEUED:
-                return c.getString(R.string.installer_state_queued);
-            case INSTALLING:
-                return c.getString(R.string.installer_state_installing);
-            case INSTALLATION_SUCCEED:
-                return c.getString(R.string.installer_state_installed);
-            case INSTALLATION_FAILED:
-                return c.getString(R.string.installer_state_failed);
-        }
+        return switch (this) {
+            case CREATED -> c.getString(R.string.installer_state_created);
+            case QUEUED -> c.getString(R.string.installer_state_queued);
+            case INSTALLING -> c.getString(R.string.installer_state_installing);
+            case INSTALLATION_SUCCEED -> c.getString(R.string.installer_state_installed);
+            case INSTALLATION_FAILED -> c.getString(R.string.installer_state_failed);
+        };
 
-        throw new IllegalStateException("wtf");
     }
 }

@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,9 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
 
 import java.util.Objects;
+import androidx.core.os.BundleCompat;
 
 public class SingleChoiceListDialogFragment extends BaseBottomSheetDialogFragment {
 
@@ -73,7 +73,7 @@ public class SingleChoiceListDialogFragment extends BaseBottomSheetDialogFragmen
         if (args == null)
             return;
 
-        mParams = Objects.requireNonNull(args.getParcelable(ARG_PARAMS), "params must not be null");
+        mParams = Objects.requireNonNull(BundleCompat.getParcelable(args, ARG_PARAMS, DialogParams.class), "params must not be null");
         mParams.setTag(getTag());
     }
 
@@ -159,7 +159,7 @@ public class SingleChoiceListDialogFragment extends BaseBottomSheetDialogFragmen
                 mText = itemView.findViewById(R.id.tv_single_choice_item);
 
                 itemView.setOnClickListener((v) -> {
-                    int adapterPosition = getAdapterPosition();
+                    int adapterPosition = getBindingAdapterPosition();
                     if (adapterPosition == RecyclerView.NO_POSITION)
                         return;
 
@@ -210,7 +210,7 @@ public class SingleChoiceListDialogFragment extends BaseBottomSheetDialogFragmen
             checkedItem = in.readInt();
         }
 
-        public static final Creator<DialogParams> CREATOR = new Creator<DialogParams>() {
+        public static final Creator<DialogParams> CREATOR = new Creator<>() {
             @Override
             public DialogParams createFromParcel(Parcel in) {
                 return new DialogParams(in);

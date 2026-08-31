@@ -18,7 +18,7 @@ public class Selection<Key> {
     private final Set<Observer<Key>> mObservers = new HashSet<>();
     private final MutableLiveData<Selection<Key>> mLiveSelection = new MutableLiveData<>(this);
 
-    public Selection(KeyStorage keyStorage) {
+    public Selection(KeyStorage<Key> keyStorage) {
         mKeyStorage = keyStorage;
     }
 

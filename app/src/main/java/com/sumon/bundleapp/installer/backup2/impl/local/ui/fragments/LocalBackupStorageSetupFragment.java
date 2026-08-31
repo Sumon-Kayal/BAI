@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.backup2.impl.local.ui.fragments;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.impl.local.ui.viewmodels.LocalBackupStorageSetupViewModel;
 import com.sumon.bundleapp.installer.ui.dialogs.UriDirectoryPickerDialogFragment;
 import com.sumon.bundleapp.installer.ui.fragments.SaiBaseFragment;
@@ -52,10 +51,8 @@ public class LocalBackupStorageSetupFragment extends SaiBaseFragment implements 
         if (tag == null)
             return;
 
-        switch (tag) {
-            case "backup_dir":
-                mViewModel.setBackupDir(dirUri);
-                break;
+        if (tag.equals("backup_dir")) {
+            mViewModel.setBackupDir(dirUri);
         }
     }
 }

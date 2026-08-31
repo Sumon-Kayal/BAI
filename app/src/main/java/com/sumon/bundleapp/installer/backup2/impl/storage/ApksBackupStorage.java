@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.backup2.impl.storage;
 
-import com.sumon.bundleapp.installer.BuildConfig;
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
@@ -12,6 +10,7 @@ import androidx.annotation.GuardedBy;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
+import com.sumon.bundleapp.installer.BuildConfig;
 import com.sumon.bundleapp.installer.backup2.Backup;
 import com.sumon.bundleapp.installer.backup2.BackupComponent;
 import com.sumon.bundleapp.installer.backup2.backuptask.config.BackupTaskConfig;
@@ -61,11 +60,10 @@ public abstract class ApksBackupStorage extends BaseBackupStorage {
     @GuardedBy("mBatchTasks")
     private final Map<String, BatchBackupTaskConfig> mBatchTasks = new HashMap<>();
 
-    private final HandlerThread mTaskProgressHandlerThread;
     private final Handler mTaskProgressHandler;
 
     protected ApksBackupStorage() {
-        mTaskProgressHandlerThread = new HandlerThread("ApksBackupStorage.TaskProgress");
+        HandlerThread mTaskProgressHandlerThread = new HandlerThread("ApksBackupStorage.TaskProgress");
         mTaskProgressHandlerThread.start();
         mTaskProgressHandler = new Handler(mTaskProgressHandlerThread.getLooper());
     }
@@ -122,8 +120,9 @@ public abstract class ApksBackupStorage extends BaseBackupStorage {
 
 
                     List<BackupComponent> backupComponents = new ArrayList<>();
-                    if (appMeta.backupComponents() != null) {
-                        for (SaiExportedAppMeta2.BackupComponent backupComponent : appMeta.backupComponents()) {
+                    List<SaiExportedAppMeta2.BackupComponent> metaComponents = appMeta.backupComponents();
+                    if (metaComponents != null) {
+                        for (SaiExportedAppMeta2.BackupComponent backupComponent : metaComponents) {
                             backupComponents.add(new SimpleBackupComponent(backupComponent.type(), backupComponent.size()));
                         }
                     }
@@ -201,7 +200,12 @@ public abstract class ApksBackupStorage extends BaseBackupStorage {
         if (!"absi".equals(iconUri.getScheme()) || !(BuildConfig.APPLICATION_ID + "." + getStorageId()).equals(iconUri.getAuthority()))
             throw new IllegalArgumentException("Invalid icon uri - " + iconUri);
 
-        return new Pair<>(new File(iconUri.getQueryParameter("cached_icon")), Uri.parse(iconUri.getQueryParameter("backup")));
+        String cachedIcon = iconUri.getQueryParameter("cached_icon");
+        String backup = iconUri.getQueryParameter("backup");
+        if (cachedIcon == null || backup == null)
+            throw new IllegalArgumentException("Invalid icon uri - " + iconUri);
+
+        return new Pair<>(new File(cachedIcon), Uri.parse(backup));
     }
 
     private File cacheBackupIcon(InputStream iconInputStream) throws IOException {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sumon.bundleapp.installer.view.ViewSwitcherLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.aefyr.sai.view.ViewSwitcherLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container_backup_dialog"
     android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                     android:text="@string/backup_export_apk_desc" />
             </LinearLayout>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <Switch
                 android:id="@+id/switch_backup_dialog_apk_export"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,12 +105,13 @@
         android:visibility="gone">
 
         <ImageView
+            android:importantForAccessibility="no"
             android:id="@+id/iv_backup_dialog_error"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_warning"
-            app:tint="?colorAccent" />
+            app:tint="?colorAccent"
+            app:srcCompat="@drawable/ic_warning" />
 
         <TextView
             android:id="@+id/tv_backup_dialog_error"
@@ -121,4 +122,4 @@
             android:text="@string/backup_load_splits_error" />
     </LinearLayout>
 
-</com.sumon.bundleapp.installer.view.ViewSwitcherLayout>
+</com.aefyr.sai.view.ViewSwitcherLayout>

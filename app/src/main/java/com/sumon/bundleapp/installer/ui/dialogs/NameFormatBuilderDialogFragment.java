@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.BackupNameFormatBuilderPartsAdapter;
 import com.sumon.bundleapp.installer.model.backup.BackupNameFormatBuilder;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
@@ -64,7 +63,9 @@ public class NameFormatBuilderDialogFragment extends BaseBottomSheetDialogFragme
 
         getNegativeButton().setOnClickListener((v) -> dismiss());
         getPositiveButton().setOnClickListener((v) -> {
-            deliverFormatAndDismiss(mViewModel.getFormat().getValue().build());
+            BackupNameFormatBuilder format = mViewModel.getFormat().getValue();
+            if (format != null)
+                deliverFormatAndDismiss(format.build());
         });
 
         RecyclerView recycler = view.findViewById(R.id.rv_name_builder);
@@ -80,9 +81,7 @@ public class NameFormatBuilderDialogFragment extends BaseBottomSheetDialogFragme
         TextView preview = view.findViewById(R.id.tv_name_builder_sample);
 
         mViewModel.getSelection().asLiveData().observe(this, (selection) -> getPositiveButton().setEnabled(selection.hasSelection()));
-        mViewModel.getFormat().observe(this, (format) -> {
-            preview.setText(format.getParts().isEmpty() ? getString(R.string.name_format_builder_preview_empty) : getString(R.string.name_format_builder_preview, BackupNameFormat.format(format.build(), mViewModel.getOwnMeta())));
-        });
+        mViewModel.getFormat().observe(this, (format) -> preview.setText(format.getParts().isEmpty() ? getString(R.string.name_format_builder_preview_empty) : getString(R.string.name_format_builder_preview, BackupNameFormat.format(format.build(), mViewModel.getOwnMeta()))));
     }
 
     private void deliverFormatAndDismiss(String format) {

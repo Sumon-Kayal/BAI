@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -9,12 +7,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.utils.Utils;
-
-import java.util.Objects;
 
 public class ErrorLogDialogFragment extends DialogFragment {
     private static final String ARG_TITLE = "title";
@@ -47,13 +43,13 @@ public class ErrorLogDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new MaterialAlertDialogBuilder(requireContext())
+        return new AlertDialog.Builder(requireContext())
                 .setTitle(mTitle)
                 .setMessage(mLog)
                 .setPositiveButton(R.string.ok, null)
                 .setNeutralButton(R.string.copy2, (d, w) -> {
-                    Utils.copyTextToClipboard(getContext(), mLog);
-                    Toast.makeText(getContext(), R.string.copied, Toast.LENGTH_SHORT).show();
+                    Utils.copyTextToClipboard(requireContext(), mLog);
+                    Toast.makeText(requireContext(), R.string.copied, Toast.LENGTH_SHORT).show();
                     dismiss();
                 })
                 .create();

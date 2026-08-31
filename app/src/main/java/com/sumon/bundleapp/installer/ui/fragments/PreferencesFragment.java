@@ -171,6 +171,22 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             return true;
         });
 
+        Preference signatureSchemesPref = findPreference("signature_schemes");
+        if (signatureSchemesPref != null) {
+            signatureSchemesPref.setOnPreferenceClickListener(p -> {
+                new SignatureSchemesDialogFragment().show(getChildFragmentManager(), "signature_schemes");
+                return true;
+            });
+        }
+
+        Preference signingKeyPref = findPreference("signing_key");
+        if (signingKeyPref != null) {
+            signingKeyPref.setOnPreferenceClickListener(p -> {
+                new SigningKeyDialogFragment().show(getChildFragmentManager(), "signing_key");
+                return true;
+            });
+        }
+
         mInstallerPref = findPreference("installer");
         updateInstallerSummary();
 
