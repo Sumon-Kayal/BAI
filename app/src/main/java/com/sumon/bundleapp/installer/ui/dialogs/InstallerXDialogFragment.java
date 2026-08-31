@@ -202,13 +202,6 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
     }
 
     private void pickFilesWithSaf(boolean ignorePermissions) {
-        if (Utils.apiIsAtLeast(30) && !ignorePermissions) {
-            if (requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                SimpleAlertDialogFragment.newInstance(requireContext(), R.string.warning, R.string.installerx_thank_you_scoped_storage_very_cool).show(getChildFragmentManager(), DIALOG_TAG_Q_SAF_WARNING);
-                return;
-            }
-        }
-
         Intent getContentIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getContentIntent.setType("*/*");
         getContentIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
