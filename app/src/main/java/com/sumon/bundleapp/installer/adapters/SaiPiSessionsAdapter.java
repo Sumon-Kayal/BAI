@@ -14,7 +14,7 @@ import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.installer2.base.model.SaiPiSessionState;
 import com.sumon.bundleapp.installer.model.common.PackageMeta;
 import com.bumptech.glide.Glide;
-import io.github.usefulness.shimmer.android.ShimmerFrameLayout;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
