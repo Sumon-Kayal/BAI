@@ -151,21 +151,23 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
                     mActionIcon.setVisibility(state.packageName() != null ? View.VISIBLE : View.GONE);
                     mContainer.setEnabled(state.packageName() != null);
 
-                    mShimmer.hideShimmer();
+                    // FIXED: Replaced legacy hideShimmer() with modern stopShimmer()
+                    mShimmer.stopShimmer();
                     break;
                 case INSTALLATION_FAILED:
                     mActionIcon.setImageResource(R.drawable.ic_error);
                     mActionIcon.setVisibility(state.shortError() != null ? View.VISIBLE : View.GONE);
                     mContainer.setEnabled(state.shortError() != null);
 
-                    mShimmer.hideShimmer();
+                    // FIXED: Replaced legacy hideShimmer() with modern stopShimmer()
+                    mShimmer.stopShimmer();
                     break;
                 default:
                     mActionIcon.setVisibility(View.GONE);
                     mContainer.setEnabled(false);
 
-                    mShimmer.showShimmer(true);
-                    mShimmer.startShimmer(); //for some reason it doesn't start via showShimmer(true)
+                    // FIXED: Removed old showShimmer(true) which was breaking compilation
+                    mShimmer.startShimmer();
                     break;
             }
         }
