@@ -2,13 +2,13 @@ package com.sumon.bundleapp.installer.ui.dialogs;
 
 import com.sumon.bundleapp.installer.R;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -28,7 +28,6 @@ import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragme
 import com.sumon.bundleapp.installer.utils.AlertsUtils;
 import com.sumon.bundleapp.installer.utils.PermissionsUtils;
 import com.sumon.bundleapp.installer.utils.PreferencesHelper;
-import com.sumon.bundleapp.installer.utils.Utils;
 import com.sumon.bundleapp.installer.view.ViewSwitcherLayout;
 import com.sumon.bundleapp.installer.viewmodels.InstallerXDialogViewModel;
 import com.sumon.bundleapp.installer.viewmodels.factory.InstallerXDialogViewModelFactory;
@@ -45,14 +44,16 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
 
     private static final String ARG_APK_SOURCE_URI = "apk_source_uri";
     private static final String ARG_URI_HOST_FACTORY = "uri_host_factory";
+    private static final String STATE_PENDING_STORAGE_ACTION = "pending_storage_action";
 
     private InstallerXDialogViewModel mViewModel;
 
     private PreferencesHelper mHelper;
 
-    private int mActionAfterGettingStoragePermissions;
+    private static final int NO_PENDING_STORAGE_ACTION = -1;
     private static final int PICK_WITH_INTERNAL_FILEPICKER = 0;
     private static final int PICK_WITH_SAF = 1;
+    private int mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
 
     private static final String DIALOG_TAG_Q_SAF_WARNING = "q_saf_warning";
 
@@ -82,6 +83,9 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null)
+            mActionAfterGettingStoragePermissions = savedInstanceState.getInt(STATE_PENDING_STORAGE_ACTION, NO_PENDING_STORAGE_ACTION);
+
         Bundle args = getArguments();
 
         UriHostFactory uriHostFactory = null;
@@ -105,6 +109,22 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
         Uri apkSourceUri = args.getParcelable(ARG_APK_SOURCE_URI);
         if (apkSourceUri != null)
             mViewModel.setApkSourceUris(Collections.singletonList(apkSourceUri));
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_PENDING_STORAGE_ACTION, mActionAfterGettingStoragePermissions);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+                && mActionAfterGettingStoragePermissions != NO_PENDING_STORAGE_ACTION) {
+            resumePendingStorageAction(Environment.isExternalStorageManager());
+        }
     }
 
     @Nullable
@@ -183,10 +203,11 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
     }
 
     private void checkPermissionsAndPickFiles() {
+        mActionAfterGettingStoragePermissions = PICK_WITH_INTERNAL_FILEPICKER;
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this)) {
-            mActionAfterGettingStoragePermissions = PICK_WITH_INTERNAL_FILEPICKER;
             return;
         }
+        mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
 
 
         DialogProperties properties = new DialogProperties();
@@ -217,20 +238,26 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
 
         if (requestCode == PermissionsUtils.REQUEST_CODE_STORAGE_PERMISSIONS) {
             boolean permissionsGranted = !(grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED);
-
-            switch (mActionAfterGettingStoragePermissions) {
-                case PICK_WITH_INTERNAL_FILEPICKER:
-                    if (!permissionsGranted)
-                        AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
-                    else
-                        checkPermissionsAndPickFiles();
-                    break;
-                case PICK_WITH_SAF:
-                    pickFilesWithSaf(true);
-                    break;
-            }
+            resumePendingStorageAction(permissionsGranted);
         }
 
+    }
+
+    private void resumePendingStorageAction(boolean permissionsGranted) {
+        int pendingAction = mActionAfterGettingStoragePermissions;
+        mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
+
+        switch (pendingAction) {
+            case PICK_WITH_INTERNAL_FILEPICKER:
+                if (!permissionsGranted)
+                    AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
+                else
+                    checkPermissionsAndPickFiles();
+                break;
+            case PICK_WITH_SAF:
+                pickFilesWithSaf(true);
+                break;
+        }
     }
 
     @Override
@@ -269,6 +296,7 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
             case DIALOG_TAG_Q_SAF_WARNING:
                 mActionAfterGettingStoragePermissions = PICK_WITH_SAF;
                 if (PermissionsUtils.checkAndRequestStoragePermissions(this)) {
+                    mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
                     pickFilesWithSaf(false);
                 }
                 break;
