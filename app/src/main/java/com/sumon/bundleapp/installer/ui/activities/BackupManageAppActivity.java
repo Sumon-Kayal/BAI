@@ -1,12 +1,12 @@
 package com.sumon.bundleapp.installer.ui.activities;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.ui.fragments.BackupManageAppFragment;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 
 public class BackupManageAppActivity extends ThemedActivity implements BackupManageAppFragment.DismissDelegate {
 
@@ -16,6 +16,8 @@ public class BackupManageAppActivity extends ThemedActivity implements BackupMan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_manage_app);
+
+        InsetsUtils.applySystemBarInsetsAsPadding(findViewById(android.R.id.content));
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -29,7 +31,6 @@ public class BackupManageAppActivity extends ThemedActivity implements BackupMan
         intent.putExtra(EXTRA_PKG, pkg);
         context.startActivity(intent);
     }
-
 
     @Override
     public void dismiss(BackupManageAppFragment fragment) {

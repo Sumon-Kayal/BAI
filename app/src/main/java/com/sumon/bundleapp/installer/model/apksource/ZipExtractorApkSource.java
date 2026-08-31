@@ -1,12 +1,11 @@
 package com.sumon.bundleapp.installer.model.apksource;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.model.filedescriptor.FileDescriptor;
 import com.sumon.bundleapp.installer.utils.IOUtils;
 import com.sumon.bundleapp.installer.utils.Utils;
@@ -15,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -39,6 +39,7 @@ public class ZipExtractorApkSource implements ApkSource {
         mZipFileDescriptor = zipFileDescriptor;
 
         File extractedApksDir = new File(c.getFilesDir(), "extractedApks");
+        //noinspection ResultOfMethodCallIgnored
         extractedApksDir.mkdirs();
         mExtractedFilesDir = new File(extractedApksDir, String.valueOf(System.currentTimeMillis()));
         mExtractedFilesDir.mkdirs();
@@ -47,7 +48,7 @@ public class ZipExtractorApkSource implements ApkSource {
     @Override
     public boolean nextApk() throws Exception {
         if (!mIsOpen) {
-            mZipInputStream = new ZipInputStream(mZipFileDescriptor.open());
+            mZipInputStream = new ZipInputStream(IOUtils.buffer(mZipFileDescriptor.open()));
             mIsOpen = true;
         }
 
@@ -72,7 +73,7 @@ public class ZipExtractorApkSource implements ApkSource {
 
     @Override
     public InputStream openApkInputStream() throws Exception {
-        return new FileInputStream(mCurrentExtractedZipEntryFile);
+        return IOUtils.buffer(new FileInputStream(mCurrentExtractedZipEntryFile));
     }
 
     @Override
@@ -108,7 +109,7 @@ public class ZipExtractorApkSource implements ApkSource {
 
     private void extractCurrentEntry() throws Exception {
         mCurrentExtractedZipEntryFile = new File(mExtractedFilesDir, Utils.getFileNameFromZipEntry(mCurrentZipEntry));
-        try (FileOutputStream fileOutputStream = new FileOutputStream(mCurrentExtractedZipEntryFile)) {
+        try (OutputStream fileOutputStream = IOUtils.buffer(new FileOutputStream(mCurrentExtractedZipEntryFile))) {
             IOUtils.copyStream(mZipInputStream, fileOutputStream);
         }
     }

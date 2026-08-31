@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.adapters;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -17,6 +15,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.selection.SelectableAdapter;
 import com.sumon.bundleapp.installer.adapters.selection.Selection;
 import com.sumon.bundleapp.installer.backup2.Backup;
@@ -34,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+@SuppressWarnings("ALL")
 public class BackupAppDetailsAdapter extends SelectableAdapter<String, BackupAppDetailsAdapter.BaseViewHolder> {
     private static final int VH_TYPE_HEADER = 0;
     private static final int VH_TYPE_BACKUP = 1;
@@ -94,16 +94,17 @@ public class BackupAppDetailsAdapter extends SelectableAdapter<String, BackupApp
     }
 
     @NonNull
+    @SuppressWarnings({"rawtypes"})
     @Override
     public BackupAppDetailsAdapter.BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case VH_TYPE_HEADER:
-                return new HeaderViewHolder(mInflater.inflate(R.layout.item_backup_app_details_header, parent, false));
-            case VH_TYPE_BACKUP:
-                return new BackupViewHolder(mInflater.inflate(R.layout.item_backup_app_details_backup, parent, false));
-        }
+        return switch (viewType) {
+            case VH_TYPE_HEADER ->
+                    new HeaderViewHolder(mInflater.inflate(R.layout.item_backup_app_details_header, parent, false));
+            case VH_TYPE_BACKUP ->
+                    new BackupViewHolder(mInflater.inflate(R.layout.item_backup_app_details_backup, parent, false));
+            default -> throw new IllegalArgumentException("Unknown viewType - " + viewType);
+        };
 
-        throw new IllegalArgumentException("Unknown viewType - " + viewType);
     }
 
     @Override
@@ -114,6 +115,7 @@ public class BackupAppDetailsAdapter extends SelectableAdapter<String, BackupApp
         return 1 + mDetails.backups().size();
     }
 
+    @SuppressWarnings({"unchecked"})
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
@@ -211,7 +213,6 @@ public class BackupAppDetailsAdapter extends SelectableAdapter<String, BackupApp
         private final AppCompatImageView mBackupStatus;
 
         private final Button mRestoreButton;
-        private final Button mDeleteButton;
 
         private final TextView mIncompatibleVersionWarning;
 
@@ -225,12 +226,12 @@ public class BackupAppDetailsAdapter extends SelectableAdapter<String, BackupApp
             mBackupStatus = itemView.findViewById(R.id.iv_backup_status);
 
             mRestoreButton = itemView.findViewById(R.id.button_backup_restore_backup);
-            mDeleteButton = itemView.findViewById(R.id.button_backup_delete_backup);
+            Button mDeleteButton = itemView.findViewById(R.id.button_backup_delete_backup);
 
             mIncompatibleVersionWarning = itemView.findViewById(R.id.tv_backup_incompatible_version_warning);
 
             mRestoreButton.setOnClickListener(v -> {
-                int adapterPosition = getAdapterPosition();
+                int adapterPosition = getBindingAdapterPosition();
                 if (adapterPosition == RecyclerView.NO_POSITION)
                     return;
 
@@ -238,7 +239,7 @@ public class BackupAppDetailsAdapter extends SelectableAdapter<String, BackupApp
             });
 
             mDeleteButton.setOnClickListener(v -> {
-                int adapterPosition = getAdapterPosition();
+                int adapterPosition = getBindingAdapterPosition();
                 if (adapterPosition == RecyclerView.NO_POSITION)
                     return;
 

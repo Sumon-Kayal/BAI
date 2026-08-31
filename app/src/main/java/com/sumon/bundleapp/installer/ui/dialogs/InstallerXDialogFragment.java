@@ -1,16 +1,14 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +16,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.SplitApkSourceMetaAdapter;
 import com.sumon.bundleapp.installer.installerx.resolver.urimess.UriHostFactory;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
@@ -38,34 +39,63 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import androidx.core.os.BundleCompat;
 
 public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment implements FilePickerDialogFragment.OnFilesSelectedListener, SimpleAlertDialogFragment.OnDismissListener {
-    private static final int REQUEST_CODE_GET_FILES = 337;
-
     private static final String ARG_APK_SOURCE_URI = "apk_source_uri";
     private static final String ARG_URI_HOST_FACTORY = "uri_host_factory";
-    private static final String STATE_PENDING_STORAGE_ACTION = "pending_storage_action";
-
-    private InstallerXDialogViewModel mViewModel;
-
-    private PreferencesHelper mHelper;
-
-    private static final int NO_PENDING_STORAGE_ACTION = -1;
-    private static final int PICK_WITH_INTERNAL_FILEPICKER = 0;
-    private static final int PICK_WITH_SAF = 1;
-    private int mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
-
+    private static final String PREF_FIRST_RUN = "first_run";
+    private static final String DIALOG_TAG_STORAGE_PERMISSION = "storage_permission_dialog";
     private static final String DIALOG_TAG_Q_SAF_WARNING = "q_saf_warning";
 
-    /**
-     * Create an instance of InstallerXDialogFragment with given apk source uri and UriHostFactory class.
-     * If {@code apkSourceUri} is null, dialog will let user pick apk source file.
-     * If {@code uriHostFactoryClass} is null, {@link com.sumon.bundleapp.installer.installerx.resolver.urimess.impl.AndroidUriHost} will be used.
-     *
-     * @param apkSourceUri
-     * @param uriHostFactoryClass
-     * @return
-     */
+    private InstallerXDialogViewModel mViewModel;
+    private PreferencesHelper mHelper;
+
+    private int mActionAfterGettingStoragePermissions;
+    private static final int PICK_WITH_INTERNAL_FILEPICKER = 0;
+    private static final int PICK_WITH_SAF = 1;
+
+    private final ActivityResultLauncher<Intent> filePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    handleFilePickerResult(result.getData());
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> manageStorageLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
+                    AlertsUtils.showAlert(this, R.string.permission_required, R.string.storage_permission_denied_message);
+                }
+            });
+
+    private final ActivityResultLauncher<String[]> permissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestMultiplePermissions(),
+            permissions -> {
+                boolean allGranted = true;
+                for (Boolean isGranted : permissions.values()) {
+                    if (!isGranted) {
+                        allGranted = false;
+                        break;
+                    }
+                }
+
+                if (allGranted) {
+                    switch (mActionAfterGettingStoragePermissions) {
+                        case PICK_WITH_INTERNAL_FILEPICKER:
+                            showFilePicker();
+                            break;
+                        case PICK_WITH_SAF:
+                            pickFilesWithSaf(true);
+                            break;
+                    }
+                } else {
+                    AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
+                }
+            });
+
     public static InstallerXDialogFragment newInstance(@Nullable Uri apkSourceUri, @Nullable Class<? extends UriHostFactory> uriHostFactoryClass) {
         Bundle args = new Bundle();
         if (apkSourceUri != null)
@@ -83,11 +113,15 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null)
-            mActionAfterGettingStoragePermissions = savedInstanceState.getInt(STATE_PENDING_STORAGE_ACTION, NO_PENDING_STORAGE_ACTION);
+        mHelper = PreferencesHelper.getInstance(requireContext());
+
+        // Check if it's first run and handle permissions
+        if (mHelper.getBoolean(PREF_FIRST_RUN, true)) {
+            mHelper.putBoolean(PREF_FIRST_RUN, false);
+            handleStoragePermissions();
+        }
 
         Bundle args = getArguments();
-
         UriHostFactory uriHostFactory = null;
         if (args != null) {
             String uriHostFactoryClass = args.getString(ARG_URI_HOST_FACTORY);
@@ -100,32 +134,66 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
             }
         }
 
-        mHelper = PreferencesHelper.getInstance(requireContext());
         mViewModel = new ViewModelProvider(this, new InstallerXDialogViewModelFactory(requireContext(), uriHostFactory)).get(InstallerXDialogViewModel.class);
 
         if (args == null)
             return;
 
-        Uri apkSourceUri = args.getParcelable(ARG_APK_SOURCE_URI);
+        Uri apkSourceUri = BundleCompat.getParcelable(args, ARG_APK_SOURCE_URI, Uri.class);
         if (apkSourceUri != null)
             mViewModel.setApkSourceUris(Collections.singletonList(apkSourceUri));
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_PENDING_STORAGE_ACTION, mActionAfterGettingStoragePermissions);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-                && mActionAfterGettingStoragePermissions != NO_PENDING_STORAGE_ACTION) {
-            resumePendingStorageAction(Environment.isExternalStorageManager());
+    private void handleStoragePermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                showManageExternalStorageDialog();
+            }
+        } else {
+            if (!PermissionsUtils.hasStoragePermissions(requireContext())) {
+                mActionAfterGettingStoragePermissions = PICK_WITH_INTERNAL_FILEPICKER;
+                permissionLauncher.launch(PermissionsUtils.getStoragePermissions());
+            }
         }
     }
+
+    private void showManageExternalStorageDialog() {
+        SimpleAlertDialogFragment.newInstance(requireContext(),
+                R.string.permission_required,
+                R.string.android_storage_permission_message,
+                (dialog, which) -> {
+                    try {
+                        Intent intent;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            intent = new Intent("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
+                            intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+                        } else {
+                            // For API < 30, use alternative approach
+                            intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+                        }
+                        manageStorageLauncher.launch(intent);
+                    } catch (Exception e) {
+                        // Fallback for devices that don't support the intent
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+                        manageStorageLauncher.launch(intent);
+                    }
+                }).show(getChildFragmentManager(), DIALOG_TAG_STORAGE_PERMISSION);
+    }
+
+        private final ActivityResultLauncher<Intent> installPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        if (requireContext().getPackageManager().canRequestPackageInstalls()) {
+                            startInstallation();
+                        } else {
+                            AlertsUtils.showAlert(this, R.string.permission_required,
+                                    R.string.install_permission_denied_message);
+                        }
+                    }
+                });
 
     @Nullable
     @Override
@@ -151,8 +219,10 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
 
         getNegativeButton().setOnClickListener(v -> dismiss());
         getPositiveButton().setOnClickListener(v -> {
-            mViewModel.enqueueInstallation();
-            dismiss();
+            if (checkAndRequestInstallPermission()) {
+                mViewModel.enqueueInstallation();
+                dismiss();
+            }
         });
 
         view.findViewById(R.id.button_installerx_fp_internal).setOnClickListener(v -> checkPermissionsAndPickFiles());
@@ -191,7 +261,78 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
             revealBottomSheet();
         });
 
-        view.requestFocus(); //TV fix
+        view.requestFocus();
+    }
+
+    private void checkPermissionsAndPickFiles() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                showFilePicker();
+                return;
+            }
+            showManageExternalStorageDialog();
+        } else {
+            if (!PermissionsUtils.hasStoragePermissions(requireContext())) {
+                mActionAfterGettingStoragePermissions = PICK_WITH_INTERNAL_FILEPICKER;
+                permissionLauncher.launch(PermissionsUtils.getStoragePermissions());
+            } else {
+                showFilePicker();
+            }
+        }
+    }
+
+    private void showFilePicker() {
+        DialogProperties properties = new DialogProperties();
+        properties.selection_mode = DialogConfigs.MULTI_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.offset = new File(mHelper.getHomeDirectory());
+        properties.extensions = new String[]{"zip", "apks", "xapk", "apk", "apkm"};
+        properties.sortBy = mHelper.getFilePickerSortBy();
+        properties.sortOrder = mHelper.getFilePickerSortOrder();
+
+        FilePickerDialogFragment.newInstance(null, getString(R.string.installer_pick_apks), properties)
+                .show(getChildFragmentManager(), "dialog_files_picker");
+    }
+
+    private void pickFilesWithSaf(boolean ignorePermissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !ignorePermissions) {
+            if (!Environment.isExternalStorageManager()) {
+                showManageExternalStorageDialog();
+                return;
+            }
+        }
+
+        Intent getContentIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        getContentIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        getContentIntent.setType("application/vnd.android.package-archive");
+        getContentIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
+                "application/vnd.android.package-archive",
+                "application/zip",
+                "application/x-zip-compressed"
+        });
+
+        getContentIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        filePickerLauncher.launch(
+                Intent.createChooser(getContentIntent, getString(R.string.installer_pick_apks))
+        );
+    }
+
+    private void handleFilePickerResult(Intent data) {
+        if (data.getData() != null) {
+            mViewModel.setApkSourceUris(Collections.singletonList(data.getData()));
+            return;
+        }
+
+        if (data.getClipData() != null) {
+            ClipData clipData = data.getClipData();
+            List<Uri> apkUris = new ArrayList<>(clipData.getItemCount());
+
+            for (int i = 0; i < clipData.getItemCount(); i++)
+                apkUris.add(clipData.getItemAt(i).getUri());
+
+            mViewModel.setApkSourceUris(apkUris);
+        }
     }
 
     @Override
@@ -202,89 +343,6 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
             mViewModel.cancelParsing();
     }
 
-    private void checkPermissionsAndPickFiles() {
-        mActionAfterGettingStoragePermissions = PICK_WITH_INTERNAL_FILEPICKER;
-        if (!PermissionsUtils.checkAndRequestStoragePermissions(this)) {
-            return;
-        }
-        mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
-
-
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.MULTI_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.offset = new File(mHelper.getHomeDirectory());
-        properties.extensions = new String[]{"zip", "apks", "xapk", "apk", "apkm"};
-        properties.sortBy = mHelper.getFilePickerSortBy();
-        properties.sortOrder = mHelper.getFilePickerSortOrder();
-
-        FilePickerDialogFragment.newInstance(null, getString(R.string.installer_pick_apks), properties).show(getChildFragmentManager(), "dialog_files_picker");
-    }
-
-    private void pickFilesWithSaf(boolean ignorePermissions) {
-        Intent getContentIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getContentIntent.setType("*/*");
-        getContentIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        getContentIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        getContentIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(getContentIntent, getString(R.string.installer_pick_apks)), REQUEST_CODE_GET_FILES);
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == PermissionsUtils.REQUEST_CODE_STORAGE_PERMISSIONS) {
-            boolean permissionsGranted = !(grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED);
-            resumePendingStorageAction(permissionsGranted);
-        }
-
-    }
-
-    private void resumePendingStorageAction(boolean permissionsGranted) {
-        int pendingAction = mActionAfterGettingStoragePermissions;
-        mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
-
-        switch (pendingAction) {
-            case PICK_WITH_INTERNAL_FILEPICKER:
-                if (!permissionsGranted)
-                    AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
-                else
-                    checkPermissionsAndPickFiles();
-                break;
-            case PICK_WITH_SAF:
-                pickFilesWithSaf(true);
-                break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE_GET_FILES) {
-            if (resultCode != Activity.RESULT_OK || data == null)
-                return;
-
-            if (data.getData() != null) {
-                mViewModel.setApkSourceUris(Collections.singletonList(data.getData()));
-                return;
-            }
-
-            if (data.getClipData() != null) {
-                ClipData clipData = data.getClipData();
-                List<Uri> apkUris = new ArrayList<>(clipData.getItemCount());
-
-                for (int i = 0; i < clipData.getItemCount(); i++)
-                    apkUris.add(clipData.getItemAt(i).getUri());
-
-                mViewModel.setApkSourceUris(apkUris);
-            }
-        }
-    }
-
     @Override
     public void onFilesSelected(String tag, List<File> files) {
         mViewModel.setApkSourceFiles(files);
@@ -292,14 +350,40 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
 
     @Override
     public void onDialogDismissed(@NonNull String dialogTag) {
-        switch (dialogTag) {
-            case DIALOG_TAG_Q_SAF_WARNING:
-                mActionAfterGettingStoragePermissions = PICK_WITH_SAF;
-                if (PermissionsUtils.checkAndRequestStoragePermissions(this)) {
-                    mActionAfterGettingStoragePermissions = NO_PENDING_STORAGE_ACTION;
-                    pickFilesWithSaf(false);
-                }
-                break;
+        if (DIALOG_TAG_Q_SAF_WARNING.equals(dialogTag)) {
+            mActionAfterGettingStoragePermissions = PICK_WITH_SAF;
+            if (PermissionsUtils.hasStoragePermissions(requireContext())) {
+                pickFilesWithSaf(false);
+            }
         }
+    }
+
+    private boolean checkAndRequestInstallPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!requireContext().getPackageManager().canRequestPackageInstalls()) {
+                // 显示权限请求对话框
+                showInstallPermissionDialog();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showInstallPermissionDialog() {
+        SimpleAlertDialogFragment.newInstance(requireContext(),
+                R.string.permission_required,
+                R.string.install_permission_message,
+                (dialog, which) -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                        intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+                        installPermissionLauncher.launch(intent);
+                    }
+                }).show(getChildFragmentManager(), "install_permission_dialog");
+    }
+
+    private void startInstallation() {
+        mViewModel.enqueueInstallation();
+        dismiss();
     }
 }

@@ -69,10 +69,10 @@ public interface Shell {
     }
 
     class Result {
-        Command cmd;
-        public int exitCode;
-        public String out;
-        public String err;
+        final Command cmd;
+        public final int exitCode;
+        public final String out;
+        public final String err;
 
         protected Result(Command cmd, int exitCode, String out, String err) {
             this.cmd = cmd;
@@ -89,7 +89,7 @@ public interface Shell {
         @NonNull
         @Override
         public String toString() {
-            return String.format("Command: %s\nExit code: %d\nOut:\n%s\n=============\nErr:\n%s", cmd, exitCode, out, err);
+            return String.format("Command: %s%nExit code: %d%nOut:%n%s%n=============%nErr:%n%s", cmd, exitCode, out, err);
         }
     }
 

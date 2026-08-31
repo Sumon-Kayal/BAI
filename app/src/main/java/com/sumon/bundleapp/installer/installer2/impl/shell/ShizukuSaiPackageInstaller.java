@@ -1,9 +1,8 @@
 package com.sumon.bundleapp.installer.installer2.impl.shell;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.shell.Shell;
 import com.sumon.bundleapp.installer.shell.ShizukuShell;
 

@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.adapters;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.model.licenses.License;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class LicensesAdapter extends RecyclerView.Adapter<LicensesAdapter.ViewHo
         return mLicenses == null ? 0 : mLicenses.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mSubject;
         private final TextView mText;
@@ -59,8 +58,8 @@ public class LicensesAdapter extends RecyclerView.Adapter<LicensesAdapter.ViewHo
         }
 
         private void bind(License license) {
-            mSubject.setText(license.subject);
-            mText.setText(license.text);
+            mSubject.setText(license.subject());
+            mText.setText(license.text());
         }
     }
 

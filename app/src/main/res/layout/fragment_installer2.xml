@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <com.sumon.bundleapp.installer.view.coolbar.Coolbar
+    <com.aefyr.sai.view.coolbar.Coolbar
         android:id="@+id/coolbar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,10 +29,11 @@
             android:contentDescription="@string/installer_select_theme"
             android:rotation="30"
             app:srcCompat="@drawable/ic_dark_theme" />
-    </com.sumon.bundleapp.installer.view.coolbar.Coolbar>
+    </com.aefyr.sai.view.coolbar.Coolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_installer_sessions"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/coolbar_main"

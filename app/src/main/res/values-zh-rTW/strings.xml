@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -21,7 +21,8 @@
     <string name="installer_installation_failed">App 未安裝</string>
     <string name="installer_installation_in_progress">安裝中…</string>
     <string name="installer_install_apks">安裝APK</string>
-    <string name="installer_help"><b>What is BAI?</b>\nBAI (Bundle APKs Installer) is an app that lets you install multiple APKs as if it was a single package. This is useful for installing apps that are distributed as App Bundles since Android provides no built-in way to install them from sources other than Google Play.\n\n<b>How to use BAI?</b>\nClick \"Install APKs\" button and select base APK and additional configuration-specific APKs or a ZIP archive that contains all required APKs, then click \"Select\" button to start installation process.\n\n<b>.apks</b>\nYou can rename a . zip archive that contains .apk files to .apks (eg: somesplitapp.zip -&gt; somesplitapp.apks), so it can be opened with BAI from other apps.</string>
+    <string name="installer_help">
+        <b>What is BAI?</b>\nBAI (Bundle APKs Installer) is an app that lets you install multiple APKs as if it was a single package. This is useful for installing apps that are distributed as App Bundles since Android provides no built-in way to install them from sources other than Google Play.\n\n<b>How to use BAI?</b>\nClick \"Install APKs\" button and select base APK and additional configuration-specific APKs or a ZIP archive that contains all required APKs, then click \"Select\" button to start installation process.\n\n<b>.apks</b>\nYou can rename a . zip archive that contains .apk files to .apks (eg: somesplitapp.zip -&gt; somesplitapp.apks), so it can be opened with BAI from other apps.</string>
     <string name="installer_pick_apks">選擇要安裝的文件</string>
     <string name="installer_app_installed">App 已安裝</string>
     <string name="installer_open">打開</string>
@@ -49,7 +50,8 @@
     <string name="installer_select_theme">選擇主題</string>
     <string name="installer_device">設備</string>
     <string name="installer_miui_warning_title">MIUI 檢測</string>
-    <string name="installer_miui_warning_message"><b>請認真閱讀此警告！</b> \n\n抱歉，請花時間閱讀此警告，但是我真的很反對MIUI的人跳過了此警告的先前版本。\n\n就像您的設備正在運行MIUI。 MIUI以破壞標準的Android API功能而聞名，許多BAI用戶已報告在MIUI上安裝失敗，並顯示“安裝失敗”。 通常，可以通過在開發人員設置中禁用MIUI優化來解決此問題，我建議您這樣做。\n\n當然，您可以嘗試使用BAI而不禁用MIUI優化，但是如果不起作用，請嘗試禁用它，然後向我抱怨 關於失敗的安裝。 如果您的MIUI版本沒有該切換或沒有幫助，那麼我無能為力。\n\n應該在（歐洲版）MIUI 20.2.20及更高版本中解決此問題。</string>
+    <string name="installer_miui_warning_message">
+        <b>請認真閱讀此警告！</b> \n\n抱歉，請花時間閱讀此警告，但是我真的很反對MIUI的人跳過了此警告的先前版本。\n\n就像您的設備正在運行MIUI。 MIUI以破壞標準的Android API功能而聞名，許多BAI用戶已報告在MIUI上安裝失敗，並顯示“安裝失敗”。 通常，可以通過在開發人員設置中禁用MIUI優化來解決此問題，我建議您這樣做。\n\n當然，您可以嘗試使用BAI而不禁用MIUI優化，但是如果不起作用，請嘗試禁用它，然後向我抱怨 關於失敗的安裝。 如果您的MIUI版本沒有該切換或沒有幫助，那麼我無能為力。\n\n應該在（歐洲版）MIUI 20.2.20及更高版本中解決此問題。</string>
     <string name="installer_miui_warning_open_dev_settings">開啟開發者選項</string>
     <string name="installer_miui_warning_oof">無法打開「開發者選項」，請手動打開（自行Google）</string>
     <string name="installer_unknown_app">未知應用程式</string>
@@ -81,10 +83,8 @@
     <string name="installer_rootless_error2_install_failed_test_only">Installed package is test-only and INSTALL_ALLOW_TEST flag was not supplied</string>
     <string name="installer_rootless_error2_install_failed_cpu_abi_incompatible">套件未包含與此裝置 CPU 相容的原生程式碼</string>
     <string name="installer_rootless_error2_install_failed_missing_feature">Package requires a feature that is not supported by this device</string>
-    <!-- no idea what this means, don't wanna dig android sources deeper for this -->
     <string name="installer_rootless_error2_install_failed_container_error">無法在外部儲存媒體上存取安全容器的掛載點</string>
     <string name="installer_rootless_error2_install_failed_invalid_install_location">套件無法安裝至指定位置</string>
-    <!-- tbh i have no idea what that means lol, like an sd card maybe, but this code doesn't seem to be used at all -->
     <string name="installer_rootless_error2_install_failed_media_unavailable">因媒體無法使用，套件無法安裝至指定位置</string>
     <string name="installer_rootless_error2_install_failed_verification_timeout">套件驗證逾時</string>
     <string name="installer_rootless_error2_install_failed_verification_failure">套件驗證失敗</string>
@@ -128,7 +128,9 @@
     <string name="backup_search_hint">搜索應用</string>
     <string name="backup_search_splits_only">僅 Split APK</string>
     <string name="backup_search_show_system_apps">顯示系統應用</string>
-    <string name="backup_warning"><b>Managed backups are currently in beta, please report issues in BAI\'s GitHub repo (you can find the link on about screen)</b>\n\n<b>Backup files format</b>\nBAI backups apps as .apks files (which are just ZIP archives with .apk files) with some meta information added to the archive (such as app name and icon). Backed up .apks files can still be installed as normal .apks files (because they are normal .apks files, except for some additional files in the archive which are ignored by installer)\n\n<b>What is backed up</b>\nCurrently BAI backups only apps APK files (no data/obb/etc)\n\n<b>External changes to backup directory</b>\nBAI doesn\'t automatically keep track of external changes done to files in the backup directory. So, if you\'ve changed them outside of BAI, use reindex option in 3-dots menu at the top right of backup screen to rescan backups directory.\n\n<b>You can always open this help from the 3-dots menu at the top right of backup screen</b></string>
+    <string name="backup_warning">
+        <b>Managed backups are currently in beta, please report issues in BAI\'s GitHub repo (you can find the link on about screen)</b>\n\n<b>Backup files format</b>\nBAI backups apps as .apks files (which are just ZIP archives with .apk files) with some meta information added to the archive (such as app name and icon). Backed up .apks files can still be installed as normal .apks files (because they are normal .apks files, except for some additional files in the archive which are ignored by installer)\n\n<b>What is backed up</b>\nCurrently BAI backups only apps APK files (no data/obb/etc)\n\n<b>External changes to backup directory</b>\nBAI doesn\'t automatically keep track of external changes done to files in the backup directory. So, if you\'ve changed them outside of BAI, use reindex option in 3-dots menu at the top right of backup screen to rescan backups directory.\n\n<b>You can always open this help from the 3-dots menu at the top right of backup screen</b>
+    </string>
     <string name="backup_export_all_splits">備份所有分割 APK</string>
     <string name="backup_export_all_splits_prompt">要備份所有分割 APK 嗎？</string>
     <string name="backup_export_selected_apps_prompt">要備份選取的 %d 個應用程式嗎？</string>
@@ -224,7 +226,8 @@
     <string name="settings_category_main_ui">應用程式界面</string>
     <string name="settings_main_ui_show_app_features">顯示應用程式特性</string>
     <string name="settings_main_ui_show_app_features_summary">在備份畫面顯示情境式應用程式特性徽章</string>
-    <string name="settings_main_ui_theme">主題</string>    <string name="settings_main_auto_theme">自動主題</string>
+    <string name="settings_main_ui_theme">主題</string>
+    <string name="settings_main_auto_theme">自動主題</string>
     <string name="settings_main_auto_theme_summary">依系統主題自動切換所選的淺色與深色主題</string>
     <string name="settings_main_auto_theme_picker">選擇主題</string>
     <string name="settings_main_auto_theme_picker_summary">目前淺色主題: %1$s\n目前深色主題: %2$s</string>
@@ -240,10 +243,13 @@
     <string name="name_format_builder_title">選擇要包含在備份檔案名稱中的部分</string>
     <string name="name_format_builder_preview">預覽: %s</string>
     <string name="name_format_builder_preview_empty">至少選擇一部分</string>
-    <!-- These strings that start with "sss_" don't really have to be translated except for the warning maybe -->
     <string name="sss">超級秘密設定</string>
-    <string name="sss_warning_title"><b>警告</b></string>
-    <string name="sss_warning_summary"><b>請勿擅自觸動此處選項！Don\'t touch anything here unless you know what you\'re doing. Some options here can break BAI or even damage your system</b></string>
+    <string name="sss_warning_title">
+        <b>警告</b>
+    </string>
+    <string name="sss_warning_summary">
+        <b>請勿擅自觸動此處選項！Don\'t touch anything here unless you know what you\'re doing. Some options here can break BAI or even damage your system</b>
+    </string>
     <string name="sss_dont_replace_dots_title">不要將點替換為逗號</string>
     <string name="sss_dont_replace_dots_summary">在備份檔案名稱中</string>
     <string name="sss_custom_install_create_title">自訂 install-create 指令</string>
@@ -254,7 +260,8 @@
     <string name="mi_continue_countdown">您可以在 %d 秒後繼續。</string>
     <string name="mi_continue">繼續</string>
     <string name="mi_miui_version">MIUI 版本 - %1$s (%2$d (%3$s))</string>
-    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset apps permissions or have other unexpected consequences</string>    <string name="installerx_dialog_title">自訂安裝</string>
+    <string name="mi_consequences">Depending on your MIUI version, turning off MIUI optimization may do nothing, reset apps permissions or have other unexpected consequences</string>
+    <string name="installerx_dialog_title">自訂安裝</string>
     <string name="installerx_dialog_choose_filepicker">您要如何選擇要安裝的檔案？</string>
     <string name="installerx_dialog_loading">正在解析 APKs…</string>
     <string name="installerx_dialog_install">安裝</string>
@@ -296,7 +303,7 @@
     <string name="installerx_notice_no_code_for_feature">功能 "%s" 有部分架構設定的分割部分，但沒有受到您裝置支援的部分</string>
     <string name="installerx_notice_no_locale_for_base">基礎 APK 的語言地區設定分割部分，沒有符合您語言的部分</string>
     <string name="installerx_notice_no_locale_for_feature">功能 "%s" 的語言地區設定分割部分，沒有符合您語言的部分</string>
-    <string name="installerx_notice_huge_app">此應用程式非常龐大（>150MB）。對於龐大的應用程式，安裝有卡住的機率（應用程式越大，機率越高），但應用程式仍會佔用儲存空間，若不使用 root 或恢復原廠設定，您將無法回收這些空間</string>
+    <string name="installerx_notice_huge_app">此應用程式非常龐大（&gt;150MB）。對於龐大的應用程式，安裝有卡住的機率（應用程式越大，機率越高），但應用程式仍會佔用儲存空間，若不使用 root 或恢復原廠設定，您將無法回收這些空間</string>
     <string name="installerx_android_uri_host_file_too_big">檔案太大，無法複製，且您的系統不支援在不複製的情況下讀取 SAF 檔案</string>
     <string name="installerx_thank_you_scoped_storage_very_cool">在 Android 11 以上版本，由於分區儲存（scoped storage）的實作毫無道理，BAI 需要儲存權限才能直接讀取透過系統檔案挑選器選取的檔案。您可以拒絕儲存權限，但 BAI 將需要複製所選檔案才能解析，BAI 不會複製並解析大型檔案。</string>
     <string name="theme_sai">BAI</string>
@@ -316,16 +323,55 @@
     <string name="auto_theme_dark_theme">深色主題</string>
     <string name="auto_theme_selection_hint">輕敲以選擇</string>
     <string name="about_author">由polychromaticfox開發</string>
-    <string name="about_source">GitHub</string>    <string name="about_licenses">許可證</string>
+    <string name="about_source">GitHub</string>
+    <string name="about_licenses">許可證</string>
     <string name="about_translate">協助翻譯 BAI</string>
     <string name="about_privacy">隱私權政策</string>
     <string name="about_eula">終端使用者授權協議</string>
-
     <string name="apply">套用</string>
     <string name="settings_category_main_languages">語言</string>
     <string name="settings_main_app_language">應用程式語言</string>
     <string name="eula_load_error">無法載入授權協議。</string>
     <string name="settings_main_root_unavailable">此裝置無法使用 root 存取權限。</string>
     <string name="settings_main_shizuku_unavailable">Shizuku 無法使用或尚未授予權限。</string>
-
+    <string name="settings_main_donate">支持SAI</string>
+    <string name="donate_message_not_donated">您好，眾所周知，SAI是個永久開源免費的工具。您若喜歡，請考慮捐贈以支持。你還能獲得<b>SAI 金色</b> 主題</string>
+    <string name="donate_message_donated">Huge thanks for supporting SAI!\nDon\'t forget to check out your new <b>SAI Gold</b> theme</string>
+    <string name="donate_message_floss">Hello. You\'re using FLOSS version of SAI. As you know, SAI is a completely free open-source app and it will always stay that way. If you like it, please consider supporting SAI by making a donation.\n\nIn FLOSS version, the <b>FLOSS Gold</b> theme is available by default.</string>
+    <string name="donate_message_unknown_or_error">Unable to get donation status. Please make sure you have Google Play Services installed and try restarting your device.</string>
+    <string name="donate_message_pending">Your donation is pending. If it isn\'t applied automatically after you complete it, please restart SAI.</string>
+    <string name="donate_non_iap_yandex_title">Yandex.Money</string>
+    <string name="donate_non_iap_yandex_desc">Basically CIS PayPal lol</string>
+    <string name="donate_billing_not_available">Unable to connect to Google Play. Please make sure you have Google Play Services installed and try restarting your device.</string>
+    <string name="donate_donate_only_theme">Donation required</string>
+    <string name="donate_dialog_close">不再顯示</string>
+    <string name="donate_dialog_go_to_donate_page">Go to donate screen</string>
+    <string name="donate_dialog_title">捐贈</string>
+    <string name="about_donate">捐贈</string>
+    <string name="permission_required">權限要求</string>
+    <string name="android_storage_permission_message">Android 11及以上版本需要獲取所有文件訪問權限才能正常運作，請點擊確定跳轉到系統設定授予此權限。</string>
+    <string name="storage_permission_denied_message">訪問權限被拒絕，應用可能無法正常運作。</string>
+    <string name="install_permission_message">此應用需要安裝未知應用的權限才能安裝APK檔案。請點擊確認前往設定頁面開啟此權限。</string>
+    <string name="install_permission_denied_message">安裝未知應用的權限被拒絕，無法安裝APK檔案。</string>
+    <string name="settings_main_signature_schemes">簽章方案</string>
+    <string name="settings_main_signature_schemes_summary">簽章時寫入哪些 APK 簽章方案</string>
+    <string name="settings_main_signing_key">簽章金鑰</string>
+    <string name="signing_schemes_v1">v1（JAR 簽章）</string>
+    <string name="signing_schemes_v1_summary">目前裝置不需要 v1。僅當簽章後的 APK 還要安裝到 Android 6 及更早的裝置上時才需要開啟。它會為封包內每個檔案寫入一條摘要，可能讓安裝檔增大約 1MB。</string>
+    <string name="signing_schemes_v2">v2（Android 7+）</string>
+    <string name="signing_schemes_v2_summary">本應用程式支援的所有裝置都能驗證。</string>
+    <string name="signing_schemes_v3">v3（Android 9+）</string>
+    <string name="signing_schemes_v3_summary">在 Android 9 及以上取代 v2。</string>
+    <string name="signing_schemes_v3_unsupported">目前裝置不支援</string>
+    <string name="signing_schemes_note">如果所選組合無法產出可安裝的 APK，SAI 會自動補上缺少的方案。</string>
+    <string name="signing_key_fingerprint">憑證 SHA-256</string>
+    <string name="signing_key_none">尚未建立金鑰，首次簽章時會自動產生</string>
+    <string name="signing_key_regenerate">重新產生</string>
+    <string name="signing_key_import">匯入金鑰</string>
+    <string name="signing_key_updated">簽章金鑰已更新</string>
+    <string name="signing_key_formats">可以選擇一個金鑰庫（.p12 / .pfx，以及裝置支援時的 .bks 或 .jks），也可以一次同時選取 PKCS#8 私鑰（.pk8 或 PEM）和 X.509 憑證（.pem 或 .der）。裝有這兩者的 zip 同樣可以。</string>
+    <string name="signing_key_regenerate_warning">使用新金鑰簽章的 APK 將無法覆蓋安裝以舊金鑰簽過的應用程式。</string>
+    <string name="signing_key_password">密碼（沒有則留空）</string>
+    <string name="signing_key_imported">金鑰已匯入</string>
+    <string name="signing_key_error">無法使用該金鑰：%s</string>
 </resources>

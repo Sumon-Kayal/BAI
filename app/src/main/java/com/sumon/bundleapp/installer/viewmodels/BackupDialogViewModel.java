@@ -112,7 +112,7 @@ public class BackupDialogViewModel extends AndroidViewModel implements Observer<
     }
 
     public void setApkExportEnabled(boolean enabled) {
-        if (!mIsApkExportOptionAvailable.getValue())
+        if (!Boolean.TRUE.equals(mIsApkExportOptionAvailable.getValue()))
             return;
 
         mPrefsHelper.setSingleApkExportEnabled(enabled);
@@ -123,7 +123,7 @@ public class BackupDialogViewModel extends AndroidViewModel implements Observer<
         List<File> selectedSplitParts = getSelectedSplitParts();
         SingleBackupTaskConfig config = new SingleBackupTaskConfig.Builder(mBackupManager.getDefaultBackupStorageProvider().getId(), mPkgMeta)
                 .addAllApks(selectedSplitParts)
-                .setExportMode(selectedSplitParts.size() == 1 && getIsApkExportEnabled().getValue() && storageSupportsApkExport())
+                .setExportMode(selectedSplitParts.size() == 1 && Boolean.TRUE.equals(getIsApkExportEnabled().getValue()) && storageSupportsApkExport())
                 .build();
 
         mBackupManager.enqueueBackup(config);
@@ -169,7 +169,7 @@ public class BackupDialogViewModel extends AndroidViewModel implements Observer<
             metaResolver.addPostprocessor(new SortPostprocessor());
             metaResolver.addPostprocessor(parserContext -> {
                 MutableSplitCategory baseApkCategory = parserContext.getCategory(Category.BASE_APK);
-                if (baseApkCategory == null || baseApkCategory.getPartsList().size() == 0)
+                if (baseApkCategory == null || baseApkCategory.getPartsList().isEmpty())
                     return;
 
                 baseApkCategory.getPartsList().get(0).setName(parserContext.getAppMeta().appName);

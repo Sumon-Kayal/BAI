@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.ThemeAdapter;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
 import com.sumon.bundleapp.installer.utils.Theme;

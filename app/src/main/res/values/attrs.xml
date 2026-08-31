@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <declare-styleable name="Coolbar_Layout">
         <attr name="coolbar_gravity" format="enum">
@@ -10,17 +10,15 @@
         <attr name="title" format="string" />
         <attr name="titleColor" format="color" />
     </declare-styleable>
-
     <attr name="colorPrimary" format="color" />
     <attr name="colorPrimaryLight" format="color" />
     <attr name="colorAccent" format="color" />
     <attr name="titleTextColor" format="color" />
-
     <attr name="simpleThemePrimaryColor" format="color" />
     <attr name="simpleThemePrimaryLightColor" format="color" />
     <attr name="simpleThemeAccentColor" format="color" />
     <attr name="simpleThemeTextPrimaryColor" format="color" />
     <attr name="simpleThemeTextSecondaryColor" format="color" />
-
     <attr name="popupMenuBackgroundTint" format="color" />
+    <attr name="colorSecpnday" format="color" />
 </resources>

@@ -10,3 +10,5 @@ plugins {
 }
 rootProject.name = "BAI-Test-1-merged"
 include ':app'
+
+include ':libs:filepicker'

@@ -1,11 +1,10 @@
 package com.sumon.bundleapp.installer.installerx.resolver.urimess.impl;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.installerx.resolver.meta.ApkSourceFile;
 import com.sumon.bundleapp.installer.installerx.resolver.meta.ApkSourceMetaResolutionResult;
 import com.sumon.bundleapp.installer.installerx.resolver.meta.SplitApkSourceMetaResolver;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class DefaultUriMessResolver implements UriMessResolver {
     private static final String TAG = "DefaultMessResolver";
@@ -48,7 +48,7 @@ public class DefaultUriMessResolver implements UriMessResolver {
                 continue;
             }
 
-            switch (extension.toLowerCase()) {
+            switch (extension.toLowerCase(Locale.ROOT)) {
                 case "zip":
                 case "apks":
                 case "xapk":
@@ -75,7 +75,7 @@ public class DefaultUriMessResolver implements UriMessResolver {
         }
 
         //TODO maybe group single apks by package
-        if (apkFileUris.size() > 0) {
+        if (!apkFileUris.isEmpty()) {
             try {
                 ApkSourceMetaResolutionResult resolutionResult = mMetaResolver.resolveFor(new MultipleApkFilesApkSourceFile(apkFileUris, uriHost));
                 if (resolutionResult.isSuccessful())
@@ -91,46 +91,39 @@ public class DefaultUriMessResolver implements UriMessResolver {
         return results;
     }
 
-    private static class MultipleApkFilesApkSourceFile implements ApkSourceFile {
-
-        private final List<Uri> mUris;
-        private final UriHost mUriHost;
-
-        private MultipleApkFilesApkSourceFile(List<Uri> uris, UriHost uriHost) {
-            mUris = uris;
-            mUriHost = uriHost;
-        }
+    private record MultipleApkFilesApkSourceFile(List<Uri> mUris,
+                                                 UriHost mUriHost) implements ApkSourceFile {
 
         @Override
-        public List<Entry> listEntries() {
-            List<Entry> entries = new ArrayList<>();
-            for (Uri uri : mUris) {
-                String name = mUriHost.getFileNameFromUri(uri);
-                entries.add(new InternalEntry(uri, name, name, mUriHost.getFileSizeFromUri(uri)));
+            public List<Entry> listEntries() {
+                List<Entry> entries = new ArrayList<>();
+                for (Uri uri : mUris) {
+                    String name = mUriHost.getFileNameFromUri(uri);
+                    entries.add(new InternalEntry(uri, name, name, mUriHost.getFileSizeFromUri(uri)));
+                }
+
+                return entries;
             }
 
-            return entries;
-        }
+            @Override
+            public InputStream openEntryInputStream(Entry entry) throws Exception {
+                return mUriHost.openUriInputStream(((InternalEntry) entry).mUri);
+            }
 
-        @Override
-        public InputStream openEntryInputStream(Entry entry) throws Exception {
-            return mUriHost.openUriInputStream(((InternalEntry) entry).mUri);
-        }
+            @Override
+            public String getName() {
+                return "whatever.whatever";
+            }
 
-        @Override
-        public String getName() {
-            return "whatever.whatever";
-        }
+            private static class InternalEntry extends Entry {
 
-        private static class InternalEntry extends Entry {
+                private final Uri mUri;
 
-            private final Uri mUri;
-
-            private InternalEntry(Uri uri, String name, String localPath, long size) {
-                super(name, localPath, size);
-                mUri = uri;
+                private InternalEntry(Uri uri, String name, String localPath, long size) {
+                    super(name, localPath, size);
+                    mUri = uri;
+                }
             }
         }
-    }
 
 }

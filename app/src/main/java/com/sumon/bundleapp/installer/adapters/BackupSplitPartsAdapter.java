@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.adapters;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.selection.SelectableAdapter;
 import com.sumon.bundleapp.installer.adapters.selection.Selection;
 import com.sumon.bundleapp.installer.model.backup.SplitApkPart;
@@ -83,7 +82,7 @@ public class BackupSplitPartsAdapter extends SelectableAdapter<String, BackupSpl
             mCheck = itemView.findViewById(R.id.check_split_apk_part);
 
             itemView.setOnClickListener((v) -> {
-                int adapterPosition = getAdapterPosition();
+                int adapterPosition = getBindingAdapterPosition();
                 if (adapterPosition == RecyclerView.NO_POSITION)
                     return;
 

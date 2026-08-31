@@ -68,6 +68,17 @@
             android:defaultValue="true" />
 
         <Preference
+            android:icon="@drawable/ic_pref_signature_schemes"
+            android:key="signature_schemes"
+            android:title="@string/settings_main_signature_schemes"
+            android:summary="@string/settings_main_signature_schemes_summary" />
+
+        <Preference
+            android:icon="@drawable/ic_pref_key"
+            android:key="signing_key"
+            android:title="@string/settings_main_signing_key" />
+
+        <Preference
             android:icon="@drawable/ic_pref_root"
             android:key="installer"
             android:title="@string/settings_main_installer"

@@ -9,7 +9,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.sumon.bundleapp.installer.backup2.backuptask.config.SingleBackupTaskConfig;
 import com.sumon.bundleapp.installer.backup2.impl.storage.ApksBackupStorage;
-import com.sumon.bundleapp.installer.installer.ApkSourceBuilder;
+import com.sumon.bundleapp.installer.model.apksource.ApkSourceBuilder;
 import com.sumon.bundleapp.installer.model.apksource.ApkSource;
 import com.sumon.bundleapp.installer.utils.Utils;
 import com.sumon.bundleapp.installer.utils.saf.SafUtils;
@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class LocalBackupStorage extends ApksBackupStorage implements LocalBackupStorageProvider.OnConfigChangeListener {
     private static final String TAG = "LocalBackupStorage";
@@ -26,18 +27,15 @@ public class LocalBackupStorage extends ApksBackupStorage implements LocalBackup
 
     private final Context mContext;
 
-    private final HandlerThread mWorkerHandlerThread;
-    private final Handler mWorkerHandler;
-
     LocalBackupStorage(LocalBackupStorageProvider provider, Context context) {
         super();
 
         mProvider = provider;
         mContext = context.getApplicationContext();
 
-        mWorkerHandlerThread = new HandlerThread("LocalBackupStorage.Worker");
+        HandlerThread mWorkerHandlerThread = new HandlerThread("LocalBackupStorage.Worker");
         mWorkerHandlerThread.start();
-        mWorkerHandler = new Handler(mWorkerHandlerThread.getLooper());
+        Handler mWorkerHandler = new Handler(mWorkerHandlerThread.getLooper());
 
         mProvider.addOnConfigChangeListener(this, mWorkerHandler);
     }
@@ -107,7 +105,7 @@ public class LocalBackupStorage extends ApksBackupStorage implements LocalBackup
                 continue;
 
             String docExt = Utils.getExtension(docName);
-            if (docExt == null || !docExt.equalsIgnoreCase("apks"))
+            if (docExt == null || !docExt.toLowerCase(Locale.ROOT).equals("apks"))
                 continue;
 
             uris.add(namespaceUri(docFile.getUri()));

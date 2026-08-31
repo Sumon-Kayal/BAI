@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.activities;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,9 +7,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.LicensesAdapter;
-import com.sumon.bundleapp.installer.utils.InsetsUtils;
 import com.sumon.bundleapp.installer.viewmodels.LicensesViewModel;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 
 public class LicensesActivity extends ThemedActivity {
 
@@ -21,7 +20,6 @@ public class LicensesActivity extends ThemedActivity {
         setContentView(R.layout.activity_licenses);
 
         RecyclerView recyclerView = findViewById(R.id.rv_licenses);
-
         InsetsUtils.applySystemBarInsetsAsPadding(recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

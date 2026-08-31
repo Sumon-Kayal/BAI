@@ -1,0 +1,33 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.github.angads25.filepicker'
+    compileSdk 37
+
+    defaultConfig {
+        minSdk 23
+    }
+
+    buildFeatures {
+        buildConfig false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.10.0'
+    implementation 'androidx.core:core:1.19.0'
+    api libs.preference
+    implementation libs.material
+}

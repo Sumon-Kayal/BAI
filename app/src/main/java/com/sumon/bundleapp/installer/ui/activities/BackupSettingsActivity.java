@@ -1,13 +1,13 @@
 package com.sumon.bundleapp.installer.ui.activities;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.BackupStorageProvider;
 import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 
 public class BackupSettingsActivity extends ThemedActivity {
 
@@ -19,6 +19,8 @@ public class BackupSettingsActivity extends ThemedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_settings);
+
+        InsetsUtils.applySystemBarInsetsAsPadding(findViewById(android.R.id.content));
 
         mCurrentFragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
 

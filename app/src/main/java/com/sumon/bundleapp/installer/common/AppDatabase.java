@@ -13,12 +13,11 @@ import com.sumon.bundleapp.installer.backup2.impl.db.BackupEntity;
 @Database(entities = {BackupEntity.class, BackupComponentEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static  volatile AppDatabase sInstance;
+    private static AppDatabase sInstance;
 
     public synchronized static AppDatabase getInstance(Context context) {
         if (sInstance == null) {
-            sInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, """
-                    room""").build();
+            sInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "room").build();
         }
 
         return sInstance;

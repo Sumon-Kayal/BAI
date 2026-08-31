@@ -1,8 +1,5 @@
 package com.sumon.bundleapp.installer.backup2.impl.local;
 
-import com.sumon.bundleapp.installer.R;
-import com.sumon.bundleapp.installer.BuildConfig;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.sumon.bundleapp.installer.BuildConfig;
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.BackupStorage;
 import com.sumon.bundleapp.installer.backup2.BackupStorageProvider;
 import com.sumon.bundleapp.installer.backup2.impl.local.prefs.LocalBackupStoragePrefConstants;
@@ -153,20 +152,12 @@ public class LocalBackupStorageProvider implements BackupStorageProvider, Shared
 
     }
 
-    private static class OnConfigChangeListenerHandlerWrapper implements OnConfigChangeListener {
-
-        private final OnConfigChangeListener mListener;
-        private final Handler mHandler;
-
-
-        private OnConfigChangeListenerHandlerWrapper(OnConfigChangeListener listener, Handler handler) {
-            mListener = listener;
-            mHandler = handler;
-        }
+    private record OnConfigChangeListenerHandlerWrapper(OnConfigChangeListener mListener,
+                                                        Handler mHandler) implements OnConfigChangeListener {
 
         @Override
-        public void onBackupDirChanged() {
-            mHandler.post(() -> mListener.onBackupDirChanged());
+            public void onBackupDirChanged() {
+                mHandler.post(mListener::onBackupDirChanged);
+            }
         }
-    }
 }

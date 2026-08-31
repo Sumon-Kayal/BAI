@@ -2,7 +2,6 @@ package com.sumon.bundleapp.installer.backup2.impl.db;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
@@ -10,6 +9,7 @@ import androidx.room.Index;
 import com.sumon.bundleapp.installer.backup2.Backup;
 
 import java.io.File;
+import androidx.annotation.NonNull;
 
 @Entity(
         indices = {@Index(value = {"package", "uri", "content_hash"}), @Index(value = {"icon_file"})},
@@ -19,8 +19,8 @@ public class BackupEntity {
 
     public static final long FLAG_SPLIT_APK = 0x1;
 
-    @NonNull
     @ColumnInfo(name = "uri")
+    @NonNull
     public String uri;
 
     @ColumnInfo(name = "package")
@@ -41,15 +41,14 @@ public class BackupEntity {
     @ColumnInfo(name = "icon_file")
     public String iconFile;
 
-    @NonNull
     @ColumnInfo(name = "content_hash")
+    @NonNull
     public String contentHash;
 
-    @NonNull
     @ColumnInfo(name = "storage_id")
+    @NonNull
     public String storageId;
 
-    @NonNull
     @ColumnInfo(name = "flags")
     public long flags;
 
@@ -58,15 +57,15 @@ public class BackupEntity {
     }
 
     public boolean isSplitApk() {
-        return hasFlag(FLAG_SPLIT_APK);
+        return hasFlag();
     }
 
-    private boolean hasFlag(long flag) {
-        return (flags & flag) == flag;
+    private boolean hasFlag() {
+        return (flags & BackupEntity.FLAG_SPLIT_APK) == BackupEntity.FLAG_SPLIT_APK;
     }
 
-    private void addFlag(long flag) {
-        flags = flags | flag;
+    private void addFlag() {
+        flags = flags | BackupEntity.FLAG_SPLIT_APK;
     }
 
     public static BackupEntity fromBackup(Backup backup, File iconFile) {
@@ -83,7 +82,7 @@ public class BackupEntity {
         backupEntity.storageId = backup.storageId();
 
         if (backup.isSplitApk())
-            backupEntity.addFlag(FLAG_SPLIT_APK);
+            backupEntity.addFlag();
 
         return backupEntity;
     }

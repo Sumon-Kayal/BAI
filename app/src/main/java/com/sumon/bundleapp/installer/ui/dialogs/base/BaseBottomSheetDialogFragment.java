@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.dialogs.base;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -16,10 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.utils.Theme;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 
 public class BaseBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
@@ -37,6 +37,7 @@ public class BaseBottomSheetDialogFragment extends BottomSheetDialogFragment {
         mPositiveButton = dialogView.findViewById(R.id.button_bottom_sheet_dialog_base_ok);
         mNegativeButton = dialogView.findViewById(R.id.button_bottom_sheet_dialog_base_cancel);
         mDialog.setContentView(dialogView);
+        InsetsUtils.applyBottomInsetAndKeyboardAsPadding(dialogView);
 
         FrameLayout container = dialogView.findViewById(R.id.container_bottom_sheet_dialog_base_content);
         View contentView = onCreateContentView(LayoutInflater.from(requireContext()), container, savedInstanceState);
@@ -81,11 +82,17 @@ public class BaseBottomSheetDialogFragment extends BottomSheetDialogFragment {
     }
 
     public void setTitle(CharSequence title) {
-        ((TextView) mDialog.findViewById(R.id.tv_bottom_sheet_dialog_base_title)).setText(title);
+        TextView titleView = mDialog.findViewById(R.id.tv_bottom_sheet_dialog_base_title);
+        if (titleView != null)
+            titleView.setText(title);
     }
 
     protected void revealBottomSheet() {
-        BottomSheetBehavior<FrameLayout> bottomSheetBehavior = mDialog.getBehavior();
+        FrameLayout bottomSheet = mDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        if (bottomSheet == null)
+            return;
+
+        BottomSheetBehavior<FrameLayout> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 

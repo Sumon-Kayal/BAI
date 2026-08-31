@@ -63,14 +63,14 @@ public class ShizukuShell implements Shell {
             return execWithStdin(command, inputPipe);
 
         if (!isAvailable())
-            return new Result(command, -1, "", "<!> BAI ShizukuShell: unable to start shell session");
+            return new Result(command, -1, "", "<!> SAI ShizukuShell: unable to start shell session");
 
         try {
             return mSession.exec(command);
         } catch (Exception e) {
             Log.w(TAG, "Session command failed, dropping session", e);
             mSession.close();
-            return new Result(command, -1, "", "<!> BAI ShizukuShell Java exception: " + Utils.throwableToString(e));
+            return new Result(command, -1, "", "<!> SAI ShizukuShell Java exception: " + Utils.throwableToString(e));
         }
     }
 
@@ -107,7 +107,7 @@ public class ShizukuShell implements Shell {
         } catch (Exception e) {
             Log.w(TAG, "Unable to execute command", e);
             return new Result(command, -1, stdOutSb.toString().trim(),
-                    stdErrSb + "\n\n<!> BAI ShizukuShell Java exception: " + Utils.throwableToString(e));
+                    stdErrSb + "\n\n<!> SAI ShizukuShell Java exception: " + Utils.throwableToString(e));
         }
     }
 

@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.adapters;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.model.common.AppFeature;
 import com.google.android.material.chip.Chip;
 
@@ -47,7 +46,7 @@ public class BackupAppFeatureAdapter extends RecyclerView.Adapter<BackupAppFeatu
         return mFeatures == null ? 0 : mFeatures.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final Chip mChip;
 

@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.adapters;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.installer2.base.model.SaiPiSessionState;
 import com.sumon.bundleapp.installer.model.common.PackageMeta;
 import com.bumptech.glide.Glide;
-import com.facebook.shimmer.ShimmerFrameLayout;
+import io.github.usefulness.shimmer.android.ShimmerFrameLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdapter.ViewHolder> {
@@ -24,8 +24,7 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
     private final Context mContext;
     private final LayoutInflater mInflater;
 
-    private List<SaiPiSessionState> mSessions;
-
+    private List<SaiPiSessionState> mSessions = new ArrayList<>();
     private ActionDelegate mActionDelegate;
 
     public SaiPiSessionsAdapter(Context c) {
@@ -35,8 +34,12 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
     }
 
     public void setData(List<SaiPiSessionState> data) {
-        mSessions = data;
-        notifyDataSetChanged();
+        int oldSize = mSessions.size();
+        mSessions.clear();
+        notifyItemRangeRemoved(0, oldSize);
+
+        mSessions = new ArrayList<>(data);
+        notifyItemRangeInserted(0, data.size());
     }
 
     public void setActionsDelegate(ActionDelegate delegate) {
@@ -61,7 +64,7 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
 
     @Override
     public int getItemCount() {
-        return mSessions == null ? 0 : mSessions.size();
+        return mSessions.size();
     }
 
     @Override
@@ -70,13 +73,15 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
     }
 
     private void launchApp(String packageName) {
-        if (mActionDelegate != null)
+        if (mActionDelegate != null) {
             mActionDelegate.launchApp(packageName);
+        }
     }
 
     private void showException(String shortError, String fullError) {
-        if (mActionDelegate != null)
+        if (mActionDelegate != null) {
             mActionDelegate.showError(shortError, fullError);
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -99,9 +104,10 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
             mActionIcon = itemView.findViewById(R.id.iv_installed_app_action);
 
             mContainer.setOnClickListener((v) -> {
-                int adapterPosition = getAdapterPosition();
-                if (adapterPosition == RecyclerView.NO_POSITION)
+                int adapterPosition = getBindingAdapterPosition();
+                if (adapterPosition == RecyclerView.NO_POSITION) {
                     return;
+                }
 
                 SaiPiSessionState state = mSessions.get(adapterPosition);
                 switch (state.status()) {
@@ -170,9 +176,7 @@ public class SaiPiSessionsAdapter extends RecyclerView.Adapter<SaiPiSessionsAdap
     }
 
     public interface ActionDelegate {
-
         void launchApp(String packageName);
-
         void showError(String shortError, String fullError);
     }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
  * Provides an easy way to add switching fragments
  */
 public class FragmentNavigator {
+    private static final String TAG = "FragmentNavigator";
 
     private final FragmentManager mFragmentManager;
     private final int mContainerId;
@@ -58,6 +59,7 @@ public class FragmentNavigator {
         transaction.commitNow();
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends Fragment> T findFragmentByTag(String tag) {
         ensureStateWasRestored();
         return (T) mFragmentManager.findFragmentByTag(tag);
@@ -86,7 +88,7 @@ public class FragmentNavigator {
         String currentFragmentTag = bundle.getString("fragment_navigator_current_fragment", null);
         if (currentFragmentTag != null) {
             mCurrentFragment = mFragmentManager.findFragmentByTag(currentFragmentTag);
-            Log.d("beb", "restored current fragment from bundle : " + mCurrentFragment.getTag());
+            Log.d(TAG, "restored current fragment from bundle: " + currentFragmentTag);
         }
 
     }

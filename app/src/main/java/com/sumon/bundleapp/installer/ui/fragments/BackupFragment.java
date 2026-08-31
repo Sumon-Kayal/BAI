@@ -1,7 +1,5 @@
 package com.sumon.bundleapp.installer.ui.fragments;
 
-import com.sumon.bundleapp.installer.R;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aefyr.flexfilter.builtin.DefaultFilterConfigViewHolderFactory;
 import com.aefyr.flexfilter.config.core.ComplexFilterConfig;
 import com.aefyr.flexfilter.ui.FilterDialog;
+import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.BackupPackagesAdapter;
 import com.sumon.bundleapp.installer.adapters.selection.Selection;
 import com.sumon.bundleapp.installer.backup2.BackupApp;
@@ -44,6 +43,7 @@ import com.sumon.bundleapp.installer.viewmodels.BackupViewModel;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import com.sumon.bundleapp.installer.utils.InsetsUtils;
 
 public class BackupFragment extends SaiBaseFragment implements BackupPackagesAdapter.OnItemInteractionListener, FilterDialog.OnApplyConfigListener, SharedPreferences.OnSharedPreferenceChangeListener, BatchBackupDialogFragment.OnBatchBackupEnqueuedListener {
 
@@ -64,6 +64,10 @@ public class BackupFragment extends SaiBaseFragment implements BackupPackagesAda
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // CardView.setPadding is a no-op, so the inset has to go on the margin.
+        InsetsUtils.applyTopInsetAsMargin(findViewById(R.id.card_search));
+        InsetsUtils.applyBottomInsetAsPadding(findViewById(R.id.rv_packages));
 
         mViewModel = new ViewModelProvider(this).get(BackupViewModel.class);
 
@@ -185,7 +189,8 @@ public class BackupFragment extends SaiBaseFragment implements BackupPackagesAda
                 if (itemId == R.id.menu_export_all_split_apks) {
                     exportAllSplitApks();
                 } else if (itemId == R.id.menu_backup_help) {
-                    SimpleAlertDialogFragment.newInstance(requireContext(), R.string.help, R.string.backup_warning).show(getChildFragmentManager(), null);
+                    SimpleAlertDialogFragment.newInstance(requireContext(), R.string.help, R.string.backup_warning)
+                            .show(getChildFragmentManager(), null);
                 } else if (itemId == R.id.menu_backup_reindex) {
                     mViewModel.reindexBackups();
                 } else if (itemId == R.id.menu_backup_settings) {
