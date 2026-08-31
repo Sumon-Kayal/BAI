@@ -4,6 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -12,12 +16,51 @@ public class PermissionsUtils {
     public static final int REQUEST_CODE_STORAGE_PERMISSIONS = 322;
     public static final int REQUEST_CODE_SHIZUKU = 1337;
 
+    /**
+     * Checks whether the app can access the filesystem used by its legacy file browser.
+     *
+     * Android 13+ no longer grants READ_EXTERNAL_STORAGE/WRITE_EXTERNAL_STORAGE to
+     * apps targeting modern SDKs. On Android 11+ the equivalent capability for
+     * this app's broad filesystem access is MANAGE_EXTERNAL_STORAGE.
+     */
     public static boolean checkAndRequestStoragePermissions(Activity a) {
-        return checkAndRequestPermissions(a, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSIONS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager())
+                return true;
+
+            openAllFilesAccessSettings(a);
+            return false;
+        }
+
+        return checkAndRequestPermissions(
+                a,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                REQUEST_CODE_STORAGE_PERMISSIONS
+        );
     }
 
     public static boolean checkAndRequestStoragePermissions(Fragment f) {
-        return checkAndRequestPermissions(f, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSIONS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager())
+                return true;
+
+            openAllFilesAccessSettings(f.requireContext());
+            return false;
+        }
+
+        return checkAndRequestPermissions(
+                f,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                REQUEST_CODE_STORAGE_PERMISSIONS
+        );
+    }
+
+    private static void openAllFilesAccessSettings(android.content.Context context) {
+        Intent intent = new Intent(
+                Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                Uri.parse("package:" + context.getPackageName())
+        );
+        context.startActivity(intent);
     }
 
     public static boolean checkAndRequestShizukuPermissions(Activity a) {
