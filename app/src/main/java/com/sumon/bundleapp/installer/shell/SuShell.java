@@ -61,14 +61,14 @@ public class SuShell implements Shell {
             return execWithStdin(command, inputPipe);
 
         if (!requestRoot())
-            return new Result(command, -1, "", "<!> SAI SuShell: unable to start su session");
+            return new Result(command, -1, "", "<!> BAI SuShell: unable to start su session");
 
         try {
             return mSession.exec(command);
         } catch (Exception e) {
             Log.w(TAG, "Session command failed, dropping session", e);
             mSession.close();
-            return new Result(command, -1, "", "<!> SAI SuShell Java exception: " + Utils.throwableToString(e));
+            return new Result(command, -1, "", "<!> BAI SuShell Java exception: " + Utils.throwableToString(e));
         }
     }
 
@@ -105,7 +105,7 @@ public class SuShell implements Shell {
         } catch (Exception e) {
             Log.w(TAG, "Unable to execute command", e);
             return new Result(command, -1, stdOutSb.toString().trim(),
-                    stdErrSb + "\n\n<!> SAI SuShell Java exception: " + Utils.throwableToString(e));
+                    stdErrSb + "\n\n<!> BAI SuShell Java exception: " + Utils.throwableToString(e));
         }
     }
 }
