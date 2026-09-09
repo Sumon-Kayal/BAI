@@ -27,6 +27,7 @@ android {
         targetSdk 36
         versionCode 61
         versionName "4.6"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "int", "DEFAULT_THEME", "6"
         buildConfigField "int", "DEFAULT_DARK_THEME", "11"
@@ -102,6 +103,10 @@ dependencies {
     implementation libs.lifecycle.common.java8
     implementation libs.preference
     implementation libs.recyclerview
+
+    // Instrumented tests
+    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation libs.androidx.test.runner
 
     // Material Design
     implementation libs.material

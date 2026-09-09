@@ -164,10 +164,12 @@ public class Installer2Fragment extends InstallerFragment implements FilePickerD
         installButton.setOnLongClickListener((v) -> {
             if (mHelper.isInstallerXEnabled())
                 openInstallerXDialog(null);
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                pickFilesWithSaf();
             else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 // Long-press keeps the internal picker reachable on modern Android too —
-                // still useful if broad storage access happens to be available, and its
-                // nicer browsing/sort/filter UX is worth keeping around as an option.
+                // still useful while READ_EXTERNAL_STORAGE can be requested, and its nicer
+                // browsing/sort/filter UX is worth keeping around as an option.
                 checkPermissionsAndPickFiles();
             else
                 pickFilesWithSaf();
