@@ -280,7 +280,9 @@ public class SigningKeyManager {
     }
 
     public synchronized void delete() throws Exception {
-        loadAndroidKeyStore().deleteEntry(KEY_ALIAS);
+        KeyStore keyStore = loadAndroidKeyStore();
+        keyStore.deleteEntry(KEY_ALIAS);
+        keyStore.deleteEntry(LEGACY_KEY_ALIAS);
     }
 
     @Nullable

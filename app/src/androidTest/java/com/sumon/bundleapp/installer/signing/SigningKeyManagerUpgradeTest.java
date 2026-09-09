@@ -2,7 +2,11 @@ package com.sumon.bundleapp.installer.signing;
 
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
-import android.test.InstrumentationTestCase;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.math.BigInteger;
 import java.security.KeyPairGenerator;
@@ -13,11 +17,17 @@ import java.util.Calendar;
 
 import javax.security.auth.x500.X500Principal;
 
-public class SigningKeyManagerUpgradeTest extends InstrumentationTestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(AndroidJUnit4.class)
+public class SigningKeyManagerUpgradeTest {
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
     private static final String CURRENT_ALIAS = "bai_apk_signing_key";
     private static final String LEGACY_ALIAS = "sai_apk_signing_key";
 
+    @Test
     public void testGetOrCreateReturnsLegacyCertificateWhenOnlyLegacyKeyExists() throws Exception {
         KeyStore keyStore = loadKeyStore();
         keyStore.deleteEntry(CURRENT_ALIAS);

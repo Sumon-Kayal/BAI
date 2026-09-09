@@ -49,7 +49,6 @@ public class UriDirectoryPickerDialogFragment extends Fragment implements FilePi
     private static final String STATE_RESULT_DELIVERED = "result_delivered";
 
     private boolean mResultDelivered;
-    private FilePickerDialogFragment mPendingFilePicker;
 
     private final ActivityResultLauncher<Intent> safDirectoryPickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -72,9 +71,9 @@ public class UriDirectoryPickerDialogFragment extends Fragment implements FilePi
                     }
                 }
 
-                if (allGranted && mPendingFilePicker != null) {
-                    openFilePicker(mPendingFilePicker);
-                    mPendingFilePicker = null;
+                if (allGranted) {
+                    if (getChildFragmentManager().findFragmentByTag(FILE_PICKER_TAG) == null)
+                        startInternalPicker();
                 } else if (!allGranted) {
                     showPermissionDeniedAlert();
                 }
@@ -135,10 +134,11 @@ public class UriDirectoryPickerDialogFragment extends Fragment implements FilePi
     }
 
     private void openFilePicker(FilePickerDialogFragment filePicker) {
-        if (PermissionsUtils.checkAndRequestStoragePermissions(this, storagePermissionLauncher)) {
-            mPendingFilePicker = filePicker;
+        if (PermissionsUtils.checkAndRequestStoragePermissions(this, storagePermissionLauncher))
             return;
-        }
+
+        if (getChildFragmentManager().findFragmentByTag(FILE_PICKER_TAG) != null)
+            return;
 
         observeChildUntilDestroyed(filePicker);
         filePicker.show(getChildFragmentManager(), FILE_PICKER_TAG);
@@ -165,7 +165,7 @@ public class UriDirectoryPickerDialogFragment extends Fragment implements FilePi
             public void onFragmentDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
                 if (f == child) {
                     fm.unregisterFragmentLifecycleCallbacks(this);
-                    if (!mResultDelivered)
+                    if (!requireActivity().isChangingConfigurations() && !mResultDelivered)
                         finish();
                 }
             }
