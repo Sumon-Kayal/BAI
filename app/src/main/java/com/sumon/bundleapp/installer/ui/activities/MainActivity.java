@@ -45,13 +45,14 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
         //TODO is this ok?
         DefaultBackupManager.getInstance(this);
 
-        showMiuiWarning();
-
         mBottomNavigationView = findViewById(R.id.bottomnav_main);
         mBottomNavigationView.setOnItemSelectedListener(this);
 
         mFragmentNavigator = new FragmentNavigator(savedInstanceState, getSupportFragmentManager(), R.id.container_main, this);
         mInstallerFragment = mFragmentNavigator.findFragmentByTag("installer");
+        if (showMiuiWarning())
+            return;
+
         if (savedInstanceState == null)
             mFragmentNavigator.switchTo("installer");
 
@@ -70,12 +71,15 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
         }
     }
 
-    private void showMiuiWarning() {
+    private boolean showMiuiWarning() {
         if (MiuiUtils.isMiui() && MiuiUtils.isMiuiVersionAtMost("12.4")
                 && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PreferencesKeys.MIUI_WARNING_SHOWN, false)) {
             startActivity(new Intent(this, MiActivity.class));
             finish();
+            return true;
         }
+
+        return false;
     }
 
     private void deliverActionViewUri(Uri uri) {

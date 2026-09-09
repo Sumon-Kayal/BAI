@@ -176,7 +176,7 @@ public class InstallerXAdapterDividerItemDecoration extends RecyclerView.ItemDec
             final View child = parent.getChildAt(i);
             RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
             if (layoutManager == null)
-                return;
+                break;
 
             layoutManager.getDecoratedBoundsWithMargins(child, mBounds);
             final int right = mBounds.right + Math.round(child.getTranslationX());

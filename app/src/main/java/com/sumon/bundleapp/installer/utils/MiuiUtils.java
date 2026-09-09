@@ -53,18 +53,19 @@ public class MiuiUtils {
         int[] version1Parts = parseVersionIntoParts(version1);
         int[] version2Parts = parseVersionIntoParts(version2);
 
-        for (int i = 0; i < version2Parts.length; i++) {
-            if (i >= version1Parts.length)
+        int partCount = Math.max(version1Parts.length, version2Parts.length);
+        for (int i = 0; i < partCount; i++) {
+            int version1Part = i < version1Parts.length ? version1Parts[i] : 0;
+            int version2Part = i < version2Parts.length ? version2Parts[i] : 0;
+
+            if (version1Part < version2Part)
                 return -1;
 
-            if (version1Parts[i] < version2Parts[i])
-                return -1;
-
-            if (version1Parts[i] > version2Parts[i])
+            if (version1Part > version2Part)
                 return 1;
         }
 
-        return 1;
+        return 0;
     }
 
     public static boolean isActualMiuiVersionAtLeast(String targetVer) {
