@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.utils.AlertsUtils;
@@ -22,17 +26,36 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
-public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFragment implements FilePickerDialogFragment.OnFilesSelectedListener {
-    private static final int BACKUP_DIR_SELECTION_METHOD_INTERNAL = 0;
-    private static final int BACKUP_DIR_SELECTION_METHOD_SAF = 1;
+/**
+ * Picks a directory, automatically choosing the selection strategy by Android version instead
+ * of asking the user to choose (which most users have no informed basis to answer):
+ * <p>
+ * - Below Android 10 (API 29): the in-app "Internal" file picker (java.io.File + a runtime
+ * storage permission). Scoped storage doesn't apply yet, so this works reliably here.
+ * - Android 10+ (API 29+): Storage Access Framework (ACTION_OPEN_DOCUMENT_TREE). Needs no
+ * special permission, and is the only approach scoped storage reliably supports for broad
+ * directory access on modern Android — the in-app picker's plain READ/WRITE_EXTERNAL_STORAGE
+ * permission stops being reliable for arbitrary paths from here on.
+ * <p>
+ * This is a headless fragment (no UI of its own) rather than a dialog: it only exists to host
+ * the ActivityResultLaunchers and the child file-picker dialog for as long as picking is in
+ * progress, then removes itself. Kept as a Fragment (not a DialogFragment) specifically so it
+ * has no window/dialog chrome of its own to show or hide — the actual picker (the in-app dialog
+ * or the system SAF UI) is the only thing the user ever sees.
+ */
+public class UriDirectoryPickerDialogFragment extends Fragment implements FilePickerDialogFragment.OnFilesSelectedListener {
     private static final String BACKUP_DIR_TAG = "backup_dir";
 
+    private boolean mResultDelivered;
     private FilePickerDialogFragment mPendingFilePicker;
+
     private final ActivityResultLauncher<Intent> safDirectoryPickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     handleSafDirectoryResult(result.getData());
+                } else {
+                    finish();
                 }
             });
 
@@ -51,33 +74,50 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
                     openFilePicker(mPendingFilePicker);
                     mPendingFilePicker = null;
                 } else if (!allGranted) {
+                    // Leaves this headless fragment attached until the alert is dismissed
+                    // (the alert is shown via this fragment's own child fragment manager,
+                    // so finishing immediately here would tear it down before it's read).
                     AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
                 }
             });
 
+    // Context kept unused for call-site compatibility with the existing two callers
+    // (LocalBackupStorageSetupFragment, LocalBackupStorageSettingsFragment) — no need to
+    // touch either of them for this change.
     public static UriDirectoryPickerDialogFragment newInstance(Context context) {
-        UriDirectoryPickerDialogFragment fragment = new UriDirectoryPickerDialogFragment();
+        return new UriDirectoryPickerDialogFragment();
+    }
 
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAMS, new DialogParams(context.getText(R.string.settings_main_backup_backup_dir_dialog), R.array.backup_dir_selection_methods));
-        fragment.setArguments(args);
-
-        return fragment;
+    /** Mirrors DialogFragment.show(FragmentManager, String) so existing callers don't need to change. */
+    public void show(FragmentManager manager, String tag) {
+        manager.beginTransaction().add(this, tag).commitNowAllowingStateLoss();
     }
 
     @Override
-    protected void deliverSelectionResult(String tag, int selectedItemIndex) {
-        if (selectedItemIndex == BACKUP_DIR_SELECTION_METHOD_INTERNAL) {
-            DialogProperties properties = new DialogProperties();
-            properties.selection_mode = DialogConfigs.SINGLE_MODE;
-            properties.selection_type = DialogConfigs.DIR_SELECT;
-            properties.root = Environment.getExternalStorageDirectory();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-            openFilePicker(FilePickerDialogFragment.newInstance(BACKUP_DIR_TAG, getString(R.string.settings_main_pick_dir), properties));
-        } else if (selectedItemIndex == BACKUP_DIR_SELECTION_METHOD_SAF) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            safDirectoryPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.installer_pick_apks)));
+        if (savedInstanceState == null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                startInternalPicker();
+            } else {
+                startSafPicker();
+            }
         }
+    }
+
+    private void startInternalPicker() {
+        DialogProperties properties = new DialogProperties();
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.DIR_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+
+        openFilePicker(FilePickerDialogFragment.newInstance(BACKUP_DIR_TAG, getString(R.string.settings_main_pick_dir), properties));
+    }
+
+    private void startSafPicker() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        safDirectoryPickerLauncher.launch(Intent.createChooser(intent, getString(R.string.settings_main_pick_dir)));
     }
 
     private void openFilePicker(FilePickerDialogFragment filePicker) {
@@ -85,6 +125,22 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
             mPendingFilePicker = filePicker;
             return;
         }
+
+        // The dialog's own cancel/back dismisses it with no callback of its own (its listener
+        // interface only reports a successful selection) — watch for it going away so this
+        // headless fragment doesn't linger under BACKUP_DIR_TAG if the user backs out.
+        getChildFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+            @Override
+            public void onFragmentViewDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
+                if (f == filePicker) {
+                    fm.unregisterFragmentLifecycleCallbacks(this);
+                    if (!mResultDelivered) {
+                        finish();
+                    }
+                }
+            }
+        }, false);
+
         filePicker.show(getChildFragmentManager(), null);
     }
 
@@ -96,11 +152,19 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
     }
 
     private void onDirectoryPicked(Uri dirUri) {
+        mResultDelivered = true;
+
         OnDirectoryPickedListener listener = Utils.getParentAs(this, OnDirectoryPickedListener.class);
         if (listener != null) {
             listener.onDirectoryPicked(getTag(), dirUri);
         }
-        dismiss();
+        finish();
+    }
+
+    private void finish() {
+        if (isAdded()) {
+            getParentFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+        }
     }
 
     @Override

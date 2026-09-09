@@ -226,10 +226,8 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
     }
 
     private void startForegroundCompat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ServiceCompat.startForeground(this, NOTIFICATION_ID, buildStatusNotification(),
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
-        }
+        ServiceCompat.startForeground(this, NOTIFICATION_ID, buildStatusNotification(),
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
     }
 
     private Notification buildStatusNotification() {

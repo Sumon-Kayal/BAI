@@ -71,6 +71,24 @@ public class MiuiUtils {
         return compareVersions(getActualMiuiVersion(), targetVer) >= 0;
     }
 
+    /**
+     * @return true if the device's MIUI version (per ro.miui.ui.version.name, e.g. "V12.5")
+     * is at most targetVer (e.g. "12.4"). Fails safe toward true (show whatever this gates)
+     * if the version can't be determined — callers are expected to already be behind an
+     * isMiui() check, where the same underlying property is confirmed non-empty, so this
+     * fallback is a defensive backstop rather than an expected path.
+     */
+    public static boolean isMiuiVersionAtMost(String targetVer) {
+        String versionName = getMiuiVersionName();
+        if ("???".equals(versionName))
+            return true;
+
+        if (versionName.startsWith("V") || versionName.startsWith("v"))
+            versionName = versionName.substring(1);
+
+        return compareVersions(versionName, targetVer) <= 0;
+    }
+
     @SuppressLint("PrivateApi")
     public static boolean isMiuiOptimizationDisabled() {
         if ("0".equals(Utils.getSystemProperty("persist.sys.miui_optimization")))

@@ -2,6 +2,7 @@ package com.sumon.bundleapp.installer.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.preference.PreferenceManager;
@@ -176,6 +177,12 @@ public class PreferencesHelper {
     }
 
     public boolean shouldShowSafTip() {
+        // On Android 10+ the install button already defaults to SAF on tap (see
+        // Installer2Fragment), so "long click to use system file picker" would be
+        // teaching the wrong gesture — long click gives the internal picker there instead.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            return false;
+
         return !mPrefs.getBoolean(
                 PreferencesKeys.SAF_TIP_SHOWN,
                 false

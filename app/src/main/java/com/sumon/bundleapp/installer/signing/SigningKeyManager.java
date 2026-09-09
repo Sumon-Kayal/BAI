@@ -39,7 +39,7 @@ import javax.security.auth.x500.X500Principal;
 public class SigningKeyManager {
 
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private static final String KEY_ALIAS = "sai_apk_signing_key";
+    private static final String KEY_ALIAS = "bai_apk_signing_key";
     private static final int KEY_SIZE = 2048;
     private static final int VALIDITY_YEARS = 30;
 
@@ -102,7 +102,7 @@ public class SigningKeyManager {
                 .setKeySize(KEY_SIZE)
                 .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
                 .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
-                .setCertificateSubject(new X500Principal("CN=SAI"))
+                .setCertificateSubject(new X500Principal("CN=BAI"))
                 .setCertificateSerialNumber(new BigInteger(64, new SecureRandom()).abs())
                 .setCertificateNotBefore(notBefore)
                 .setCertificateNotAfter(notAfter)

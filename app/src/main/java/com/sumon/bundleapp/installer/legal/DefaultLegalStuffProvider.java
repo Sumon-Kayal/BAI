@@ -11,8 +11,6 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
     }
 
     private DefaultLegalStuffProvider(Context context) {
-        Context mContext = context.getApplicationContext();
-
         sInstance = this;
     }
 
@@ -33,6 +31,6 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
 
     @Override
     public String getEulaUrl() {
-        return "https://aefyr.github.io/sai/eula_en";
+        return null;
     }
 }

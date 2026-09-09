@@ -54,7 +54,7 @@ public class AppInstalledDialogFragment extends DialogFragment {
             appLaunchIntent = pm.getLaunchIntentForPackage(mPackage);
             Objects.requireNonNull(appLaunchIntent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } catch (Exception e) {
-            Log.w("SAI", e);
+            Log.w("BAI", e);
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
