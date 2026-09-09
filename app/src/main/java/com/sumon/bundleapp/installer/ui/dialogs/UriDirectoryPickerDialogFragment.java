@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.sumon.bundleapp.installer.R;
-import com.sumon.bundleapp.installer.utils.AlertsUtils;
 import com.sumon.bundleapp.installer.utils.PermissionsUtils;
 import com.sumon.bundleapp.installer.utils.Utils;
 import com.github.angads25.filepicker.model.DialogConfigs;
@@ -45,6 +44,9 @@ import java.util.Objects;
  */
 public class UriDirectoryPickerDialogFragment extends Fragment implements FilePickerDialogFragment.OnFilesSelectedListener {
     private static final String BACKUP_DIR_TAG = "backup_dir";
+    private static final String FILE_PICKER_TAG = "directory_picker";
+    private static final String PERMISSION_ALERT_TAG = "storage_permission_alert";
+    private static final String STATE_RESULT_DELIVERED = "result_delivered";
 
     private boolean mResultDelivered;
     private FilePickerDialogFragment mPendingFilePicker;
@@ -74,10 +76,7 @@ public class UriDirectoryPickerDialogFragment extends Fragment implements FilePi
                     openFilePicker(mPendingFilePicker);
                     mPendingFilePicker = null;
                 } else if (!allGranted) {
-                    // Leaves this headless fragment attached until the alert is dismissed
-                    // (the alert is shown via this fragment's own child fragment manager,
-                    // so finishing immediately here would tear it down before it's read).
-                    AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
+                    showPermissionDeniedAlert();
                 }
             });
 
@@ -103,7 +102,22 @@ public class UriDirectoryPickerDialogFragment extends Fragment implements FilePi
             } else {
                 startSafPicker();
             }
+        } else {
+            mResultDelivered = savedInstanceState.getBoolean(STATE_RESULT_DELIVERED);
+            if (mResultDelivered) {
+                finish();
+                return;
+            }
+
+            observeRestoredChild(FILE_PICKER_TAG);
+            observeRestoredChild(PERMISSION_ALERT_TAG);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_RESULT_DELIVERED, mResultDelivered);
     }
 
     private void startInternalPicker() {
@@ -126,22 +140,36 @@ public class UriDirectoryPickerDialogFragment extends Fragment implements FilePi
             return;
         }
 
-        // The dialog's own cancel/back dismisses it with no callback of its own (its listener
-        // interface only reports a successful selection) — watch for it going away so this
-        // headless fragment doesn't linger under BACKUP_DIR_TAG if the user backs out.
+        observeChildUntilDestroyed(filePicker);
+        filePicker.show(getChildFragmentManager(), FILE_PICKER_TAG);
+    }
+
+    private void showPermissionDeniedAlert() {
+        SimpleAlertDialogFragment alert = SimpleAlertDialogFragment.newInstance(
+                getString(R.string.error), getString(R.string.permissions_required_storage));
+        observeChildUntilDestroyed(alert);
+        alert.show(getChildFragmentManager(), PERMISSION_ALERT_TAG);
+    }
+
+    private void observeRestoredChild(String tag) {
+        Fragment child = getChildFragmentManager().findFragmentByTag(tag);
+        if (child != null)
+            observeChildUntilDestroyed(child);
+    }
+
+    private void observeChildUntilDestroyed(Fragment child) {
+        // The picker reports successful selection only, so cancellation is observed through its
+        // lifecycle. The same mechanism keeps a permission alert visible until it is dismissed.
         getChildFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
-            public void onFragmentViewDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
-                if (f == filePicker) {
+            public void onFragmentDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
+                if (f == child) {
                     fm.unregisterFragmentLifecycleCallbacks(this);
-                    if (!mResultDelivered) {
+                    if (!mResultDelivered)
                         finish();
-                    }
                 }
             }
         }, false);
-
-        filePicker.show(getChildFragmentManager(), null);
     }
 
     private void handleSafDirectoryResult(Intent data) {
