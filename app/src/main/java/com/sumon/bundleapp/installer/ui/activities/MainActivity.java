@@ -8,15 +8,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
 import com.sumon.bundleapp.installer.ui.fragments.BackupFragment;
 import com.sumon.bundleapp.installer.ui.fragments.Installer2Fragment;
 import com.sumon.bundleapp.installer.ui.fragments.InstallerFragment;
+import com.sumon.bundleapp.installer.ui.fragments.LegacyInstallerFragment;
 import com.sumon.bundleapp.installer.ui.fragments.PreferencesFragment;
 import com.sumon.bundleapp.installer.utils.FragmentNavigator;
+import com.sumon.bundleapp.installer.utils.MiuiUtils;
 import com.sumon.bundleapp.installer.utils.PreferencesHelper;
+import com.sumon.bundleapp.installer.utils.PreferencesKeys;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.sumon.bundleapp.installer.utils.InsetsUtils;
@@ -41,12 +45,14 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
         //TODO is this ok?
         DefaultBackupManager.getInstance(this);
 
-
         mBottomNavigationView = findViewById(R.id.bottomnav_main);
         mBottomNavigationView.setOnItemSelectedListener(this);
 
         mFragmentNavigator = new FragmentNavigator(savedInstanceState, getSupportFragmentManager(), R.id.container_main, this);
         mInstallerFragment = mFragmentNavigator.findFragmentByTag("installer");
+        if (showMiuiWarning())
+            return;
+
         if (savedInstanceState == null)
             mFragmentNavigator.switchTo("installer");
 
@@ -63,6 +69,17 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
         if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null) {
             deliverActionViewUri(intent.getData());
         }
+    }
+
+    private boolean showMiuiWarning() {
+        if (MiuiUtils.isMiui() && MiuiUtils.isMiuiVersionAtMost("12.4")
+                && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PreferencesKeys.MIUI_WARNING_SHOWN, false)) {
+            startActivity(new Intent(this, MiActivity.class));
+            finish();
+            return true;
+        }
+
+        return false;
     }
 
     private void deliverActionViewUri(Uri uri) {
@@ -119,7 +136,7 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
 
     private InstallerFragment getInstallerFragment() {
         if (mInstallerFragment == null)
-            mInstallerFragment = new Installer2Fragment();
+            mInstallerFragment = PreferencesHelper.getInstance(this).useOldInstaller() ? new LegacyInstallerFragment() : new Installer2Fragment();
         return mInstallerFragment;
     }
 

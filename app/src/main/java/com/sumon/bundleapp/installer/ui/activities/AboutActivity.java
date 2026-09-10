@@ -26,7 +26,7 @@ public class AboutActivity extends ThemedActivity {
 
         InsetsUtils.applySystemBarInsetsAsPadding(findViewById(android.R.id.content));
 
-        mLegalStuffProvider = DefaultLegalStuffProvider.getInstance(this);
+        mLegalStuffProvider = DefaultLegalStuffProvider.getInstance();
 
         ((TextView) findViewById(R.id.tv_about_app)).setText(
                 String.format("%s %s", getString(R.string.app_name_full), BuildConfig.VERSION_NAME));

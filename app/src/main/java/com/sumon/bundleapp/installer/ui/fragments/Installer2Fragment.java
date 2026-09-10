@@ -18,7 +18,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -154,12 +153,24 @@ public class Installer2Fragment extends InstallerFragment implements FilePickerD
         installButton.setOnClickListener((v) -> {
             if (mHelper.isInstallerXEnabled())
                 openInstallerXDialog(null);
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                // Scoped storage from here on means the internal picker's plain storage
+                // permission can't reliably browse to arbitrary APK locations any more —
+                // SAF is the reliable default on modern Android.
+                pickFilesWithSaf();
             else
                 checkPermissionsAndPickFiles();
         });
         installButton.setOnLongClickListener((v) -> {
             if (mHelper.isInstallerXEnabled())
                 openInstallerXDialog(null);
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                pickFilesWithSaf();
+            else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                // Long-press keeps the internal picker reachable on modern Android too —
+                // still useful while READ_EXTERNAL_STORAGE can be requested, and its nicer
+                // browsing/sort/filter UX is worth keeping around as an option.
+                checkPermissionsAndPickFiles();
             else
                 pickFilesWithSaf();
 
@@ -269,7 +280,6 @@ public class Installer2Fragment extends InstallerFragment implements FilePickerD
         AppInstalledDialogFragment.newInstance(packageName).show(getChildFragmentManager(), "dialog_app_installed");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     @Override
     public void onFilesSelected(String tag, List<File> files) {
         if (files.isEmpty() || !ensureExtensionsConsistency(files)) {
@@ -288,7 +298,6 @@ public class Installer2Fragment extends InstallerFragment implements FilePickerD
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     private boolean ensureExtensionsConsistency(List<File> files) {
         String firstFileExtension = Utils.getExtension(files.get(0).getName());
         if (firstFileExtension == null)
@@ -345,7 +354,7 @@ public class Installer2Fragment extends InstallerFragment implements FilePickerD
             Objects.requireNonNull(appLaunchIntent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(appLaunchIntent);
         } catch (Exception e) {
-            Log.w("SAI", e);
+            Log.w("BAI", e);
             Toast.makeText(requireContext(), R.string.installer_unable_to_launch_app, Toast.LENGTH_SHORT).show();
         }
     }

@@ -39,7 +39,8 @@ import javax.security.auth.x500.X500Principal;
 public class SigningKeyManager {
 
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private static final String KEY_ALIAS = "sai_apk_signing_key";
+    private static final String KEY_ALIAS = "bai_apk_signing_key";
+    private static final String LEGACY_KEY_ALIAS = "sai_apk_signing_key";
     private static final int KEY_SIZE = 2048;
     private static final int VALIDITY_YEARS = 30;
 
@@ -78,11 +79,16 @@ public class SigningKeyManager {
     @Nullable
     public synchronized SigningKey get() throws Exception {
         KeyStore keyStore = loadAndroidKeyStore();
-        if (!keyStore.containsAlias(KEY_ALIAS))
+        String alias;
+        if (keyStore.containsAlias(KEY_ALIAS))
+            alias = KEY_ALIAS;
+        else if (keyStore.containsAlias(LEGACY_KEY_ALIAS))
+            alias = LEGACY_KEY_ALIAS;
+        else
             return null;
 
-        PrivateKey privateKey = (PrivateKey) keyStore.getKey(KEY_ALIAS, null);
-        Certificate certificate = keyStore.getCertificate(KEY_ALIAS);
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, null);
+        Certificate certificate = keyStore.getCertificate(alias);
 
         if (privateKey == null || !(certificate instanceof X509Certificate))
             return null;
@@ -102,7 +108,7 @@ public class SigningKeyManager {
                 .setKeySize(KEY_SIZE)
                 .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
                 .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
-                .setCertificateSubject(new X500Principal("CN=SAI"))
+                .setCertificateSubject(new X500Principal("CN=BAI"))
                 .setCertificateSerialNumber(new BigInteger(64, new SecureRandom()).abs())
                 .setCertificateNotBefore(notBefore)
                 .setCertificateNotAfter(notAfter)
@@ -274,7 +280,9 @@ public class SigningKeyManager {
     }
 
     public synchronized void delete() throws Exception {
-        loadAndroidKeyStore().deleteEntry(KEY_ALIAS);
+        KeyStore keyStore = loadAndroidKeyStore();
+        keyStore.deleteEntry(KEY_ALIAS);
+        keyStore.deleteEntry(LEGACY_KEY_ALIAS);
     }
 
     @Nullable

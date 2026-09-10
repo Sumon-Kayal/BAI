@@ -1,18 +1,14 @@
 package com.sumon.bundleapp.installer.legal;
 
-import android.content.Context;
-
 public class DefaultLegalStuffProvider implements LegalStuffProvider {
 
     private static DefaultLegalStuffProvider sInstance;
 
-    public static synchronized DefaultLegalStuffProvider getInstance(Context context) {
-        return sInstance != null ? sInstance : new DefaultLegalStuffProvider(context);
+    public static synchronized DefaultLegalStuffProvider getInstance() {
+        return sInstance != null ? sInstance : new DefaultLegalStuffProvider();
     }
 
-    private DefaultLegalStuffProvider(Context context) {
-        Context mContext = context.getApplicationContext();
-
+    private DefaultLegalStuffProvider() {
         sInstance = this;
     }
 
@@ -25,7 +21,6 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
     public String getPrivacyPolicyUrl() {
         return null;
     }
-
     @Override
     public boolean hasEula() {
         return true;
@@ -33,6 +28,6 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
 
     @Override
     public String getEulaUrl() {
-        return "https://aefyr.github.io/sai/eula_en";
+        return null;
     }
 }
