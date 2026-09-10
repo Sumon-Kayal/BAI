@@ -129,11 +129,12 @@ public class RootlessSaiPackageInstaller extends BaseSaiPackageInstaller impleme
             Intent callbackIntent = new Intent(RootlessSaiPiBroadcastReceiver.ACTION_DELIVER_PI_EVENT);
             callbackIntent.setPackage(getContext().getPackageName());
 
-            int flags = PendingIntent.FLAG_UPDATE_CURRENT;
-            if (Build.VERSION.SDK_INT >= 31) {
-                flags |= PendingIntent.FLAG_IMMUTABLE;
-            }
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, callbackIntent, flags);
+            // PackageInstaller.Session#commit(IntentSender) requires a MUTABLE PendingIntent:
+            // the system fills in EXTRA_STATUS (and the rest of the install result) into this
+            // Intent when it fires. FLAG_IMMUTABLE here silently breaks install-completion
+            // reporting on API 31+ — do not change this back to conditional/immutable.
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, callbackIntent,
+                    PendingIntent.FLAG_MUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             session.commit(pendingIntent.getIntentSender());
         } catch (Exception e) {
             Log.w(TAG, e);
