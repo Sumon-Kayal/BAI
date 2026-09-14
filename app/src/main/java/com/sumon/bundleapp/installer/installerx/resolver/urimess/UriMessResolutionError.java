@@ -2,8 +2,8 @@ package com.sumon.bundleapp.installer.installerx.resolver.urimess;
 
 public class UriMessResolutionError {
 
-    final String mMessage;
-    final boolean mDoesTryingToInstallNonethelessMakeSense;
+    String mMessage;
+    boolean mDoesTryingToInstallNonethelessMakeSense;
 
     public UriMessResolutionError(String message, boolean doesTryingToInstallNonethelessMakeSense) {
         mMessage = message;

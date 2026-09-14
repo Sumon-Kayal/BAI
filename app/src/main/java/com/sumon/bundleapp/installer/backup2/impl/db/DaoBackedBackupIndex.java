@@ -177,7 +177,6 @@ public class DaoBackedBackupIndex implements BackupIndex {
         try (InputStream in = iconInputStream; FileOutputStream out = new FileOutputStream(iconFile)) {
             IOUtils.copyStream(in, out);
         } catch (Exception e) {
-            //noinspection ResultOfMethodCallIgnored
             iconFile.delete();
             throw e;
         }
@@ -210,7 +209,6 @@ public class DaoBackedBackupIndex implements BackupIndex {
                 if (mDao.containsIcon(iconFile.getAbsolutePath())) {
                     validFiles++;
                 } else {
-                    //noinspection ResultOfMethodCallIgnored
                     iconFile.delete();
                     filesDeleted++;
                 }

@@ -9,11 +9,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import androidx.core.os.ParcelCompat;
 
 public class SingleBackupTaskConfig implements Parcelable, BackupTaskConfig {
 
-    public static final Parcelable.Creator<SingleBackupTaskConfig> CREATOR = new Parcelable.Creator<>() {
+    public static final Parcelable.Creator<SingleBackupTaskConfig> CREATOR = new Parcelable.Creator<SingleBackupTaskConfig>() {
         @Override
         public SingleBackupTaskConfig createFromParcel(Parcel in) {
             return new SingleBackupTaskConfig(in);
@@ -36,7 +35,7 @@ public class SingleBackupTaskConfig implements Parcelable, BackupTaskConfig {
 
     SingleBackupTaskConfig(Parcel in) {
         mBackupStorageId = in.readString();
-        mPackageMeta = ParcelCompat.readParcelable(in, PackageMeta.class.getClassLoader(), PackageMeta.class);
+        mPackageMeta = in.readParcelable(PackageMeta.class.getClassLoader());
 
         ArrayList<String> apkFilePaths = new ArrayList<>();
         in.readStringList(apkFilePaths);

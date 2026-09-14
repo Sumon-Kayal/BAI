@@ -2,6 +2,10 @@
 
 Thank you for your interest in contributing to BAI (Bundle APKs Installer)! Contributions of all kinds are welcome, including translations, bug reports, feature suggestions, documentation improvements, and code.
 
+## Project structure: two platform generations
+
+BAI builds as two Gradle product flavors — `legacy` (Android 6–10, API 23–29) and `modern` (Android 11–16, API 30–36) — sharing one `main` source set for everything that doesn't differ by Android version, with `src/legacy/` and `src/modern/` holding only the parts that do (currently: storage/file-picking permissions and a couple of manifest entries). If you're adding something that behaves differently across Android versions, it likely belongs behind a shared interface in `platform/` with one implementation per flavor, not an inline SDK_INT check — see `platform/PlatformPermissions.java` and `platform/PlatformFilePicker.java` for the existing pattern.
+
 ## Discussions
 
 For general questions, ideas, feedback, or community discussions, please use GitHub Discussions:

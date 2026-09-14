@@ -1,5 +1,8 @@
 package com.sumon.bundleapp.installer.backup2.impl;
 
+import com.sumon.bundleapp.installer.R;
+import com.sumon.bundleapp.installer.BuildConfig;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,7 +15,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
-import android.content.pm.ServiceInfo;
 import android.os.Looper;
 import android.util.Log;
 
@@ -20,10 +22,7 @@ import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.app.ServiceCompat;
 
-import com.sumon.bundleapp.installer.BuildConfig;
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.BackupManager;
 import com.sumon.bundleapp.installer.backup2.BackupStorage;
 import com.sumon.bundleapp.installer.backup2.backuptask.config.BackupTaskConfig;
@@ -51,6 +50,9 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
     public static final String ACTION_CANCEL_BACKUP = BuildConfig.APPLICATION_ID + ".action.BackupService2.CANCEL_BACKUP";
     public static final String EXTRA_STORAGE_ID = "storage_id";
     public static final String EXTRA_TASK_TOKEN = "task_token";
+
+    public static final String NOTIFICATION_GROUP_BACKUP_ONGOING = BuildConfig.APPLICATION_ID + ".notification_group.BACKUP_ONGOING";
+    public static final String NOTIFICATION_GROUP_BACKUP_DONE = BuildConfig.APPLICATION_ID + ".notification_group.BACKUP_DONE";
 
     private NotificationHelper mNotificationHelper;
 
@@ -134,16 +136,15 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
         BackupStorage storage = mBackupManager.getBackupStorageProvider(storageId).getStorage();
 
         BackupTaskConfig config = storage.getTaskConfig(taskToken);
-        switch (config) {
-            case null -> {
-                return;
-            }
-            case SingleBackupTaskConfig taskConfig ->
-                    mTasks.put(taskToken, new BackupTaskInfo(config.getBackupStorageId(), taskConfig.packageMeta(), taskToken, taskToken));
-            case BatchBackupTaskConfig ignored ->
-                    mBatchTasks.put(taskToken, new BatchBackupTaskInfo(config.getBackupStorageId(), taskToken, taskToken));
-            default ->
-                    Log.w(TAG, String.format("Got unsupported task config class - %s, task token - %s, ignoring", config.getClass().getCanonicalName(), taskToken));
+        if (config == null)
+            return;
+
+        if (config instanceof SingleBackupTaskConfig taskConfig) {
+            mTasks.put(taskToken, new BackupTaskInfo(config.getBackupStorageId(), taskConfig.packageMeta(), taskToken, taskToken));
+        } else if (config instanceof BatchBackupTaskConfig) {
+            mBatchTasks.put(taskToken, new BatchBackupTaskInfo(config.getBackupStorageId(), taskToken, taskToken));
+        } else {
+            Log.w(TAG, String.format("Got unsupported task config class - %s, task token - %s, ignoring", config.getClass().getCanonicalName(), taskToken));
         }
 
         addStorageDependency(storageId);
@@ -171,12 +172,12 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
         if (mTasks.isEmpty() && mBatchTasks.isEmpty()) {
             die();
         } else {
-            startForegroundCompat();
+            startForeground(NOTIFICATION_ID, buildStatusNotification());
         }
     }
 
     private void die() {
-        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
+        stopForeground(true);
         stopSelf();
     }
 
@@ -222,12 +223,7 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
             mNotificationManager.createNotificationChannel(new NotificationChannel(NOTIFICATION_CHANNEL_ID, getString(R.string.backup_backup), NotificationManager.IMPORTANCE_DEFAULT));
         }
 
-        startForegroundCompat();
-    }
-
-    private void startForegroundCompat() {
-        ServiceCompat.startForeground(this, NOTIFICATION_ID, buildStatusNotification(),
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        startForeground(NOTIFICATION_ID, buildStatusNotification());
     }
 
     private Notification buildStatusNotification() {
@@ -238,7 +234,7 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
                 .build();
     }
 
-    private void publishProgress(BackupTaskInfo taskInfo, int current) {
+    private void publishProgress(BackupTaskInfo taskInfo, int current, int goal) {
         if (System.currentTimeMillis() - taskInfo.lastProgressUpdate < PROGRESS_NOTIFICATION_UPDATE_CD)
             return;
 
@@ -252,8 +248,7 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
             cancelTaskIntent.putExtra(EXTRA_STORAGE_ID, taskInfo.storageId);
             cancelTaskIntent.putExtra(EXTRA_TASK_TOKEN, taskInfo.taskToken);
 
-            cancelTaskPendingIntent = PendingIntent.getService(this, 0, cancelTaskIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            cancelTaskPendingIntent = PendingIntent.getService(this, 0, cancelTaskIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             taskInfo.cachedCancelPendingIntent = cancelTaskPendingIntent;
         }
 
@@ -263,7 +258,7 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_backup)
                 .setContentTitle(getString(R.string.backup_backup))
-                .setProgress(100, current, false)
+                .setProgress(goal, current, false)
                 .setContentText(getString(R.string.backup_backup_in_progress, taskInfo.packageMeta.label))
                 .addAction(new NotificationCompat.Action(null, getString(R.string.cancel), cancelTaskPendingIntent))
                 .build();
@@ -307,18 +302,18 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
                 break;
             case IN_PROGRESS:
                 int progress = (int) ((float) status.currentProgress() / ((float) status.progressGoal() / 100f));
-                publishProgress(Objects.requireNonNull(mTasks.get(status.token())), progress);
+                publishProgress(mTasks.get(status.token()), progress, 100);
                 break;
             case CANCELLED:
-                notifyBackupCancelled(Objects.requireNonNull(mTasks.get(status.token())));
+                notifyBackupCancelled(mTasks.get(status.token()));
                 mHandler.post(() -> taskFinished(status.token()));
                 break;
             case SUCCEEDED:
-                notifyBackupCompleted(Objects.requireNonNull(mTasks.get(status.token())), true);
+                notifyBackupCompleted(mTasks.get(status.token()), true);
                 mHandler.post(() -> taskFinished(status.token()));
                 break;
             case FAILED:
-                notifyBackupCompleted(Objects.requireNonNull(mTasks.get(status.token())), false);
+                notifyBackupCompleted(mTasks.get(status.token()), false);
                 mHandler.post(() -> taskFinished(status.token()));
                 break;
         }
@@ -338,8 +333,7 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
             cancelTaskIntent.putExtra(EXTRA_STORAGE_ID, taskInfo.storageId);
             cancelTaskIntent.putExtra(EXTRA_TASK_TOKEN, taskInfo.taskToken);
 
-            cancelTaskPendingIntent = PendingIntent.getService(this, 0, cancelTaskIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            cancelTaskPendingIntent = PendingIntent.getService(this, 0, cancelTaskIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             taskInfo.cachedCancelPendingIntent = cancelTaskPendingIntent;
         }
 
@@ -402,24 +396,24 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
             case QUEUED:
                 break;
             case IN_PROGRESS:
-                publishBatchProgress(Objects.requireNonNull(mBatchTasks.get(status.token())), status.completedBackupsCount(), status.totalBackupsCount(), status.currentConfig());
+                publishBatchProgress(mBatchTasks.get(status.token()), status.completedBackupsCount(), status.totalBackupsCount(), status.currentConfig());
                 break;
             case CANCELLED:
             case SUCCEEDED:
             case FAILED:
-                notifyBatchBackupCompleted(Objects.requireNonNull(mBatchTasks.get(status.token())), status);
+                notifyBatchBackupCompleted(mBatchTasks.get(status.token()), status);
                 mHandler.post(() -> taskFinished(status.token()));
                 break;
         }
     }
 
     private static class BackupTaskInfo {
-        final String storageId;
-        final PackageMeta packageMeta;
-        final String taskToken;
-        final String notificationTag;
+        String storageId;
+        PackageMeta packageMeta;
+        String taskToken;
+        String notificationTag;
         long lastProgressUpdate = 0;
-        final long creationTime = System.currentTimeMillis();
+        long creationTime = System.currentTimeMillis();
         PendingIntent cachedCancelPendingIntent;
         boolean firstProgressNotificationFired = false;
 
@@ -432,11 +426,11 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
     }
 
     private static class BatchBackupTaskInfo {
-        final String storageId;
-        final String taskToken;
-        final String notificationTag;
+        String storageId;
+        String taskToken;
+        String notificationTag;
         long lastProgressUpdate = 0;
-        final long creationTime = System.currentTimeMillis();
+        long creationTime = System.currentTimeMillis();
         PendingIntent cachedCancelPendingIntent;
         boolean firstProgressNotificationFired = false;
 

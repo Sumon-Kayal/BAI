@@ -22,6 +22,7 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
 import com.sumon.bundleapp.installer.shell.SuShell;
+import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.ui.activities.AboutActivity;
 import com.sumon.bundleapp.installer.ui.activities.ApkActionViewProxyActivity;
 import com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity;
@@ -156,6 +157,13 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         mFilePickerSortPref = findPreference("file_picker_sort");
         updateFilePickerSortSummary();
 
+        if (!new DeviceGenerationFilePicker().offersInternalPicker()) {
+            // Both settings only affect the internal file browser, which Modern doesn't offer —
+            // see BAI-PHASE4-STORAGE-SAF.md. Showing them would just be two dead-end rows.
+            mHomeDirPref.setVisible(false);
+            mFilePickerSortPref.setVisible(false);
+        }
+
         mFilePickerSortPref.setOnPreferenceClickListener((p) -> {
             SingleChoiceListDialogFragment.newInstance(
                     getText(R.string.settings_main_file_picker_sort),
@@ -170,22 +178,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
             startActivity(new Intent(getContext(), AboutActivity.class));
             return true;
         });
-
-        Preference signatureSchemesPref = findPreference("signature_schemes");
-        if (signatureSchemesPref != null) {
-            signatureSchemesPref.setOnPreferenceClickListener(p -> {
-                new SignatureSchemesDialogFragment().show(getChildFragmentManager(), "signature_schemes");
-                return true;
-            });
-        }
-
-        Preference signingKeyPref = findPreference("signing_key");
-        if (signingKeyPref != null) {
-            signingKeyPref.setOnPreferenceClickListener(p -> {
-                new SigningKeyDialogFragment().show(getChildFragmentManager(), "signing_key");
-                return true;
-            });
-        }
 
         mInstallerPref = findPreference("installer");
         updateInstallerSummary();

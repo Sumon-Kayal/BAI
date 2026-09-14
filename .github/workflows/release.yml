@@ -22,11 +22,11 @@ jobs:
         with:
           ref: ${{ inputs.release_tag }}
  
-      - name: Set up JDK 21
+      - name: Set up JDK 17
         uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '17'
           cache: 'gradle'
           verify-signature: true
  
@@ -61,11 +61,11 @@ jobs:
       - name: Build release APKs
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleRelease --stacktrace --no-daemon
+          ./gradlew assembleLegacyRelease assembleModernRelease --stacktrace --no-daemon
  
       # ABI splits produce one APK per architecture (armeabi-v7a, arm64-v8a,
-      # x86, x86_64) instead of a single universal one - collect and rename
-      # all of them.
+      # x86, x86_64) instead of a single universal one, times two platform
+      # generations (Phase 3) - collect and rename all eight of them.
       - name: Locate and rename APKs
         id: apk
         env:
@@ -79,11 +79,43 @@ jobs:
             echo "The release ref does not contain a valid filename component" >&2
             exit 1
           fi
-          for APK_PATH in app/build/outputs/apk/release/*.apk; do
-            ABI=$(basename "$APK_PATH" .apk | sed -E 's/^app-//; s/-release(-unsigned)?$//')
-            cp "$APK_PATH" "dist/BAI-${SAFE_RELEASE_REF}-${ABI}.apk"
+          for APK_PATH in app/build/outputs/apk/*/release/*.apk; do
+            NAME=$(basename "$APK_PATH" .apk)
+            # Matched against the known set of values rather than a fixed-position regex, so
+            # this doesn't quietly break the next time the Gradle output naming changes.
+            FLAVOR=$(grep -oE 'legacy|modern' <<< "$NAME")
+            ABI=$(grep -oE 'armeabi-v7a|arm64-v8a|x86_64|x86' <<< "$NAME")
+            if [[ -z "$FLAVOR" || -z "$ABI" ]]; then
+              echo "::error::Could not determine flavor/ABI from APK filename: $NAME"
+              exit 1
+            fi
+            cp "$APK_PATH" "dist/BAI-${SAFE_RELEASE_REF}-${FLAVOR}-${ABI}.apk"
           done
           echo "dir=dist" >> "$GITHUB_OUTPUT"
+
+      - name: Validate the eight-APK build matrix
+        run: |
+          set -euo pipefail
+          EXPECTED=8
+          COUNT=$(find dist -maxdepth 1 -type f -name '*.apk' | wc -l)
+          if [ "$COUNT" -ne "$EXPECTED" ]; then
+            echo "::error::Expected $EXPECTED release APKs (2 platform generations x 4 ABIs), found $COUNT."
+            ls -la dist
+            exit 1
+          fi
+          for FLAVOR in legacy modern; do
+            for ABI in armeabi-v7a arm64-v8a x86 x86_64; do
+              if ! ls dist | grep -qF -- "-${FLAVOR}-${ABI}.apk"; then
+                echo "::error::Missing expected APK for $FLAVOR / $ABI."
+                exit 1
+              fi
+            done
+          done
+          if find app/build/outputs/apk -iname '*universal*.apk' | grep -q .; then
+            echo "::error::An unexpected universal APK was produced — universalApk should be false."
+            exit 1
+          fi
+          echo "Build matrix OK: all 8 expected APKs present, no universal APK."
  
       - name: Verify APK signatures
         env:
@@ -136,3 +168,14 @@ jobs:
           files: ${{ steps.apk.outputs.dir }}/*.apk
           generate_release_notes: true
           fail_on_unmatched_files: true
+          body: |
+            ## Which APK do I want?
+
+            Eight APKs, built from one codebase — pick one row, then one column.
+
+            | | armeabi-v7a | arm64-v8a | x86 | x86_64 |
+            |---|---|---|---|---|
+            | **Legacy** (Android 6–10) | `*-legacy-armeabi-v7a.apk` | `*-legacy-arm64-v8a.apk` | `*-legacy-x86.apk` | `*-legacy-x86_64.apk` |
+            | **Modern** (Android 11–16) | `*-modern-armeabi-v7a.apk` | `*-modern-arm64-v8a.apk` | `*-modern-x86.apk` | `*-modern-x86_64.apk` |
+
+            Most phones from the last few years are **arm64-v8a**. If you don't know your Android version, check Settings → About phone.

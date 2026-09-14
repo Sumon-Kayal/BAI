@@ -150,6 +150,25 @@ If you are looking for a dedicated Android backup solution rather than an instal
 
 The latest public builds are available from the repository's [GitHub Releases](https://github.com/Sumon-Kayal/BAI/releases/latest).
 
+### Which APK do I want?
+
+BAI ships as **eight APKs, built from one codebase** — two Android generations, times four CPU architectures. Pick one of each:
+
+**1. Which Android version?**
+
+| | Covers | Pick this if |
+|---|---|---|
+| **BAI Legacy** | Android 6–10 (API 23–29) | Your phone shipped with, or is running, Android 10 or older |
+| **BAI Modern** | Android 11–16 (API 30–36) | Your phone is running Android 11 or newer |
+
+Check your version under Settings → About phone if you're not sure.
+
+**2. Which CPU architecture?**
+
+Most phones from the last several years are **arm64-v8a**. If a build doesn't install, or your device is older/32-bit, try **armeabi-v7a**. `x86`/`x86_64` are for emulators and x86-based devices, not typical phones.
+
+Filenames follow `BAI-<version>-<legacy|modern>-<abi>.apk` — e.g. `BAI-4.6-modern-arm64-v8a.apk` is Modern, arm64.
+
 ### Stable Releases
 
 Stable releases are created by manually running the `release.yml` workflow in
@@ -166,9 +185,9 @@ For example:
 v4.6.0
 ```
 
-The release workflow builds the four ABI-specific APKs and publishes them to the corresponding GitHub Release.
+The release workflow builds all eight platform-generation × ABI combinations and publishes them to the corresponding GitHub Release, with a compatibility table in the release notes.
 
-If release signing is configured with the repository's signing secrets, the release APKs are signed with that keystore. Otherwise, the workflow still completes and publishes the generated unsigned release APKs.
+If release signing is configured with the repository's signing secrets, the release APKs are signed with that keystore — the same keystore and signing config for all eight, there's no per-flavor signing difference. Otherwise, the workflow still completes and publishes the generated unsigned release APKs.
 
 ### Debug Builds
 
@@ -177,7 +196,7 @@ in GitHub Actions against the selected branch or ref.
 
 Debug APKs are:
 
-- built for all four supported ABIs;
+- built for both platform generations across all four supported ABIs (eight APKs total);
 - signed with Android's debug keystore;
 - uploaded as workflow artifacts with 14-day retention; and
 - published to the rolling `debug-latest` GitHub pre-release.
@@ -211,13 +230,19 @@ cd BAI
 chmod +x gradlew
 ```
 
-1. Build a release APKs:
+1. Build release APKs (both platform generations, all four ABIs each — eight APKs):
 
 ```bash
 ./gradlew assembleRelease
 ```
 
-1. Or build a debug APKs:
+Or just one platform generation while iterating:
+
+```bash
+./gradlew assembleLegacyRelease   # or assembleModernRelease
+```
+
+1. Or build debug APKs the same way:
 
 ```bash
 ./gradlew assembleDebug
@@ -226,8 +251,10 @@ chmod +x gradlew
 The generated APKs are placed under:
 
 ```text
-app/build/outputs/apk/release/
-app/build/outputs/apk/debug/
+app/build/outputs/apk/legacy/release/
+app/build/outputs/apk/modern/release/
+app/build/outputs/apk/legacy/debug/
+app/build/outputs/apk/modern/debug/
 ```
 
 </details>
@@ -242,7 +269,7 @@ git clone https://github.com/Sumon-Kayal/BAI.git
 cd BAI
 ```
 
-1. Build a release APK:
+1. Build a release APK (or `assembleLegacyRelease`/`assembleModernRelease` for one platform generation only):
 
 ```powershell
 .\gradlew.bat assembleRelease
@@ -257,8 +284,10 @@ cd BAI
 The generated APKs are placed under:
 
 ```text
-app\build\outputs\apk\release\
-app\build\outputs\apk\debug\
+app\build\outputs\apk\legacy\release\
+app\build\outputs\apk\modern\release\
+app\build\outputs\apk\legacy\debug\
+app\build\outputs\apk\modern\debug\
 ```
 
 </details>

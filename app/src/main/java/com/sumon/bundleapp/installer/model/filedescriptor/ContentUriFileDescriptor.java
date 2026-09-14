@@ -6,11 +6,9 @@ import android.net.Uri;
 
 import androidx.documentfile.provider.DocumentFile;
 
-import com.sumon.bundleapp.installer.utils.IOUtils;
 import com.sumon.bundleapp.installer.utils.saf.SafUtils;
 
 import java.io.InputStream;
-import java.io.Serial;
 
 public class ContentUriFileDescriptor implements FileDescriptor {
 
@@ -46,13 +44,10 @@ public class ContentUriFileDescriptor implements FileDescriptor {
 
     @Override
     public InputStream open() throws Exception {
-        return IOUtils.buffer(mContentResolver.openInputStream(mContentUri));
+        return mContentResolver.openInputStream(mContentUri);
     }
 
     private static class BadContentProviderException extends Exception {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
 
         private BadContentProviderException(String message) {
             super(message);

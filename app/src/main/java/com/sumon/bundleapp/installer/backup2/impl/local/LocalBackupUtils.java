@@ -86,7 +86,7 @@ public class LocalBackupUtils {
         int suffix = 0;
         while (true) {
             DocumentFile backupFileCandidate = DocumentFile.fromSingleUri(c, SafUtils.buildChildDocumentUri(backupDirUri, actualBackupFileName));
-            if (!backupFileCandidate.exists())
+            if (backupFileCandidate == null || !backupFileCandidate.exists())
                 break;
 
             actualBackupFileName = String.format("%s(%d).%s", backupFileName, ++suffix, extension);

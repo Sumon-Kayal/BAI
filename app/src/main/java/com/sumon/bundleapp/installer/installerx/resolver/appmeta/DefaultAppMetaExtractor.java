@@ -11,7 +11,6 @@ import com.sumon.bundleapp.installer.installerx.resolver.appmeta.brute.BruteAppM
 import com.sumon.bundleapp.installer.installerx.resolver.appmeta.xapk.XapkAppMetaExtractor;
 import com.sumon.bundleapp.installer.installerx.resolver.meta.ApkSourceFile;
 import com.sumon.bundleapp.installer.utils.Utils;
-import java.util.Locale;
 
 public class DefaultAppMetaExtractor implements AppMetaExtractor {
     private static final String TAG = "DefaultAppMetaExtractor";
@@ -47,11 +46,15 @@ public class DefaultAppMetaExtractor implements AppMetaExtractor {
         if (archiveExtension == null)
             return null;
 
-        return switch (archiveExtension.toLowerCase(Locale.ROOT)) {
-            case "xapk" -> new XapkAppMetaExtractor(mContext);
-            case "apks" -> new SaiAppMetaExtractor(mContext);
-            case "apkm" -> new ApkmAppMetaExtractor(mContext);
-            default -> null;
-        };
+        switch (archiveExtension.toLowerCase()) {
+            case "xapk":
+                return new XapkAppMetaExtractor(mContext);
+            case "apks":
+                return new SaiAppMetaExtractor(mContext);
+            case "apkm":
+                return new ApkmAppMetaExtractor(mContext);
+            default:
+                return null;
+        }
     }
 }

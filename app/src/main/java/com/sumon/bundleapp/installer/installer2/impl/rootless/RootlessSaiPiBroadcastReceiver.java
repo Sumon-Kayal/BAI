@@ -1,5 +1,8 @@
 package com.sumon.bundleapp.installer.installer2.impl.rootless;
 
+import com.sumon.bundleapp.installer.R;
+import com.sumon.bundleapp.installer.BuildConfig;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +11,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.sumon.bundleapp.installer.BuildConfig;
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.installer2.base.model.AndroidPackageInstallerError;
 import com.sumon.bundleapp.installer.utils.Utils;
 
 import java.util.HashSet;
-import androidx.core.content.IntentCompat;
 
 class RootlessSaiPiBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "RootlessSaiPiBR";
@@ -48,7 +48,7 @@ class RootlessSaiPiBroadcastReceiver extends BroadcastReceiver {
             case PackageInstaller.STATUS_PENDING_USER_ACTION:
                 Log.d(TAG, "Requesting user confirmation for installation");
                 dispatchOnConfirmationPending(intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1), intent.getStringExtra(PackageInstaller.EXTRA_PACKAGE_NAME));
-                Intent confirmationIntent = IntentCompat.getParcelableExtra(intent, Intent.EXTRA_INTENT, Intent.class);
+                Intent confirmationIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 
                 ConfirmationIntentWrapperActivity2.start(context, intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1), confirmationIntent);
                 break;
@@ -58,7 +58,7 @@ class RootlessSaiPiBroadcastReceiver extends BroadcastReceiver {
                 break;
             default:
                 Log.d(TAG, "Installation failed");
-                dispatchOnInstallationFailed(intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1), parseError(intent), getRawError(intent));
+                dispatchOnInstallationFailed(intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1), parseError(intent), getRawError(intent), null);
                 break;
         }
     }
@@ -73,9 +73,9 @@ class RootlessSaiPiBroadcastReceiver extends BroadcastReceiver {
             observer.onInstallationSucceeded(sessionId, packageName);
     }
 
-    private void dispatchOnInstallationFailed(int sessionId, String shortError, @Nullable String fullError) {
+    private void dispatchOnInstallationFailed(int sessionId, String shortError, @Nullable String fullError, @Nullable Exception exception) {
         for (EventObserver observer : mObservers)
-            observer.onInstallationFailed(sessionId, shortError, fullError, null);
+            observer.onInstallationFailed(sessionId, shortError, fullError, exception);
     }
 
     @Nullable

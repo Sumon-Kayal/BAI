@@ -3,8 +3,6 @@ package com.sumon.bundleapp.installer.utils;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,27 +23,12 @@ import java.util.zip.CRC32;
 public class IOUtils {
     private static final String TAG = "IOUtils";
 
-    /** Sized to keep syscall counts low on FUSE-backed external storage. */
-    public static final int BUFFER_SIZE = 256 * 1024;
-
-    /** @return number of bytes copied */
-    public static long copyStream(InputStream from, OutputStream to) throws IOException {
-        byte[] buf = new byte[BUFFER_SIZE];
-        long total = 0;
+    public static void copyStream(InputStream from, OutputStream to) throws IOException {
+        byte[] buf = new byte[1024 * 1024];
         int len;
         while ((len = from.read(buf)) > 0) {
             to.write(buf, 0, len);
-            total += len;
         }
-        return total;
-    }
-
-    public static InputStream buffer(InputStream in) {
-        return in instanceof BufferedInputStream ? in : new BufferedInputStream(in, BUFFER_SIZE);
-    }
-
-    public static OutputStream buffer(OutputStream out) {
-        return out instanceof BufferedOutputStream ? out : new BufferedOutputStream(out, BUFFER_SIZE);
     }
 
     public static void copyFile(File original, File destination) throws IOException {
@@ -68,7 +51,6 @@ public class IOUtils {
                     deleteRecursively(child);
             }
         }
-        //noinspection ResultOfMethodCallIgnored
         f.delete();
     }
 
@@ -98,7 +80,7 @@ public class IOUtils {
             try {
                 char[] buf = new char[1024];
                 int len;
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 while ((len = reader.read(buf)) > 0)
                     builder.append(buf, 0, len);
 
@@ -163,9 +145,9 @@ public class IOUtils {
     public static byte[] hashStream(InputStream inputStream, MessageDigest messageDigest) throws IOException {
         try (DigestInputStream digestInputStream = new DigestInputStream(inputStream, messageDigest)) {
             byte[] buffer = new byte[1024 * 64];
-            // Reading updates the digest as a side effect.
-            //noinspection StatementWithEmptyBody
-            while (digestInputStream.read(buffer) > 0) {
+            int read;
+            while ((read = digestInputStream.read(buffer)) > 0) {
+                //Do nothing
             }
 
             return messageDigest.digest();

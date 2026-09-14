@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.viewmodels;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -10,10 +12,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.selection.Selection;
 import com.sumon.bundleapp.installer.adapters.selection.SimpleKeyStorage;
-import com.sumon.bundleapp.installer.model.apksource.ApkSourceBuilder;
+import com.sumon.bundleapp.installer.installer.ApkSourceBuilder;
 import com.sumon.bundleapp.installer.installer2.base.model.SaiPiSessionParams;
 import com.sumon.bundleapp.installer.installer2.impl.FlexSaiPackageInstaller;
 import com.sumon.bundleapp.installer.installerx.common.SplitApkSourceMeta;
@@ -56,7 +57,7 @@ public class InstallerXDialogViewModel extends ViewModel {
 
     private LoadMetaTask mLoadMetaTask;
 
-    private final Selection<String> mPartsSelection = new Selection<>(new SimpleKeyStorage<>());
+    private final Selection<String> mPartsSelection = new Selection<>(new SimpleKeyStorage());
     private List<UriMessResolutionResult> mResolutionResults;
 
     public InstallerXDialogViewModel(@NonNull Context appContext, @Nullable UriHost uriHost) {
@@ -140,7 +141,7 @@ public class InstallerXDialogViewModel extends ViewModel {
                         .setReadZipViaZipFileEnabled(mPrefsHelper.shouldUseZipFileApi())
                         .setSigningEnabled(mPrefsHelper.shouldSignApks());
 
-                install(apkSourceBuilder.build(), packageNameOf(resolutionResult));
+                install(apkSourceBuilder.build());
             }
         }
     }
@@ -165,43 +166,40 @@ public class InstallerXDialogViewModel extends ViewModel {
             if (result.isSuccessful())
                 apkSourceBuilder.filterApksByLocalPath(new HashSet<>(mPartsSelection.getSelectedKeys()), false);
 
-            install(apkSourceBuilder.build(), packageNameOf(result));
+            install(apkSourceBuilder.build());
         }
 
     }
 
-    private void install(ApkSource apkSource, @Nullable String packageName) {
-        mInstaller.enqueueSession(mInstaller.createSessionOnInstaller(mPrefsHelper.getInstaller(),
-                new SaiPiSessionParams(apkSource, packageName)));
-    }
-
-    @Nullable
-    private static String packageNameOf(UriMessResolutionResult result) {
-        if (!result.isSuccessful() || result.meta() == null || result.meta().appMeta() == null)
-            return null;
-
-        return result.meta().appMeta().packageName;
+    private void install(ApkSource apkSource) {
+        mInstaller.enqueueSession(mInstaller.createSessionOnInstaller(mPrefsHelper.getInstaller(), new SaiPiSessionParams(apkSource)));
     }
 
     public enum State {
         NO_DATA, LOADING, LOADED, WARNING, ERROR
     }
 
-    private record LoadMetaTaskInput(List<File> apkSourceFiles, List<Uri> apkSourceContentUris) {
-            private LoadMetaTaskInput(@Nullable List<File> apkSourceFiles, @Nullable List<Uri> apkSourceContentUris) {
-                this.apkSourceFiles = apkSourceFiles;
-                this.apkSourceContentUris = apkSourceContentUris;
-            }
-        }
+    private static class LoadMetaTaskInput {
+        List<File> apkSourceFiles;
+        List<Uri> apkSourceContentUris;
 
-    private record LoadMetaTaskResult(SplitApkSourceMeta meta, Set<String> splitsToSelect,
-                                      List<UriMessResolutionResult> resolutionResults) {
-            private LoadMetaTaskResult(@Nullable SplitApkSourceMeta meta, @Nullable Set<String> splitsToSelect, @NonNull List<UriMessResolutionResult> resolutionResults) {
-                this.meta = meta;
-                this.splitsToSelect = splitsToSelect;
-                this.resolutionResults = resolutionResults;
-            }
+        private LoadMetaTaskInput(@Nullable List<File> apkSourceFiles, @Nullable List<Uri> apkSourceContentUris) {
+            this.apkSourceFiles = apkSourceFiles;
+            this.apkSourceContentUris = apkSourceContentUris;
         }
+    }
+
+    private static class LoadMetaTaskResult {
+        SplitApkSourceMeta meta;
+        Set<String> splitsToSelect;
+        List<UriMessResolutionResult> resolutionResults;
+
+        private LoadMetaTaskResult(@Nullable SplitApkSourceMeta meta, @Nullable Set<String> splitsToSelect, @NonNull List<UriMessResolutionResult> resolutionResults) {
+            this.meta = meta;
+            this.splitsToSelect = splitsToSelect;
+            this.resolutionResults = resolutionResults;
+        }
+    }
 
     private class LoadMetaTask extends SimpleAsyncTask<LoadMetaTaskInput, LoadMetaTaskResult> {
 
@@ -212,7 +210,7 @@ public class InstallerXDialogViewModel extends ViewModel {
         @Override
         protected LoadMetaTaskResult doWork(LoadMetaTaskInput input) {
             List<Uri> apkSourceUris = flattenInputToUris(input);
-            if (apkSourceUris.isEmpty())
+            if (apkSourceUris.size() == 0)
                 throw new IllegalArgumentException("Expected at least 1 file in input");
 
             DefaultSplitApkSourceMetaResolver metaResolver = new DefaultSplitApkSourceMetaResolver(mContext, new DefaultAppMetaExtractor(mContext));
@@ -261,7 +259,7 @@ public class InstallerXDialogViewModel extends ViewModel {
         protected void onWorkDone(LoadMetaTaskResult result) {
             mResolutionResults = result.resolutionResults;
 
-            if (mResolutionResults.isEmpty()) {
+            if (mResolutionResults.size() == 0) {
                 mWarning = new Warning(mContext.getString(R.string.installerx_dialog_warn_no_files), false);
                 mState.setValue(State.WARNING);
             } else if (mResolutionResults.size() == 1) {
@@ -297,8 +295,8 @@ public class InstallerXDialogViewModel extends ViewModel {
     }
 
     public static class Warning {
-        final String mMessage;
-        final boolean mCanInstallAnyway;
+        String mMessage;
+        boolean mCanInstallAnyway;
 
         private Warning(String message, boolean canInstallAnyway) {
             mMessage = message;

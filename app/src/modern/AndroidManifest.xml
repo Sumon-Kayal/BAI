@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.sumon.bundleapp.installer">
+
+    <!-- Required from API 34+ for BackupService2's dataSync foreground service type. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <!-- Required from API 33+: without this, backup-progress notifications
+         silently never show. PermissionsUtils already no-ops below API 33,
+         so this only needs to be requestable where it's declared. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Required from API 30+: without this, the app's own purpose (listing
+         every installed app for backup) silently returns almost nothing. -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <application>
+        <!-- Merges onto the shared <service> declaration by matching
+             android:name — adds the type attribute for Modern only. -->
+        <service
+            android:name="com.sumon.bundleapp.installer.backup2.impl.BackupService2"
+            android:foregroundServiceType="dataSync" />
+    </application>
+
+</manifest>

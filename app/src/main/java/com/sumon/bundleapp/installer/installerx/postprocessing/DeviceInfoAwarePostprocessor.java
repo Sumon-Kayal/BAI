@@ -7,9 +7,7 @@ import android.os.Build;
 import android.os.LocaleList;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.os.ConfigurationCompat;
 
 import com.sumon.bundleapp.installer.installerx.common.Category;
 import com.sumon.bundleapp.installer.installerx.common.MutableSplitCategory;
@@ -126,7 +124,7 @@ public class DeviceInfoAwarePostprocessor implements Postprocessor {
         if (localeCategory == null)
             return;
 
-        localeCategory.setDescription(mContext.getString(R.string.installerx_category_config_locale_desc, primaryLocale().getDisplayLanguage()));
+        localeCategory.setDescription(mContext.getString(R.string.installerx_category_config_locale_desc, mContext.getResources().getConfiguration().locale.getDisplayLanguage()));
 
         scopeToModuleAndProcess(parserContext, localeCategory.getPartsList(), this::processLocaleParts);
     }
@@ -163,7 +161,7 @@ public class DeviceInfoAwarePostprocessor implements Postprocessor {
     private Map<String, Integer> getPreferredLanguagesRanking() {
         if (!Utils.apiIsAtLeast(Build.VERSION_CODES.N)) {
             HashMap<String, Integer> localeRanking = new HashMap<>();
-            localeRanking.put(primaryLocale().getLanguage(), 0);
+            localeRanking.put(mContext.getResources().getConfiguration().locale.getLanguage(), 0);
             return localeRanking;
         } else {
             HashMap<String, Integer> localeRanking = new HashMap<>();
@@ -214,15 +212,6 @@ public class DeviceInfoAwarePostprocessor implements Postprocessor {
             return;
 
         unknownCategory.setDescription(mContext.getString(R.string.installerx_category_unknown_desc));
-    }
-
-    /**
-     * ConfigurationCompat.getLocales() can return an empty list, in which case get(0) is null.
-     */
-    @NonNull
-    private Locale primaryLocale() {
-        Locale locale = ConfigurationCompat.getLocales(mContext.getResources().getConfiguration()).get(0);
-        return locale != null ? locale : Locale.getDefault();
     }
 
 }

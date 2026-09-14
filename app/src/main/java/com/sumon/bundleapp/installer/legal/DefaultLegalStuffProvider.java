@@ -1,14 +1,20 @@
 package com.sumon.bundleapp.installer.legal;
 
+import android.content.Context;
+
 public class DefaultLegalStuffProvider implements LegalStuffProvider {
 
     private static DefaultLegalStuffProvider sInstance;
 
-    public static synchronized DefaultLegalStuffProvider getInstance() {
-        return sInstance != null ? sInstance : new DefaultLegalStuffProvider();
+    private final Context mContext;
+
+    public static synchronized DefaultLegalStuffProvider getInstance(Context context) {
+        return sInstance != null ? sInstance : new DefaultLegalStuffProvider(context);
     }
 
-    private DefaultLegalStuffProvider() {
+    private DefaultLegalStuffProvider(Context context) {
+        mContext = context.getApplicationContext();
+
         sInstance = this;
     }
 
@@ -31,3 +37,4 @@ public class DefaultLegalStuffProvider implements LegalStuffProvider {
         return null;
     }
 }
+

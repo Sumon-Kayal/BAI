@@ -13,14 +13,18 @@ import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
 
 public class BackupManageAppViewModel extends ViewModel {
 
+    private final Context mContext;
     private final String mPackage;
+
+    private final BackupManager mBackupManager;
 
     private final LiveData<BackupAppDetails> mDetailsLiveData;
 
     public BackupManageAppViewModel(Context appContext, String pkg) {
+        mContext = appContext;
         mPackage = pkg;
 
-        BackupManager mBackupManager = DefaultBackupManager.getInstance(appContext);
+        mBackupManager = DefaultBackupManager.getInstance(mContext);
 
         mDetailsLiveData = mBackupManager.getAppDetails(pkg);
     }
@@ -39,7 +43,7 @@ public class BackupManageAppViewModel extends ViewModel {
         if (details == null)
             return null;
 
-        if (!details.backups().isEmpty())
+        if (details.backups().size() > 0)
             return details.backups().get(0);
 
         return null;

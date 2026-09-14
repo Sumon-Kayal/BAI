@@ -22,11 +22,13 @@ public class FilterApkSource implements ApkSource {
 
     @Override
     public boolean nextApk() throws Exception {
+        if (!mWrappedApkSource.nextApk())
+            return false;
 
-        do {
+        while (shouldSkip(getApkLocalPath())) {
             if (!mWrappedApkSource.nextApk())
                 return false;
-        } while (shouldSkip(getApkLocalPath()));
+        }
 
         return true;
     }

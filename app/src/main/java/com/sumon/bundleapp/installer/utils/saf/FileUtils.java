@@ -46,13 +46,24 @@ public class FileUtils {
     }
 
     private static boolean isValidFatFilenameChar(char c) {
-        if (c <= 0x1f) {
+        if ((0x00 <= c && c <= 0x1f)) {
             return false;
         }
-        return switch (c) {
-            case '"', '*', '/', ':', '<', '>', '?', '\\', '|', 0x7F -> false;
-            default -> true;
-        };
+        switch (c) {
+            case '"':
+            case '*':
+            case '/':
+            case ':':
+            case '<':
+            case '>':
+            case '?':
+            case '\\':
+            case '|':
+            case 0x7F:
+                return false;
+            default:
+                return true;
+        }
     }
 
     private static void trimFilename(StringBuilder res, int maxBytes) {

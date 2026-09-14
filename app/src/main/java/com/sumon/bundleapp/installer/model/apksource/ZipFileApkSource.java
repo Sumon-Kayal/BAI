@@ -1,10 +1,11 @@
 package com.sumon.bundleapp.installer.model.apksource;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.model.filedescriptor.FileDescriptor;
 import com.sumon.bundleapp.installer.utils.IOUtils;
 import com.sumon.bundleapp.installer.utils.Utils;
@@ -16,7 +17,6 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.Locale;
 
 /**
  * An ApkSource implementation that copies given zip file FileDescriptor to a temp file and uses {@link ZipFile} API to read APKs from it.
@@ -49,7 +49,7 @@ public class ZipFileApkSource implements ZipBackedApkSource {
         mCurrentEntry = null;
         while (mCurrentEntry == null && mZipEntries.hasMoreElements()) {
             ZipEntry nextEntry = mZipEntries.nextElement();
-            if (!nextEntry.isDirectory() && nextEntry.getName().toLowerCase(Locale.ROOT).endsWith(".apk")) {
+            if (!nextEntry.isDirectory() && nextEntry.getName().toLowerCase().endsWith(".apk")) {
                 mCurrentEntry = nextEntry;
                 mSeenApkFile = true;
             }
@@ -68,8 +68,7 @@ public class ZipFileApkSource implements ZipBackedApkSource {
     private void copyAndOpenZip() throws Exception {
         mTempFile = createTempFile();
 
-        try (InputStream in = mZipFileDescriptor.open();
-             OutputStream out = IOUtils.buffer(new FileOutputStream(mTempFile))) {
+        try (InputStream in = mZipFileDescriptor.open(); OutputStream out = new FileOutputStream(mTempFile)) {
             IOUtils.copyStream(in, out);
         }
 
@@ -79,7 +78,7 @@ public class ZipFileApkSource implements ZipBackedApkSource {
 
     @Override
     public InputStream openApkInputStream() throws Exception {
-        return IOUtils.buffer(mZipFile.getInputStream(mCurrentEntry));
+        return mZipFile.getInputStream(mCurrentEntry);
     }
 
     @Override
@@ -118,7 +117,6 @@ public class ZipFileApkSource implements ZipBackedApkSource {
 
     private File createTempFile() {
         File tempFile = new File(mContext.getFilesDir(), "ZipFileApkSource");
-        //noinspection ResultOfMethodCallIgnored
         tempFile.mkdir();
         tempFile = new File(tempFile, System.currentTimeMillis() + ".zip");
         return tempFile;

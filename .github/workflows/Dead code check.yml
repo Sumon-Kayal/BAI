@@ -126,7 +126,12 @@ jobs:
           # R8's usage.txt is the strongest build-level signal available for
           # unreachable/unused code. Do not fail the workflow merely because
           # R8 is unavailable or the project has no minified release variant.
-          ./gradlew app:minifyReleaseWithR8 --console=plain >/tmp/r8.log 2>&1
+          #
+          # Flavor-qualified task name (Phase 3): the bare minifyReleaseWithR8 task no longer
+          # exists once flavorDimensions is set, and this step's existing graceful-skip handling
+          # below would have silently treated that as "R8 unavailable" forever rather than
+          # actually failing — Modern only, same reasoning as the CodeQL workflow.
+          ./gradlew app:minifyModernReleaseWithR8 --console=plain >/tmp/r8.log 2>&1
           r8_exit=$?
 
           if [ "$r8_exit" -ne 0 ]; then

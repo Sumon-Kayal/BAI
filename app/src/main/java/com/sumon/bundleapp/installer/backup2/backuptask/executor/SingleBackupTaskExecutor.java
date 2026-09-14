@@ -11,7 +11,6 @@ import com.sumon.bundleapp.installer.backup2.backuptask.config.SingleBackupTaskC
 
 import java.io.File;
 import java.io.OutputStream;
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -151,9 +150,6 @@ public abstract class SingleBackupTaskExecutor implements CancellableBackupTaskE
     }
 
     protected static class TaskCancelledException extends Exception {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
 
     }
 

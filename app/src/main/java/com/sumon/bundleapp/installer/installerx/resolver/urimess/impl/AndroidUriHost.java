@@ -1,12 +1,16 @@
 package com.sumon.bundleapp.installer.installerx.resolver.urimess.impl;
 
+import com.sumon.bundleapp.installer.R;
+
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 
 import androidx.documentfile.provider.DocumentFile;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.installerx.resolver.urimess.UriHost;
 import com.sumon.bundleapp.installer.utils.IOUtils;
 import com.sumon.bundleapp.installer.utils.Logs;
@@ -49,14 +53,20 @@ public class AndroidUriHost implements UriHost {
         try {
             return new ProcSelfFdUriAsFile(uri);
         } catch (Exception e) {
-            Logs.logException(new IOException("Failed to access file descriptor"));
-            return new CopyFileUriAsFile(uri);
+            boolean hasReadExternalStoragePermission = true;
+            if (Utils.apiIsAtLeast(Build.VERSION_CODES.M)) {
+                hasReadExternalStoragePermission = mContext.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            }
+
+            Logs.logException(new IOException(String.format("Unable to use /proc/self/fd, READ_EXTERNAL_STORAGE permission = %s", hasReadExternalStoragePermission)));
+            return new CopyFileUriAsFile(uri, MAX_FILE_LENGTH_FOR_COPY);
         }
     }
 
+
     @Override
     public InputStream openUriInputStream(Uri uri) throws Exception {
-        return IOUtils.buffer(mContext.getContentResolver().openInputStream(uri));
+        return mContext.getContentResolver().openInputStream(uri);
     }
 
     private class ProcSelfFdUriAsFile implements UriAsFile {
@@ -66,7 +76,7 @@ public class AndroidUriHost implements UriHost {
         private ProcSelfFdUriAsFile(Uri uri) throws Exception {
             mFd = mContext.getContentResolver().openFileDescriptor(uri, "r");
             if (!file().canRead())
-                throw new IOException("Failed to read file descriptor");
+                throw new IOException("Can't read /proc/self/fd/" + mFd.getFd());
         }
 
         @Override
@@ -85,14 +95,13 @@ public class AndroidUriHost implements UriHost {
 
         private final File mTempFile;
 
-        private CopyFileUriAsFile(Uri uri) throws Exception {
-            if (SafUtils.getFileLengthFromContentUri(mContext, uri) > AndroidUriHost.MAX_FILE_LENGTH_FOR_COPY) {
+        private CopyFileUriAsFile(Uri uri, long maxFileLength) throws Exception {
+            if (SafUtils.getFileLengthFromContentUri(mContext, uri) > maxFileLength) {
                 throw new IOException(mContext.getString(R.string.installerx_android_uri_host_file_too_big));
             }
 
             mTempFile = Utils.createTempFileInCache(mContext, "AndroidUriHost.CopyFileUriAsFile", "tmp");
-            try (InputStream in = Objects.requireNonNull(mContext.getContentResolver().openInputStream(uri));
-                 OutputStream out = IOUtils.buffer(new FileOutputStream(mTempFile))) {
+            try (InputStream in = Objects.requireNonNull(mContext.getContentResolver().openInputStream(uri)); OutputStream out = new FileOutputStream(mTempFile)) {
                 IOUtils.copyStream(in, out);
             }
         }
@@ -103,8 +112,7 @@ public class AndroidUriHost implements UriHost {
         }
 
         @Override
-        public void close() {
-            //noinspection ResultOfMethodCallIgnored
+        public void close() throws Exception {
             mTempFile.delete();
         }
     }

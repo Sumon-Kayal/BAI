@@ -17,14 +17,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import androidx.core.content.pm.PackageInfoCompat;
-import android.content.pm.ApplicationInfo;
 
 //TODO add validation
 public class SaiExportedAppMeta2 {
 
     public static final String META_FILE = "meta.sai_v2.json";
     public static final String ICON_FILE = SaiExportedAppMeta.ICON_FILE;
+
+    @SerializedName("meta_version")
+    @Expose
+    private final Long mMetaVersion = 2L;
 
     @SerializedName("package")
     @Expose
@@ -75,26 +77,23 @@ public class SaiExportedAppMeta2 {
 
         SaiExportedAppMeta2 appMeta = new SaiExportedAppMeta2();
         appMeta.mPackage = packageInfo.packageName;
-        appMeta.mLabel = packageInfo.applicationInfo != null
-                ? packageInfo.applicationInfo.loadLabel(pm).toString()
-                : packageInfo.packageName;
+        appMeta.mLabel = packageInfo.applicationInfo.loadLabel(pm).toString();
         appMeta.mVersionName = packageInfo.versionName;
 
         if (Utils.apiIsAtLeast(Build.VERSION_CODES.P)) {
             appMeta.mVersionCode = packageInfo.getLongVersionCode();
         } else {
-            appMeta.mVersionCode = PackageInfoCompat.getLongVersionCode(packageInfo);
+            appMeta.mVersionCode = (long) packageInfo.versionCode;
         }
 
         appMeta.mExportTimestamp = exportTimestamp;
 
-        ApplicationInfo applicationInfo = packageInfo.applicationInfo;
-        if (applicationInfo != null) {
-            appMeta.mMinSdk = (long) applicationInfo.minSdkVersion;
-            appMeta.mTargetSdk = (long) applicationInfo.targetSdkVersion;
-            appMeta.mIsSplitApk = applicationInfo.splitPublicSourceDirs != null
-                    && applicationInfo.splitPublicSourceDirs.length > 0;
+        if (Utils.apiIsAtLeast(Build.VERSION_CODES.N)) {
+            appMeta.mMinSdk = (long) packageInfo.applicationInfo.minSdkVersion;
+            appMeta.mTargetSdk = (long) packageInfo.applicationInfo.targetSdkVersion;
         }
+
+        appMeta.mIsSplitApk = packageInfo.applicationInfo.splitPublicSourceDirs != null && packageInfo.applicationInfo.splitPublicSourceDirs.length > 0;
 
         return appMeta;
     }
@@ -112,7 +111,7 @@ public class SaiExportedAppMeta2 {
     }
 
     public long metaVersion() {
-        return 2L;
+        return mMetaVersion;
     }
 
     public String packageName() {
@@ -179,7 +178,7 @@ public class SaiExportedAppMeta2 {
         }
 
         public long size() {
-            return mSize;
+            return mSize != null ? mSize : 0;
         }
     }
 }

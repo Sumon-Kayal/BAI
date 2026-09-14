@@ -19,11 +19,7 @@ public class MiuiUtils {
 
     public static int getMiuiVersionCode() {
         try {
-            return Integer.parseInt(
-                    Objects.requireNonNull(
-                            Utils.getSystemProperty("ro.miui.ui.version.code")
-                    )
-            );
+            return Integer.parseInt(Objects.requireNonNull(Utils.getSystemProperty("ro.miui.ui.version.code")));
         } catch (Exception e) {
             return -1;
         }
@@ -48,27 +44,27 @@ public class MiuiUtils {
     }
 
     /**
-     * @return 0 if versions are equal, values less than 0 if ver1 is lower than ver2,
-     *         values greater than 0 if ver1 is higher than ver2
+     * @return 0 if versions are equal, values less than 0 if ver1 is lower than ver2, value more than 0 if ver1 is higher than ver2
      */
     private static int compareVersions(String version1, String version2) {
+        if (version1.equals(version2))
+            return 0;
+
         int[] version1Parts = parseVersionIntoParts(version1);
         int[] version2Parts = parseVersionIntoParts(version2);
 
-        int length = Math.max(version1Parts.length, version2Parts.length);
-
-        for (int i = 0; i < length; i++) {
-            int part1 = i < version1Parts.length ? version1Parts[i] : 0;
-            int part2 = i < version2Parts.length ? version2Parts[i] : 0;
-
-            if (part1 < part2)
+        for (int i = 0; i < version2Parts.length; i++) {
+            if (i >= version1Parts.length)
                 return -1;
 
-            if (part1 > part2)
+            if (version1Parts[i] < version2Parts[i])
+                return -1;
+
+            if (version1Parts[i] > version2Parts[i])
                 return 1;
         }
 
-        return 0;
+        return 1;
     }
 
     public static boolean isActualMiuiVersionAtLeast(String targetVer) {
@@ -76,19 +72,13 @@ public class MiuiUtils {
     }
 
     /**
-     * @return true if the device's MIUI version (per ro.miui.ui.version.name, e.g. "V12.5")
-     *         is at most targetVer (e.g. "12.4").
+     * Compares against the MIUI marketing version (ro.miui.ui.version.name, e.g. "12.5", "14") —
+     * not {@link #getActualMiuiVersion()}, which is the ROM's build incremental and answers a
+     * different question. This is the property the warning boundary is actually supposed to be
+     * checked against (BAI-PHASE6-MODERN-COMPAT.md).
      */
     public static boolean isMiuiVersionAtMost(String targetVer) {
-        String versionName = getMiuiVersionName();
-
-        if ("???".equals(versionName))
-            return true;
-
-        if (versionName.startsWith("V") || versionName.startsWith("v"))
-            versionName = versionName.substring(1);
-
-        return compareVersions(versionName, targetVer) <= 0;
+        return compareVersions(getMiuiVersionName(), targetVer) <= 0;
     }
 
     @SuppressLint("PrivateApi")
@@ -106,6 +96,6 @@ public class MiuiUtils {
     }
 
     public static boolean isFixedMiui() {
-        return !isMiuiVersionAtMost("12.4") || isMiuiOptimizationDisabled();
+        return isActualMiuiVersionAtLeast("20.2.20") || isMiuiOptimizationDisabled();
     }
 }

@@ -174,11 +174,7 @@ public class InstallerXAdapterDividerItemDecoration extends RecyclerView.ItemDec
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
-            RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
-            if (layoutManager == null)
-                break;
-
-            layoutManager.getDecoratedBoundsWithMargins(child, mBounds);
+            parent.getLayoutManager().getDecoratedBoundsWithMargins(child, mBounds);
             final int right = mBounds.right + Math.round(child.getTranslationX());
             final int left = right - mDivider.getIntrinsicWidth();
             mDivider.setBounds(left, top, right, bottom);

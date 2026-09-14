@@ -2,16 +2,12 @@ package com.sumon.bundleapp.installer.utils;
 
 import android.app.Notification;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 
 /**
  * Manages delaying notification to avoid going over notifications per second limit
@@ -22,7 +18,6 @@ public class NotificationHelper {
     private static NotificationHelper sInstance;
 
     private final NotificationManagerCompat mNotificationManager;
-    private final Context mApplicationContext;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     private long mLastNotificationTime = 0;
@@ -34,20 +29,8 @@ public class NotificationHelper {
     }
 
     private NotificationHelper(Context c) {
-        mApplicationContext = c.getApplicationContext();
-        mNotificationManager = NotificationManagerCompat.from(mApplicationContext);
+        mNotificationManager = NotificationManagerCompat.from(c.getApplicationContext());
         sInstance = this;
-    }
-
-    /**
-     * Check if notification permission is granted
-     */
-    private boolean hasNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return ContextCompat.checkSelfPermission(mApplicationContext,
-                    android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
-        }
-        return true;
     }
 
     /**
@@ -57,7 +40,6 @@ public class NotificationHelper {
      * @param notification notification to post
      * @param skipable     if notification can be skipped (such as progress notifications)
      */
-    @SuppressWarnings("unused")
     public void notify(int id, Notification notification, boolean skipable) {
         notify(null, id, notification, skipable);
     }
@@ -71,30 +53,18 @@ public class NotificationHelper {
      * @param skipable     if notification can be skipped (such as progress notifications)
      */
     public synchronized void notify(@Nullable String tag, int id, Notification notification, boolean skipable) {
-        if (!hasNotificationPermission()) {
-            return;
-        }
-
         long timeSinceLastNotification = SystemClock.uptimeMillis() - mLastNotificationTime;
 
         if (timeSinceLastNotification < NOTIFICATION_CD) {
             if (!skipable) {
-                mHandler.postAtTime(() -> {
-                    if (hasNotificationPermission()) {
-                        mNotificationManager.notify(tag, id, notification);
-                    }
-                }, mLastNotificationTime + NOTIFICATION_CD);
+                mHandler.postAtTime(() -> mNotificationManager.notify(tag, id, notification), mLastNotificationTime + NOTIFICATION_CD);
                 mLastNotificationTime = mLastNotificationTime + NOTIFICATION_CD;
             }
             return;
         }
 
-        try {
-            mLastNotificationTime = SystemClock.uptimeMillis();
-            mNotificationManager.notify(tag, id, notification);
-        } catch (SecurityException e) {
-            Log.w("NotificationHelper", "Failed to post notification due to security exception", e);
-        }
+        mLastNotificationTime = SystemClock.uptimeMillis();
+        mNotificationManager.notify(tag, id, notification);
     }
 
     public void cancel(@Nullable String tag, int id) {
@@ -104,4 +74,5 @@ public class NotificationHelper {
     public void cancel(int id) {
         cancel(null, id);
     }
+
 }
