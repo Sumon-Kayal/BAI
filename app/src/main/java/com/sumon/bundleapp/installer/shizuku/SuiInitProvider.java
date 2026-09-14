@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.shizuku;
 
+import com.sumon.bundleapp.installer.BuildConfig;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -10,7 +12,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.sumon.bundleapp.installer.BuildConfig;
 import com.sumon.bundleapp.installer.utils.Utils;
 
 import rikka.sui.Sui;

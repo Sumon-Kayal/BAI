@@ -17,12 +17,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 21
+      - name: Set up JDK 17
         uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '17'
           cache: 'gradle'
+
+      - name: Generate debug keystore
+        run: |
+          mkdir -p ~/.android
+          keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
           verify-signature: true
 
       - name: Read latest dated version from CHANGELOG.md
@@ -78,10 +83,10 @@ jobs:
 
           echo "Latest dated changelog version: $SAFE_VERSION ($RELEASE_DATE)"
 
-      - name: Build debug APKs
+      - name: Build debug APKs (both platform generations)
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace --no-daemon
+          ./gradlew assembleLegacyDebug assembleModernDebug --stacktrace --no-daemon
 
       - name: Locate and rename APKs
         id: apk
@@ -96,7 +101,7 @@ jobs:
           shopt -s nullglob
 
           SHORT_SHA="${GITHUB_SHA::7}"
-          APK_PATHS=(app/build/outputs/apk/debug/*.apk)
+          APK_PATHS=(app/build/outputs/apk/*/debug/*.apk)
 
           if (( ${#APK_PATHS[@]} == 0 )); then
             echo "::error::No debug APKs were produced"
@@ -107,8 +112,14 @@ jobs:
           echo "dir=dist" >> "$GITHUB_OUTPUT"
 
           for APK_PATH in "${APK_PATHS[@]}"; do
-            ABI="$(basename "$APK_PATH" .apk | sed -E 's/^app-//; s/-debug$//')"
-            cp "$APK_PATH" "dist/BAI-debug-v${VERSION}-${RELEASE_DATE}-${SHORT_SHA}-${ABI}.apk"
+            NAME="$(basename "$APK_PATH" .apk)"
+            FLAVOR="$(grep -oE 'legacy|modern' <<< "$NAME")"
+            ABI="$(grep -oE 'armeabi-v7a|arm64-v8a|x86_64|x86' <<< "$NAME")"
+            if [[ -z "$FLAVOR" || -z "$ABI" ]]; then
+              echo "::error::Could not determine flavor/ABI from APK filename: $NAME"
+              exit 1
+            fi
+            cp "$APK_PATH" "dist/BAI-debug-v${VERSION}-${RELEASE_DATE}-${SHORT_SHA}-${FLAVOR}-${ABI}.apk"
           done
 
       - name: Create internal debug release notes

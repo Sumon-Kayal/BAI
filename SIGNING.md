@@ -6,6 +6,8 @@ This guide explains how to create, protect, prepare, and use a personal Android 
 
 > **Golden rule:** Generate the release key **once**. Keep the original keystore safe and reuse it for every future release.
 
+> **One key for all eight APKs.** BAI Legacy and BAI Modern, across all four ABIs, are signed with the exact same release key and `keystore.properties` — the platform split (see the architecture roadmap) doesn't add any per-flavor signing configuration. Nothing in this guide changes because of it.
+
 ---
 
 ## Table of Contents

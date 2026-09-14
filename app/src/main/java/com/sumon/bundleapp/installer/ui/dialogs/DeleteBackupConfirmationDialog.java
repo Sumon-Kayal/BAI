@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.app.Dialog;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,15 +9,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import androidx.core.os.BundleCompat;
 
 public class DeleteBackupConfirmationDialog extends DialogFragment {
 
@@ -44,16 +45,18 @@ public class DeleteBackupConfirmationDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = requireArguments();
-        mBackupUri = BundleCompat.getParcelable(args, ARG_BACKUP_URI, Uri.class);
+        mBackupUri = args.getParcelable(ARG_BACKUP_URI);
         mTimestamp = args.getLong(ARG_TIMESTAMP);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new AlertDialog.Builder(requireContext())
+        return new MaterialAlertDialogBuilder(requireContext())
                 .setMessage(getString(R.string.backup_delete_backup_prompt, mBackupTimeSdf.format(new Date(mTimestamp))))
                 .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.ok, (dialog, which) -> DefaultBackupManager.getInstance(requireContext()).deleteBackup(mBackupUri, null, null)).create();
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    DefaultBackupManager.getInstance(requireContext()).deleteBackup(mBackupUri, null, null);
+                }).create();
     }
 }

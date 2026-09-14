@@ -21,12 +21,12 @@ import com.sumon.bundleapp.installer.backup2.BackupComponent;
 )
 public class BackupComponentEntity implements BackupComponent {
 
-    @ColumnInfo(name = "backup_uri")
     @NonNull
+    @ColumnInfo(name = "backup_uri")
     String backupUri;
 
-    @ColumnInfo(name = "type")
     @NonNull
+    @ColumnInfo(name = "type")
     String type;
 
     @ColumnInfo(name = "size")

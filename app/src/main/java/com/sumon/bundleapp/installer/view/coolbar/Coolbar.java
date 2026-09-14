@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.view.coolbar;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -16,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.annotation.AttrRes;
 
-import com.sumon.bundleapp.installer.R;
 
 public class Coolbar extends ViewGroup {
     private static final int DEFAULT_TITLE_TEXT_SIZE_SP = 24;
@@ -25,6 +26,7 @@ public class Coolbar extends ViewGroup {
     TextView mTitle;
     private String mTitleText = "";
     private int mHeight;
+    private int mWidth;
     private int mTitleColor = 0xff212121;
 
     public Coolbar(Context context) {
@@ -93,7 +95,7 @@ public class Coolbar extends ViewGroup {
         else
             desiredWidth = getResources().getDisplayMetrics().widthPixels;
 
-        int desiredHeight = dpToPx();
+        int desiredHeight = dpToPx(56);
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -135,7 +137,7 @@ public class Coolbar extends ViewGroup {
             else if (params.height == LayoutParams.WRAP_CONTENT) {
                 heightMS = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.AT_MOST);
             } else {
-                heightMS = MeasureSpec.makeMeasureSpec(clamp(params.height, mHeight), MeasureSpec.EXACTLY);
+                heightMS = MeasureSpec.makeMeasureSpec(clamp(params.height, 0, mHeight), MeasureSpec.EXACTLY);
             }
 
             if (params.width == ViewGroup.LayoutParams.MATCH_PARENT)
@@ -143,14 +145,14 @@ public class Coolbar extends ViewGroup {
             else if (params.width == LayoutParams.WRAP_CONTENT) {
                 widthMS = MeasureSpec.makeMeasureSpec(mHeight * 2, MeasureSpec.AT_MOST);
             } else {
-                widthMS = MeasureSpec.makeMeasureSpec(clamp(params.width, mHeight * 2), MeasureSpec.EXACTLY);
+                widthMS = MeasureSpec.makeMeasureSpec(clamp(params.width, 0, mHeight * 2), MeasureSpec.EXACTLY);
             }
 
             child.measure(widthMS, heightMS);
         }
 
         mHeight = height;
-        int mWidth = width;
+        mWidth = width;
         setMeasuredDimension(width, height);
     }
 
@@ -227,14 +229,16 @@ public class Coolbar extends ViewGroup {
         return p instanceof LayoutParams;
     }
 
-    private int dpToPx() {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics());
+    private int dpToPx(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
-    private int clamp(int a, int max) {
-        if (a < 0)
-            return 0;
-        return Math.min(a, max);
+    private int clamp(int a, int min, int max) {
+        if (a < min)
+            return min;
+        if (a > max)
+            return max;
+        return a;
     }
 
     private int getThemeColor(@AttrRes int attr, int defaultColor) {
@@ -274,9 +278,9 @@ public class Coolbar extends ViewGroup {
         }
     }
 
-    private static class CoolbarOutlineProvider extends ViewOutlineProvider {
-        final int mWidth;
-        final int mHeight;
+    private class CoolbarOutlineProvider extends ViewOutlineProvider {
+        int mWidth;
+        int mHeight;
 
         CoolbarOutlineProvider(int width, int height) {
             mWidth = width;

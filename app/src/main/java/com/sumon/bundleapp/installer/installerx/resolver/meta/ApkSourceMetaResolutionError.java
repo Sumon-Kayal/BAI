@@ -3,8 +3,8 @@ package com.sumon.bundleapp.installer.installerx.resolver.meta;
 public class ApkSourceMetaResolutionError {
 
 
-    final String mMessage;
-    final boolean mDoesTryingToInstallNonethelessMakeSense;
+    String mMessage;
+    boolean mDoesTryingToInstallNonethelessMakeSense;
 
     public ApkSourceMetaResolutionError(String message, boolean doesTryingToInstallNonethelessMakeSense) {
         mMessage = message;

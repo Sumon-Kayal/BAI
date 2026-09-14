@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,6 @@ import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
 import com.sumon.bundleapp.installer.utils.Theme;
 import com.sumon.bundleapp.installer.utils.Utils;
@@ -84,12 +85,8 @@ public class DarkLightThemeSelectionDialogFragment extends BaseBottomSheetDialog
                     listener.onThemesChosen(getTag(), mViewModel.getLightTheme().getValue(), mViewModel.getDarkTheme().getValue());
             } else {
                 Theme theme = Theme.getInstance(requireContext());
-                Theme.ThemeDescriptor light = mViewModel.getLightTheme().getValue();
-                Theme.ThemeDescriptor dark = mViewModel.getDarkTheme().getValue();
-                if (light != null)
-                    theme.setLightTheme(light);
-                if (dark != null)
-                    theme.setDarkTheme(dark);
+                theme.setLightTheme(mViewModel.getLightTheme().getValue());
+                theme.setDarkTheme(mViewModel.getDarkTheme().getValue());
             }
 
             dismiss();

@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.view;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -14,7 +16,6 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.utils.Theme;
 import com.sumon.bundleapp.installer.utils.Utils;
 import com.google.android.material.card.MaterialCardView;
@@ -65,7 +66,7 @@ public class ThemeView extends MaterialCardView {
         Context themedContext = new ContextThemeWrapper(getContext(), theme.getTheme());
         setCardBackgroundColor(Utils.getThemeColor(themedContext, R.attr.colorPrimary));
 
-        int accentColor = Utils.getThemeColor(themedContext, R.attr.colorAccent);
+        int accentColor = Utils.getThemeColor(themedContext, androidx.appcompat.R.attr.colorAccent);
         setStrokeColor(accentColor);
         mThemeTitle.setTextColor(accentColor);
 

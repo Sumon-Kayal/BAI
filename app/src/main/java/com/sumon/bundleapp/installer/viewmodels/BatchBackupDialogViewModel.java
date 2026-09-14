@@ -49,7 +49,7 @@ public class BatchBackupDialogViewModel extends ViewModel {
     }
 
     public void enqueueBackup() {
-        if (Boolean.TRUE.equals(mIsPreparing.getValue()))
+        if (mIsPreparing.getValue())
             return;
 
         mIsPreparing.setValue(true);

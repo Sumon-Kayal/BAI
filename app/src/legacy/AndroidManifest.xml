@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sumon.bundleapp.installer">
+
+    <!-- Only meaningful on Android 10 (API 29), the top of Legacy's range —
+         it's ignored outright on API 30+, which is why it doesn't belong in
+         the shared manifest or in the modern overlay. -->
+    <application android:requestLegacyExternalStorage="true" />
+
+</manifest>

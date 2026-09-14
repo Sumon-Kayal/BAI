@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sumon.bundleapp.installer.ui.activities.MainActivity;
 import com.sumon.bundleapp.installer.ui.activities.PreferencesActivity;
+import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.AppInstalledDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ErrorLogDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.FilePickerDialogFragment;
@@ -90,7 +91,13 @@ public class LegacyInstallerFragment extends InstallerFragment implements FilePi
         findViewById(R.id.ib_toggle_theme).setOnClickListener((v -> ThemeSelectionDialogFragment.newInstance(requireContext()).show(getChildFragmentManager(), "theme_selection_dialog")));
         mButtonSettings.setOnClickListener((v) -> PreferencesActivity.open(requireContext(), PreferencesFragment.class, getString(R.string.settings_title)));
 
-        mButton.setOnClickListener((v) -> checkPermissionsAndPickFiles());
+        boolean offersInternalPicker = new DeviceGenerationFilePicker().offersInternalPicker();
+        mButton.setOnClickListener((v) -> {
+            if (offersInternalPicker)
+                checkPermissionsAndPickFiles();
+            else
+                pickFilesWithSaf();
+        });
         mButton.setOnLongClickListener((v) -> pickFilesWithSaf());
         findViewById(R.id.button_help).setOnClickListener((v) -> AlertsUtils.showAlert(this, R.string.help, R.string.installer_help));
 

@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.adapters;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.adapters.selection.SelectableAdapter;
 import com.sumon.bundleapp.installer.adapters.selection.Selection;
 import com.sumon.bundleapp.installer.model.backup.BackupNameFormatBuilder;
@@ -75,7 +76,7 @@ public class BackupNameFormatBuilderPartsAdapter extends SelectableAdapter<Backu
                 if (mPauseCheckedListener)
                     return;
 
-                int adapterPosition = getBindingAdapterPosition();
+                int adapterPosition = getAdapterPosition();
                 if (adapterPosition == RecyclerView.NO_POSITION)
                     return;
 

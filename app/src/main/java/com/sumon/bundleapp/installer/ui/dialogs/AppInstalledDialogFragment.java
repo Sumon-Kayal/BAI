@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.ui.dialogs;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -11,9 +13,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 
-import com.sumon.bundleapp.installer.R;
 
 import java.util.Objects;
 
@@ -48,7 +50,7 @@ public class AppInstalledDialogFragment extends DialogFragment {
         Intent appLaunchIntent = null;
 
         try {
-            PackageManager pm = requireContext().getPackageManager();
+            PackageManager pm = getContext().getPackageManager();
             ApplicationInfo appInfo = pm.getApplicationInfo(mPackage, 0);
             appLabel = pm.getApplicationLabel(appInfo).toString();
             appLaunchIntent = pm.getLaunchIntentForPackage(mPackage);
@@ -57,7 +59,7 @@ public class AppInstalledDialogFragment extends DialogFragment {
             Log.w("SAI", e);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
+        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(getContext())
                 .setTitle(R.string.app_name)
                 .setMessage(appLabel == null ? getString(R.string.installer_app_installed) : String.format(getString(R.string.installer_app_installed_full), appLabel))
                 .setNegativeButton(R.string.ok, null);

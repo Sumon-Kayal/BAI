@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.sumon.bundleapp.installer.model.licenses.License;
 import com.sumon.bundleapp.installer.utils.IOUtils;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,8 +36,13 @@ public class LicensesViewModel extends AndroidViewModel {
         return mLicenses;
     }
 
+    public LiveData<Boolean> getAreLicensesLoading() {
+        return mAreLicensesLoading;
+    }
+
     private void loadLicences() {
-        if (Boolean.TRUE.equals(mAreLicensesLoading.getValue())) return;
+        if (mAreLicensesLoading.getValue())
+            return;
 
         mAreLicensesLoading.setValue(true);
 
@@ -45,18 +51,9 @@ public class LicensesViewModel extends AndroidViewModel {
                 AssetManager assetManager = getApplication().getAssets();
                 ArrayList<License> licenses = new ArrayList<>();
 
-                String[] licenseFiles = assetManager.list("licenses/common");
-                if (licenseFiles != null) {
-                    for (String fileName : licenseFiles) {
-                        licenses.add(new License(
-                                fileName,
-                                IOUtils.readStream(assetManager.open("licenses/common/" + fileName), StandardCharsets.UTF_8)
-                        ));
-                    }
-                }
+                addLicensesForFlavor(assetManager, licenses, "common");
 
-                licenses.sort((license1, license2) ->
-                        license1.subject().compareToIgnoreCase(license2.subject()));
+                Collections.sort(licenses, (license1, license2) -> license1.subject.compareToIgnoreCase(license2.subject));
 
                 mLicenses.postValue(licenses);
                 mAreLicensesLoading.postValue(false);
@@ -65,6 +62,17 @@ public class LicensesViewModel extends AndroidViewModel {
                 mAreLicensesLoading.postValue(false);
             }
         }).start();
+    }
+
+    private void addLicensesForFlavor(AssetManager assetManager, List<License> licenses, String flavor) throws IOException {
+        String licensesDir = "licenses/" + flavor;
+
+        String[] rawLicenses = assetManager.list(licensesDir);
+        if (rawLicenses == null)
+            return;
+
+        for (String rawLicense : rawLicenses)
+            licenses.add(new License(rawLicense, IOUtils.readStream(assetManager.open(licensesDir + "/" + rawLicense), StandardCharsets.UTF_8)));
     }
 
 }

@@ -67,37 +67,51 @@ public abstract class BaseBackupStorage implements BackupStorage {
         onEachObserver(it -> it.onStorageUpdated(getStorageId()));
     }
 
-    private record ProgressListenerHandlerWrapper(BackupProgressListener mWrappedListener,
-                                                  Handler mHandler) implements BackupProgressListener {
+    private static class ProgressListenerHandlerWrapper implements BackupProgressListener {
 
-        @Override
-            public void onBackupTaskStatusChanged(String storageId, BackupTaskStatus status) {
-                mHandler.post(() -> mWrappedListener.onBackupTaskStatusChanged(storageId, status));
-            }
+        private final BackupProgressListener mWrappedListener;
+        private final Handler mHandler;
 
-            @Override
-            public void onBatchBackupTaskStatusChanged(String storageId, BatchBackupTaskStatus status) {
-                mHandler.post(() -> mWrappedListener.onBatchBackupTaskStatusChanged(storageId, status));
-            }
+        private ProgressListenerHandlerWrapper(BackupProgressListener wrappedListener, Handler handler) {
+            mWrappedListener = wrappedListener;
+            mHandler = handler;
         }
 
-    private record ObserverHandlerWrapper(Observer mWrappedObserver,
-                                          Handler mHandler) implements Observer {
+        @Override
+        public void onBackupTaskStatusChanged(String storageId, BackupTaskStatus status) {
+            mHandler.post(() -> mWrappedListener.onBackupTaskStatusChanged(storageId, status));
+        }
+
+        @Override
+        public void onBatchBackupTaskStatusChanged(String storageId, BatchBackupTaskStatus status) {
+            mHandler.post(() -> mWrappedListener.onBatchBackupTaskStatusChanged(storageId, status));
+        }
+    }
+
+    private static class ObserverHandlerWrapper implements Observer {
+
+        private final Observer mWrappedObserver;
+        private final Handler mHandler;
+
+        private ObserverHandlerWrapper(Observer wrappedObserver, Handler handler) {
+            mWrappedObserver = wrappedObserver;
+            mHandler = handler;
+        }
 
 
         @Override
-            public void onBackupAdded(String storageId, Backup backup) {
-                mHandler.post(() -> mWrappedObserver.onBackupAdded(storageId, backup));
-            }
-
-            @Override
-            public void onBackupRemoved(String storageId, Uri backupUri) {
-                mHandler.post(() -> mWrappedObserver.onBackupRemoved(storageId, backupUri));
-            }
-
-            @Override
-            public void onStorageUpdated(String storageId) {
-                mHandler.post(() -> mWrappedObserver.onStorageUpdated(storageId));
-            }
+        public void onBackupAdded(String storageId, Backup backup) {
+            mHandler.post(() -> mWrappedObserver.onBackupAdded(storageId, backup));
         }
+
+        @Override
+        public void onBackupRemoved(String storageId, Uri backupUri) {
+            mHandler.post(() -> mWrappedObserver.onBackupRemoved(storageId, backupUri));
+        }
+
+        @Override
+        public void onStorageUpdated(String storageId) {
+            mHandler.post(() -> mWrappedObserver.onStorageUpdated(storageId));
+        }
+    }
 }

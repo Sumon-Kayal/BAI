@@ -20,7 +20,7 @@ public class DefaultApkSource implements ApkSource {
 
     @Override
     public boolean nextApk() {
-        if (mApkFileDescriptors.isEmpty())
+        if (mApkFileDescriptors.size() == 0)
             return false;
 
         mCurrentApk = mApkFileDescriptors.remove(0);

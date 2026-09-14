@@ -12,6 +12,7 @@ import com.sumon.bundleapp.installer.backup2.backuptask.config.SingleBackupTaskC
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,6 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BatchBackupTaskExecutor implements CancellableBackupTaskExecutor {
 
+    private final Context mContext;
+    private final BatchBackupTaskConfig mConfig;
     private final SingleBackupTaskExecutorFactory mSingleBackupTaskExecutorFactory;
 
     private final Stack<SingleBackupTaskConfig> mRemainingConfigs;
@@ -34,11 +37,12 @@ public class BatchBackupTaskExecutor implements CancellableBackupTaskExecutor {
     private final AtomicBoolean mIsCancelled = new AtomicBoolean(false);
 
     public BatchBackupTaskExecutor(Context context, BatchBackupTaskConfig config, SingleBackupTaskExecutorFactory singleBackupTaskExecutorFactory) {
-        Context mContext = context.getApplicationContext();
+        mContext = context.getApplicationContext();
+        mConfig = config;
         mSingleBackupTaskExecutorFactory = singleBackupTaskExecutorFactory;
 
         mRemainingConfigs = new Stack<>();
-        mRemainingConfigs.addAll(config.configs());
+        mRemainingConfigs.addAll(mConfig.configs());
     }
 
     public void setListener(Listener listener, Handler listenerHandler) {
@@ -103,8 +107,7 @@ public class BatchBackupTaskExecutor implements CancellableBackupTaskExecutor {
 
             @Override
             public void onSuccess(@Nullable Backup backup) {
-                if (backup != null)
-                    notifyAppBackedUp(config, backup);
+                notifyAppBackedUp(config, Objects.requireNonNull(backup));
                 nextTask();
             }
 

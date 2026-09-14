@@ -11,13 +11,15 @@ import com.sumon.bundleapp.installer.utils.Theme;
 
 public class DarkLightThemeSelectionViewModel extends AndroidViewModel {
 
+    private final Theme mThemeManager;
+
     private final MutableLiveData<Theme.ThemeDescriptor> mLightTheme = new MutableLiveData<>();
     private final MutableLiveData<Theme.ThemeDescriptor> mDarkTheme = new MutableLiveData<>();
 
     public DarkLightThemeSelectionViewModel(@NonNull Application application) {
         super(application);
 
-        Theme mThemeManager = Theme.getInstance(getApplication());
+        mThemeManager = Theme.getInstance(getApplication());
         mLightTheme.setValue(mThemeManager.getLightTheme());
         mDarkTheme.setValue(mThemeManager.getDarkTheme());
     }

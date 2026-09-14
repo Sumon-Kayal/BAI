@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.adapters;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.utils.Theme;
 import com.sumon.bundleapp.installer.view.ThemeView;
 
@@ -18,11 +19,13 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> 
 
     private List<Theme.ThemeDescriptor> mThemes;
 
+    private final Context mContext;
     private final LayoutInflater mInflater;
 
     private OnThemeInteractionListener mListener;
 
     public ThemeAdapter(Context c) {
+        mContext = c;
         mInflater = LayoutInflater.from(c);
         setHasStableIds(true);
     }
@@ -68,7 +71,7 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder> 
             mThemeView = itemView.findViewById(R.id.themeview_theme_item);
 
             mThemeView.setOnClickListener(v -> {
-                int adapterPosition = getBindingAdapterPosition();
+                int adapterPosition = getAdapterPosition();
                 if (adapterPosition == RecyclerView.NO_POSITION)
                     return;
 

@@ -40,6 +40,11 @@ jobs:
           cache: 'gradle'
           verify-signature: true
 
+      - name: Generate debug keystore
+        run: |
+          mkdir -p ~/.android
+          keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
         with:
@@ -48,9 +53,13 @@ jobs:
           queries: security-extended
 
       - name: Build (Gradle)
+        # Modern only, not both flavors: nearly all platform-sensitive code (storage/SAF,
+        # permissions, file picking) lives in the Modern implementation now, so it's the more
+        # complete single variant to scan. The roadmap explicitly allows "a representative safe
+        # subset" rather than requiring all eight — this is that subset, not an oversight.
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace --no-daemon
+          ./gradlew assembleModernDebug --stacktrace --no-daemon
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3

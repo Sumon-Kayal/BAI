@@ -232,9 +232,9 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
             saiVersion = getContext().getPackageManager()
                     .getPackageInfo(getContext().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.wtf(tag(), "Unable to get SAI version", e);
+            Log.wtf(tag(), "Unable to get BAI version", e);
         }
-        return String.format(Locale.US, "%s: %s %s | %s | Android %s | Using %s ApkSource implementation | SAI %s",
+        return String.format(Locale.US, "%s: %s %s | %s | Android %s | Using %s ApkSource implementation | BAI %s",
                 getContext().getString(R.string.installer_device), Build.BRAND, Build.MODEL,
                 Build.DEVICE, Build.VERSION.RELEASE, apkSource.getClass().getSimpleName(), saiVersion);
     }

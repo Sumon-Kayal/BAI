@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 
 //TODO applier should have setConfig or something
 public class BackupViewModel extends AndroidViewModel {
@@ -109,9 +108,7 @@ public class BackupViewModel extends AndroidViewModel {
 
     public void search(String query) {
         mCurrentSearchQuery = query;
-        List<BackupApp> apps = mBackupManager.getApps().getValue();
-        mLiveFilterApplier.apply(createComplexFilter(query),
-                apps != null ? new ArrayList<>(apps) : new ArrayList<>());
+        mLiveFilterApplier.apply(createComplexFilter(query), new ArrayList<>(mBackupManager.getApps().getValue()));
     }
 
     public Selection<String> getSelection() {
@@ -177,61 +174,69 @@ public class BackupViewModel extends AndroidViewModel {
         mLiveFilterApplier.asLiveData().removeObserver(mLiveFilterObserver);
     }
 
-    private record SearchFilter(String mQuery) implements CustomFilter<BackupApp> {
+    private static class SearchFilter implements CustomFilter<BackupApp> {
+
+        private final String mQuery;
+
+        SearchFilter(String query) {
+            mQuery = query;
+        }
 
         @Override
-            public boolean filterSimple(BackupApp app) {
-                String query = mQuery.toLowerCase(Locale.ROOT);
+        public boolean filterSimple(BackupApp app) {
+            String query = mQuery.toLowerCase();
 
-                if (query.isEmpty())
-                    return false;
+            if (query.length() == 0)
+                return false;
 
-                //Check if app label matches
-                String[] wordsInLabel = app.packageMeta().label.toLowerCase(Locale.ROOT).split(" ");
-                boolean labelMatches = false;
-                for (String word : wordsInLabel) {
-                    if (word.startsWith(query)) {
-                        labelMatches = true;
-                        break;
-                    }
+            //Check if app label matches
+            String[] wordsInLabel = app.packageMeta().label.toLowerCase().split(" ");
+            boolean labelMatches = false;
+            for (String word : wordsInLabel) {
+                if (word.startsWith(query)) {
+                    labelMatches = true;
+                    break;
                 }
-
-                //Check if app packages matches
-                boolean packagesMatches = app.packageMeta().packageName.toLowerCase(Locale.ROOT).startsWith(query);
-
-                return !labelMatches && !packagesMatches;
             }
+
+            //Check if app packages matches
+            boolean packagesMatches = app.packageMeta().packageName.toLowerCase().startsWith(query);
+
+            return !labelMatches && !packagesMatches;
         }
+    }
 
     //TODO clean this up
     private static class BackupCustomFilterFactory implements DefaultCustomFilterFactory<BackupApp> {
 
         @Override
         public CustomFilter<BackupApp> createCustomSingleChoiceFilter(SingleChoiceFilterConfig config) {
-            return switch (config.id()) {
-                case BackupPackagesFilterConfig.FILTER_SPLIT -> createSplitFilter(config);
-                case BackupPackagesFilterConfig.FILTER_SYSTEM_APP -> createSystemAppFilter(config);
-                case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS ->
-                        createBackupStatusFilter(config);
-                default -> throw new IllegalArgumentException("Unsupported filter: " + config.id());
-            };
+            switch (config.id()) {
+                case BackupPackagesFilterConfig.FILTER_SPLIT:
+                    return createSplitFilter(config);
+                case BackupPackagesFilterConfig.FILTER_SYSTEM_APP:
+                    return createSystemAppFilter(config);
+                case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS:
+                    return createBackupStatusFilter(config);
+            }
+            throw new IllegalArgumentException("Unsupported filter: " + config.id());
         }
 
         @Override
         public CustomFilter<BackupApp> createCustomSortFilter(SortFilterConfig config) {
-            return new CustomFilter<>() {
+            return new CustomFilter<BackupApp>() {
                 @Override
                 public List<BackupApp> filterComplex(List<BackupApp> list) {
                     SortFilterConfigOption selectedOption = config.getSelectedOption();
                     switch (selectedOption.id()) {
                         case BackupPackagesFilterConfig.SORT_NAME:
-                            list.sort((o1, o2) -> (selectedOption.ascending() ? 1 : -1) * o1.packageMeta().label.compareToIgnoreCase(o2.packageMeta().label));
+                            Collections.sort(list, (o1, o2) -> (selectedOption.ascending() ? 1 : -1) * o1.packageMeta().label.compareToIgnoreCase(o2.packageMeta().label));
                             break;
                         case BackupPackagesFilterConfig.SORT_INSTALL:
-                            list.sort((o1, o2) -> (selectedOption.ascending() ? 1 : -1) * Long.compare(o1.packageMeta().installTime, o2.packageMeta().installTime));
+                            Collections.sort(list, (o1, o2) -> (selectedOption.ascending() ? 1 : -1) * Long.compare(o1.packageMeta().installTime, o2.packageMeta().installTime));
                             break;
                         case BackupPackagesFilterConfig.SORT_UPDATE:
-                            list.sort((o1, o2) -> (selectedOption.ascending() ? 1 : -1) * Long.compare(o1.packageMeta().updateTime, o2.packageMeta().updateTime));
+                            Collections.sort(list, (o1, o2) -> (selectedOption.ascending() ? 1 : -1) * Long.compare(o1.packageMeta().updateTime, o2.packageMeta().updateTime));
                             break;
                     }
 
@@ -241,58 +246,58 @@ public class BackupViewModel extends AndroidViewModel {
         }
 
         private CustomFilter<BackupApp> createSplitFilter(SingleChoiceFilterConfig config) {
-            return new CustomFilter<>() {
+            return new CustomFilter<BackupApp>() {
                 @Override
                 public boolean filterSimple(BackupApp app) {
                     String selectedOption = config.getSelectedOption().id();
-                    return switch (selectedOption) {
-                        case BackupPackagesFilterConfig.FILTER_MODE_YES ->
-                                !app.packageMeta().hasSplits;
-                        case BackupPackagesFilterConfig.FILTER_MODE_NO ->
-                                app.packageMeta().hasSplits;
-                        default -> false;
-                    };
+                    switch (selectedOption) {
+                        case BackupPackagesFilterConfig.FILTER_MODE_YES:
+                            return !app.packageMeta().hasSplits;
+                        case BackupPackagesFilterConfig.FILTER_MODE_NO:
+                            return app.packageMeta().hasSplits;
+                    }
 
+                    return false;
                 }
             };
         }
 
         private CustomFilter<BackupApp> createSystemAppFilter(SingleChoiceFilterConfig config) {
-            return new CustomFilter<>() {
+            return new CustomFilter<BackupApp>() {
                 @Override
                 public boolean filterSimple(BackupApp app) {
                     String selectedOption = config.getSelectedOption().id();
-                    return switch (selectedOption) {
-                        case BackupPackagesFilterConfig.FILTER_MODE_YES ->
-                                !app.packageMeta().isSystemApp;
-                        case BackupPackagesFilterConfig.FILTER_MODE_NO ->
-                                app.packageMeta().isSystemApp;
-                        default -> false;
-                    };
+                    switch (selectedOption) {
+                        case BackupPackagesFilterConfig.FILTER_MODE_YES:
+                            return !app.packageMeta().isSystemApp;
+                        case BackupPackagesFilterConfig.FILTER_MODE_NO:
+                            return app.packageMeta().isSystemApp;
+                    }
 
+                    return false;
                 }
             };
         }
 
         private CustomFilter<BackupApp> createBackupStatusFilter(SingleChoiceFilterConfig config) {
-            return new CustomFilter<>() {
+            return new CustomFilter<BackupApp>() {
                 @Override
                 public boolean filterSimple(BackupApp app) {
                     String selectedOption = config.getSelectedOption().id();
-                    return switch (selectedOption) {
-                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_NO_BACKUP ->
-                                app.backupStatus() != BackupStatus.NO_BACKUP;
-                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_SAME_VERSION ->
-                                app.backupStatus() != BackupStatus.SAME_VERSION;
-                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_HIGHER_VERSION ->
-                                app.backupStatus() != BackupStatus.HIGHER_VERSION;
-                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_LOWER_VERSION ->
-                                app.backupStatus() != BackupStatus.LOWER_VERSION;
-                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_APP_NOT_INSTALLED ->
-                                app.backupStatus() != BackupStatus.APP_NOT_INSTALLED;
-                        default -> false;
-                    };
+                    switch (selectedOption) {
+                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_NO_BACKUP:
+                            return app.backupStatus() != BackupStatus.NO_BACKUP;
+                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_SAME_VERSION:
+                            return app.backupStatus() != BackupStatus.SAME_VERSION;
+                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_HIGHER_VERSION:
+                            return app.backupStatus() != BackupStatus.HIGHER_VERSION;
+                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_LOWER_VERSION:
+                            return app.backupStatus() != BackupStatus.LOWER_VERSION;
+                        case BackupPackagesFilterConfig.FILTER_BACKUP_STATUS_MODE_APP_NOT_INSTALLED:
+                            return app.backupStatus() != BackupStatus.APP_NOT_INSTALLED;
+                    }
 
+                    return false;
                 }
             };
         }

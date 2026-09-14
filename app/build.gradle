@@ -32,6 +32,29 @@ android {
         buildConfigField "int", "DEFAULT_DARK_THEME", "11"
     }
 
+    // Phase 3 platform split (see BAI-ROADMAP-AND-TODO.md), built on main rather than the
+    // another-update branch — main has none of that branch's leftover donation cruft, and the
+    // manifest/build.gradle turned out identical between the two anyway. Same applicationId for
+    // both flavors — a physical device only ever runs one Android generation, so there's no need
+    // for them to coexist in production. (They also can't be installed side by side on one test
+    // device this way; add an applicationIdSuffix here later if parallel QA installs matter.)
+    flavorDimensions = ["platform"]
+
+    productFlavors {
+        legacy {
+            dimension "platform"
+            minSdk 23
+            targetSdk 29
+            versionNameSuffix "-legacy"
+        }
+        modern {
+            dimension "platform"
+            minSdk 30
+            targetSdk 36
+            versionNameSuffix "-modern"
+        }
+    }
+
     signingConfigs {
         release {
             if (hasSigningConfig) {
@@ -67,8 +90,26 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// Phase 3 (BAI-ROADMAP-AND-TODO.md): output naming, e.g. BAI-4.6-legacy-armeabi-v7a-release.apk
+// instead of AGP's default app-legacy-armeabi_v7a-release.apk. Uses the old applicationVariants
+// API rather than the newer per-AGP-version Variant API on purpose — it's the one that's stayed
+// stable across the most AGP releases, which matters here since there's no way to compile-test
+// this against your actual AGP version from this sandbox. Verify it still resolves on your end;
+// if your AGP has dropped applicationVariants entirely, this is the one thing in the whole split
+// that needs a per-version rewrite rather than just working.
+android.applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+        def abi = output.getFilter(com.android.build.OutputFile.ABI)
+        def parts = ["BAI", variant.versionName, variant.buildType.name]
+        if (abi != null) {
+            parts.add(abi)
+        }
+        outputFileName = parts.join("-") + ".apk"
     }
 }
 
@@ -83,8 +124,6 @@ room {
 }
 
 dependencies {
-    // SAIR signing implementation
-    implementation libs.apksig
     // Memory leak detection (debug builds only)
     debugImplementation libs.leakcanary.android
 
@@ -93,7 +132,6 @@ dependencies {
             dir: 'libs',
             include: ['*.jar', '*.aar']
     )
-    implementation project(':libs:filepicker')
 
     // AndroidX
     implementation libs.appcompat

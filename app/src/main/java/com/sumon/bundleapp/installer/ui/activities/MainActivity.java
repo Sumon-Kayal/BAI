@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.ui.activities;
 
+import com.sumon.bundleapp.installer.R;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,20 +10,23 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
-import com.sumon.bundleapp.installer.R;
 import com.sumon.bundleapp.installer.backup2.impl.DefaultBackupManager;
 import com.sumon.bundleapp.installer.ui.fragments.BackupFragment;
 import com.sumon.bundleapp.installer.ui.fragments.Installer2Fragment;
 import com.sumon.bundleapp.installer.ui.fragments.InstallerFragment;
+import com.sumon.bundleapp.installer.ui.fragments.LegacyInstallerFragment;
 import com.sumon.bundleapp.installer.ui.fragments.PreferencesFragment;
 import com.sumon.bundleapp.installer.utils.FragmentNavigator;
-import com.sumon.bundleapp.installer.utils.PreferencesHelper;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.sumon.bundleapp.installer.utils.InsetsUtils;
+import com.sumon.bundleapp.installer.utils.MiuiUtils;
+import com.sumon.bundleapp.installer.utils.PermissionsUtils;
+import com.sumon.bundleapp.installer.utils.PreferencesHelper;
+import com.sumon.bundleapp.installer.utils.PreferencesKeys;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends ThemedActivity implements NavigationBarView.OnItemSelectedListener, FragmentNavigator.FragmentFactory {
+public class MainActivity extends ThemedActivity implements BottomNavigationView.OnNavigationItemSelectedListener, FragmentNavigator.FragmentFactory {
 
     private BottomNavigationView mBottomNavigationView;
 
@@ -36,14 +41,17 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        InsetsUtils.applyBottomInsetAsPadding(findViewById(R.id.bottomnav_main));
+        PermissionsUtils.checkAndRequestNotificationPermission(this);
 
         //TODO is this ok?
         DefaultBackupManager.getInstance(this);
 
+        showMiuiWarning();
+
 
         mBottomNavigationView = findViewById(R.id.bottomnav_main);
-        mBottomNavigationView.setOnItemSelectedListener(this);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
+        InsetsUtils.applyBottomInsetAsPadding(mBottomNavigationView);
 
         mFragmentNavigator = new FragmentNavigator(savedInstanceState, getSupportFragmentManager(), R.id.container_main, this);
         mInstallerFragment = mFragmentNavigator.findFragmentByTag("installer");
@@ -75,6 +83,14 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
         getInstallerFragment().handleActionView(uri);
     }
 
+    private void showMiuiWarning() {
+        if (MiuiUtils.isMiui() && MiuiUtils.isMiuiVersionAtMost("12.5")
+                && !PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PreferencesKeys.MIUI_WARNING_SHOWN, false)) {
+            startActivity(new Intent(this, MiActivity.class));
+            finish();
+        }
+    }
+
     public void setNavigationEnabled(boolean enabled) {
         mIsNavigationEnabled = enabled;
 
@@ -89,26 +105,30 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu_installer) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_installer) {
             mFragmentNavigator.switchTo("installer");
-        } else if (id == R.id.menu_backup) {
+        } else if (itemId == R.id.menu_backup) {
             mFragmentNavigator.switchTo("backup");
-        } else if (id == R.id.menu_settings) {
+        } else if (itemId == R.id.menu_settings) {
             mFragmentNavigator.switchTo("settings");
         }
+
         return true;
     }
 
     @Override
     public Fragment createFragment(String tag) {
-        return switch (tag) {
-            case "installer" -> getInstallerFragment();
-            case "backup" -> new BackupFragment();
-            case "settings" -> new PreferencesFragment();
-            default -> throw new IllegalArgumentException("Unknown fragment tag: " + tag);
-        };
+        switch (tag) {
+            case "installer":
+                return getInstallerFragment();
+            case "backup":
+                return new BackupFragment();
+            case "settings":
+                return new PreferencesFragment();
+        }
 
+        throw new IllegalArgumentException("Unknown fragment tag: " + tag);
     }
 
     @Override
@@ -119,8 +139,23 @@ public class MainActivity extends ThemedActivity implements NavigationBarView.On
 
     private InstallerFragment getInstallerFragment() {
         if (mInstallerFragment == null)
-            mInstallerFragment = new Installer2Fragment();
+            mInstallerFragment = PreferencesHelper.getInstance(this).useOldInstaller() ? new LegacyInstallerFragment() : new Installer2Fragment();
         return mInstallerFragment;
     }
 
+    /**
+     * Works around a known AOSP framework leak (Activity$1#this$0, via
+     * android.app.IRequestFinishCallback$Stub, introduced in Android Q) -
+     * see https://issuetracker.google.com/issues/139738913 for the report
+     * and this exact fix. Only applies when this is the task root with no
+     * fragment back stack, i.e. back would otherwise just finish the task.
+     */
+    @Override
+    public void onBackPressed() {
+        if (isTaskRoot() && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finishAfterTransition();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

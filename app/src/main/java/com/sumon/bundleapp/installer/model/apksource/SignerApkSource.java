@@ -1,80 +1,57 @@
 package com.sumon.bundleapp.installer.model.apksource;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.sumon.bundleapp.installer.signing.SaiApkSigner;
-import com.sumon.bundleapp.installer.signing.SigningKeyManager;
-import com.sumon.bundleapp.installer.signing.SigningSchemes;
+import com.aefyr.pseudoapksigner.PseudoApkSigner;
 import com.sumon.bundleapp.installer.utils.IOUtils;
-import com.sumon.bundleapp.installer.utils.PreferencesHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
-/**
- * Re-signs every APK of the wrapped source. apksig needs random access to both sides, so each APK is
- * staged to a file first.
- */
 public class SignerApkSource implements ApkSource {
+    private static final String TAG = "SignerApkSource";
+    private static final String FILE_NAME_PAST = "testkey.past";
+    private static final String FILE_NAME_PRIVATE_KEY = "testkey.pk8";
 
     private final ApkSource mWrappedApkSource;
     private final Context mContext;
-
-    private SaiApkSigner mSigner;
-    private SigningSchemes mSchemes;
+    private boolean mIsPrepared;
+    private PseudoApkSigner mApkSigner;
     private File mTempDir;
 
     private File mCurrentSignedApkFile;
-    private int mApkIndex;
 
     public SignerApkSource(Context c, ApkSource apkSource) {
-        mContext = c.getApplicationContext();
+        mContext = c;
         mWrappedApkSource = apkSource;
     }
 
     @Override
     public boolean nextApk() throws Exception {
-        if (!mWrappedApkSource.nextApk())
+        if (!mWrappedApkSource.nextApk()) {
             return false;
+        }
 
-        if (mSigner == null) {
-            mSigner = new SaiApkSigner(SigningKeyManager.getInstance().getOrCreate());
-            mSchemes = PreferencesHelper.getInstance(mContext).getSigningSchemes();
+        if (!mIsPrepared) {
+            checkAndPrepareSigningEnvironment();
             createTempDir();
+            mApkSigner = new PseudoApkSigner(new File(getSigningEnvironmentDir(), FILE_NAME_PAST), new File(getSigningEnvironmentDir(), FILE_NAME_PRIVATE_KEY));
         }
 
-        // A previous APK is dropped before the next one is written, so two entries sharing a name
-        // cannot make the new file delete itself.
-        deleteCurrentSignedApk();
+        mCurrentSignedApkFile = new File(mTempDir, getApkName());
+        mApkSigner.sign(mWrappedApkSource.openApkInputStream(), new FileOutputStream(mCurrentSignedApkFile));
 
-        int index = mApkIndex++;
-        File unsigned = new File(mTempDir, index + "-unsigned.apk");
-        try (InputStream in = mWrappedApkSource.openApkInputStream();
-             OutputStream out = IOUtils.buffer(new FileOutputStream(unsigned))) {
-            IOUtils.copyStream(in, out);
-        }
-
-        File signed = new File(mTempDir, index + "-signed.apk");
-        try {
-            mSigner.sign(unsigned, signed, mSchemes);
-        } finally {
-            //noinspection ResultOfMethodCallIgnored
-            unsigned.delete();
-        }
-
-        mCurrentSignedApkFile = signed;
         return true;
     }
 
     @Override
     public InputStream openApkInputStream() throws Exception {
-        return IOUtils.buffer(new FileInputStream(mCurrentSignedApkFile));
+        return new FileInputStream(mCurrentSignedApkFile);
     }
 
     @Override
@@ -92,12 +69,6 @@ public class SignerApkSource implements ApkSource {
         return mWrappedApkSource.getApkLocalPath();
     }
 
-    @Nullable
-    @Override
-    public String getAppName() {
-        return mWrappedApkSource.getAppName();
-    }
-
     @Override
     public void close() throws Exception {
         if (mTempDir != null)
@@ -106,17 +77,37 @@ public class SignerApkSource implements ApkSource {
         mWrappedApkSource.close();
     }
 
-    private void deleteCurrentSignedApk() {
-        if (mCurrentSignedApkFile != null) {
-            //noinspection ResultOfMethodCallIgnored
-            mCurrentSignedApkFile.delete();
-            mCurrentSignedApkFile = null;
-        }
+    @Nullable
+    @Override
+    public String getAppName() {
+        return mWrappedApkSource.getAppName();
     }
 
-    private void createTempDir() throws IOException {
-        mTempDir = new File(mContext.getCacheDir(), "SignerApkSource-" + System.nanoTime());
-        if (!mTempDir.mkdirs() && !mTempDir.isDirectory())
-            throw new IOException("Unable to create a staging directory for signing");
+    private void checkAndPrepareSigningEnvironment() throws Exception {
+        File signingEnvironment = getSigningEnvironmentDir();
+        File pastFile = new File(signingEnvironment, FILE_NAME_PAST);
+        File privateKeyFile = new File(signingEnvironment, FILE_NAME_PRIVATE_KEY);
+
+        if (pastFile.exists() && privateKeyFile.exists()) {
+            mIsPrepared = true;
+            return;
+        }
+
+        Log.d(TAG, "Preparing signing environment...");
+        signingEnvironment.mkdir();
+
+        IOUtils.copyFileFromAssets(mContext, FILE_NAME_PAST, pastFile);
+        IOUtils.copyFileFromAssets(mContext, FILE_NAME_PRIVATE_KEY, privateKeyFile);
+
+        mIsPrepared = true;
+    }
+
+    private File getSigningEnvironmentDir() {
+        return new File(mContext.getFilesDir(), "signing");
+    }
+
+    private void createTempDir() {
+        mTempDir = new File(mContext.getFilesDir(), String.valueOf(System.currentTimeMillis()));
+        mTempDir.mkdirs();
     }
 }

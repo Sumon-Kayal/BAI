@@ -38,7 +38,7 @@ public class ApksSingleBackupTaskExecutor extends SingleBackupTaskExecutor {
             ensureNotCancelled();
 
             List<File> apkFiles;
-            if (getConfig().apksToBackup().isEmpty())
+            if (getConfig().apksToBackup().size() == 0)
                 apkFiles = getAllApkFilesForPackage(getConfig().packageMeta().packageName);
             else
                 apkFiles = getConfig().apksToBackup();
@@ -136,7 +136,6 @@ public class ApksSingleBackupTaskExecutor extends SingleBackupTaskExecutor {
                     }
 
                     zipOutputStream.closeEntry();
-                    //noinspection ResultOfMethodCallIgnored
                     iconFile.delete();
                 }
             }

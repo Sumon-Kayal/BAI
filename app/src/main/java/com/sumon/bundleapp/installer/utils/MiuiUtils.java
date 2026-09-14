@@ -71,6 +71,16 @@ public class MiuiUtils {
         return compareVersions(getActualMiuiVersion(), targetVer) >= 0;
     }
 
+    /**
+     * Compares against the MIUI marketing version (ro.miui.ui.version.name, e.g. "12.5", "14") —
+     * not {@link #getActualMiuiVersion()}, which is the ROM's build incremental and answers a
+     * different question. This is the property the warning boundary is actually supposed to be
+     * checked against (BAI-PHASE6-MODERN-COMPAT.md).
+     */
+    public static boolean isMiuiVersionAtMost(String targetVer) {
+        return compareVersions(getMiuiVersionName(), targetVer) <= 0;
+    }
+
     @SuppressLint("PrivateApi")
     public static boolean isMiuiOptimizationDisabled() {
         if ("0".equals(Utils.getSystemProperty("persist.sys.miui_optimization")))

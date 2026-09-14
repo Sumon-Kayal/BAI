@@ -54,7 +54,7 @@ public abstract class BaseSaiPackageInstaller implements SaiPackageInstaller {
 
     @Override
     public List<SaiPiSessionState> getSessions() {
-        return List.copyOf(mSessionStates.values());
+        return Collections.unmodifiableList(new ArrayList<>(mSessionStates.values()));
     }
 
     protected void setSessionState(String sessionId, SaiPiSessionState state) {
