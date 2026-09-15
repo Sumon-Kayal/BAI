@@ -101,8 +101,9 @@ android {
 // files in a finalizer task. This keeps the existing ABI split configuration unchanged.
 def renameApksAfterAssemble = { String variantName ->
     def capitalizedVariant = variantName.capitalize()
-
     def renameTask = tasks.register("rename${capitalizedVariant}Apks") {
+        dependsOn("package${capitalizedVariant}")
+
         doLast {
             def apkDir = file("$buildDir/outputs/apk/${variantName}")
             if (!apkDir.exists()) {
@@ -142,10 +143,8 @@ def renameApksAfterAssemble = { String variantName ->
         }
     }
 
-    tasks.configureEach { task ->
-        if (task.name == "assemble${capitalizedVariant}") {
-            task.finalizedBy(renameTask)
-        }
+    tasks.named("assemble${capitalizedVariant}") {
+        finalizedBy(renameTask)
     }
 }
 
