@@ -95,21 +95,28 @@ android {
     }
 }
 
-// Phase 3 (BAI-ROADMAP-AND-TODO.md): output naming, e.g. BAI-4.6-legacy-armeabi-v7a-release.apk
-// instead of AGP's default app-legacy-armeabi_v7a-release.apk. Uses the old applicationVariants
-// API rather than the newer per-AGP-version Variant API on purpose — it's the one that's stayed
-// stable across the most AGP releases, which matters here since there's no way to compile-test
-// this against your actual AGP version from this sandbox. Verify it still resolves on your end;
-// if your AGP has dropped applicationVariants entirely, this is the one thing in the whole split
-// that needs a per-version rewrite rather than just working.
-android.applicationVariants.all { variant ->
-    variant.outputs.all { output ->
-        def abi = output.getFilter(com.android.build.OutputFile.ABI)
-        def parts = ["BAI", variant.versionName, variant.buildType.name]
-        if (abi != null) {
-            parts.add(abi)
+// Phase 3 (BAI-ROADMAP-AND-TODO.md): output naming, e.g. BAI-legacy-debug-armeabi-v7a.apk instead
+// of AGP's default app-legacy-armeabi_v7a-debug.apk.
+//
+// CORRECTED: the previous version of this block used android.applicationVariants.all, which this
+// project's actual CI run (logs_94305503106, "Analyze (java)" / Build (Gradle), 2026-09-14) showed
+// fails outright on AGP 9.3.2 — "Could not get unknown property 'applicationVariants'" — because
+// AGP 9 removed that API entirely rather than just deprecating it. Confirmed against Android's own
+// "Build multiple APKs" and "Gradle tips and recipes" docs, which show this exact
+// androidComponents.onVariants + FilterConfiguration replacement for AGP 9. This is now based on
+// verified current documentation rather than the "stayed stable across the most AGP versions"
+// guess the old comment made — but still unverified by an actual local build, since this sandbox
+// has no Android SDK/Gradle network access. Confirm it resolves on your end.
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            def abi = output.filters.find { it.filterType == com.android.build.api.variant.FilterConfiguration.FilterType.ABI }?.identifier
+            def parts = ["BAI", variant.flavorName, variant.buildType]
+            if (abi != null) {
+                parts.add(abi)
+            }
+            output.outputFileName.set(parts.join("-") + ".apk")
         }
-        outputFileName = parts.join("-") + ".apk"
     }
 }
 

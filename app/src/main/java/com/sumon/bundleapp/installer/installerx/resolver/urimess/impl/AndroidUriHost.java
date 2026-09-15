@@ -42,10 +42,15 @@ public class AndroidUriHost implements UriHost {
     public long getFileSizeFromUri(Uri uri) {
         DocumentFile documentFile = SafUtils.docFileFromSingleUriOrFileUri(mContext, uri);
 
-        if (documentFile != null)
-            return documentFile.length();
-        else
+        if (documentFile == null)
             return -1;
+
+        long length = documentFile.length();
+        // DocumentFile.length() returns 0 both for a genuinely empty file and for "this
+        // provider doesn't report a length" — conflating those with a real 0-byte file made a
+        // size-unknown case look identical to an empty one downstream. -1, matching the
+        // documentFile == null case just above, means "don't know," never "zero."
+        return length != 0 ? length : -1;
     }
 
     @Override

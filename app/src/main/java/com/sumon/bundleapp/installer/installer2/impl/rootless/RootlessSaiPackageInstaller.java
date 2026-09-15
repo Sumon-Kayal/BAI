@@ -100,7 +100,13 @@ public class RootlessSaiPackageInstaller extends BaseSaiPackageInstaller impleme
             }
 
             Intent callbackIntent = new Intent(RootlessSaiPiBroadcastReceiver.ACTION_DELIVER_PI_EVENT);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, callbackIntent, PendingIntent.FLAG_MUTABLE);
+            callbackIntent.setPackage(getContext().getPackageName());
+            // FLAG_IMMUTABLE (available since API 23, this project's minSdk) rather than
+            // FLAG_MUTABLE: this PendingIntent only carries a callback notification back to this
+            // app, nothing needs to mutate it in flight, and a mutable PendingIntent wrapping an
+            // implicit intent is exactly the pattern Android's platform-security hardening
+            // targets on 12+.
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, callbackIntent, PendingIntent.FLAG_IMMUTABLE);
             session.commit(pendingIntent.getIntentSender());
         } catch (Exception e) {
             Log.w(TAG, e);
