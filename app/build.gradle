@@ -105,13 +105,13 @@ def renameApksAfterAssemble = { String variantName ->
         dependsOn("package${capitalizedVariant}")
 
         doLast {
-            def apkDir = file("$buildDir/outputs/apk/${variantName}")
+            def flavor = variantName.toLowerCase().startsWith("legacy") ? "legacy" : "modern"
+            def buildType = variantName.toLowerCase().endsWith("debug") ? "debug" : "release"
+            def apkDir = file("$buildDir/outputs/apk/${flavor}/${buildType}")
             if (!apkDir.exists()) {
                 throw new GradleException("APK output directory does not exist: ${apkDir}")
             }
 
-            def flavor = variantName.toLowerCase().startsWith("legacy") ? "legacy" : "modern"
-            def buildType = variantName.toLowerCase().endsWith("debug") ? "debug" : "release"
             def abiPattern = ~/.*-(armeabi-v7a|armeabi_v7a|arm64-v8a|arm64_v8a|x86_64|x86).*\.apk/
             def abiNames = [
                 "armeabi_v7a": "armeabi-v7a",
