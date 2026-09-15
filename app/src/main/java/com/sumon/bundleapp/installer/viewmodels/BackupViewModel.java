@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 //TODO applier should have setConfig or something
 public class BackupViewModel extends AndroidViewModel {
@@ -184,13 +185,13 @@ public class BackupViewModel extends AndroidViewModel {
 
         @Override
         public boolean filterSimple(BackupApp app) {
-            String query = mQuery.toLowerCase();
+            String query = mQuery.toLowerCase(Locale.ROOT);
 
             if (query.length() == 0)
                 return false;
 
             //Check if app label matches
-            String[] wordsInLabel = app.packageMeta().label.toLowerCase().split(" ");
+            String[] wordsInLabel = app.packageMeta().label.toLowerCase(Locale.ROOT).split(" ");
             boolean labelMatches = false;
             for (String word : wordsInLabel) {
                 if (word.startsWith(query)) {
@@ -200,7 +201,7 @@ public class BackupViewModel extends AndroidViewModel {
             }
 
             //Check if app packages matches
-            boolean packagesMatches = app.packageMeta().packageName.toLowerCase().startsWith(query);
+            boolean packagesMatches = app.packageMeta().packageName.toLowerCase(Locale.ROOT).startsWith(query);
 
             return !labelMatches && !packagesMatches;
         }

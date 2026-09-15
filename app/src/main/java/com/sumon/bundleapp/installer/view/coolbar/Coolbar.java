@@ -121,6 +121,11 @@ public class Coolbar extends ViewGroup {
             height = desiredHeight;
         }
 
+        // Set before the children loop below, which reads mHeight — not after, which meant
+        // every child was measured against last frame's height (0 on the very first layout
+        // pass) instead of the height just computed above.
+        mHeight = height;
+
         //Children
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);

@@ -37,6 +37,11 @@ public class ConfirmationIntentWrapperActivity2 extends AppCompatActivity {
             } catch (Exception e) {
                 Logs.logException(e);
                 sendErrorBroadcast(mSessionId, RootlessSaiPiBroadcastReceiver.STATUS_BAD_ROM);
+                // Also covers the error path here, not just a real user response in
+                // onActivityResult: without this, onDestroy's abandonment safety net below
+                // reads "didn't finish properly" and relaunches the exact confirmation intent
+                // that just threw, which throws again, forever.
+                mFinishedProperly = true;
                 finish();
             }
         }

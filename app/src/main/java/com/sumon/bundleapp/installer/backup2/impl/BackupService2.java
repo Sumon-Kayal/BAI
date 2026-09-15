@@ -296,24 +296,33 @@ public class BackupService2 extends Service implements BackupStorage.BackupProgr
 
     @Override
     public void onBackupTaskStatusChanged(String storageId, BackupStorage.BackupTaskStatus status) {
+        // A status callback can be queued and still arrive after taskFinished() has already
+        // removed the entry from mTasks (e.g. a stale IN_PROGRESS tick racing a terminal state).
+        // Every branch below guards against that instead of assuming the lookup always succeeds.
+        BackupTaskInfo taskInfo = mTasks.get(status.token());
         switch (status.state()) {
             case CREATED:
             case QUEUED:
                 break;
             case IN_PROGRESS:
-                int progress = (int) ((float) status.currentProgress() / ((float) status.progressGoal() / 100f));
-                publishProgress(mTasks.get(status.token()), progress, 100);
+                if (taskInfo != null) {
+                    int progress = (int) ((float) status.currentProgress() / ((float) status.progressGoal() / 100f));
+                    publishProgress(taskInfo, progress, 100);
+                }
                 break;
             case CANCELLED:
-                notifyBackupCancelled(mTasks.get(status.token()));
+                if (taskInfo != null)
+                    notifyBackupCancelled(taskInfo);
                 mHandler.post(() -> taskFinished(status.token()));
                 break;
             case SUCCEEDED:
-                notifyBackupCompleted(mTasks.get(status.token()), true);
+                if (taskInfo != null)
+                    notifyBackupCompleted(taskInfo, true);
                 mHandler.post(() -> taskFinished(status.token()));
                 break;
             case FAILED:
-                notifyBackupCompleted(mTasks.get(status.token()), false);
+                if (taskInfo != null)
+                    notifyBackupCompleted(taskInfo, false);
                 mHandler.post(() -> taskFinished(status.token()));
                 break;
         }

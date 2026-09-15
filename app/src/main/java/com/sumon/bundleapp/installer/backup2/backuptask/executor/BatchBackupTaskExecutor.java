@@ -12,7 +12,6 @@ import com.sumon.bundleapp.installer.backup2.backuptask.config.SingleBackupTaskC
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -107,7 +106,12 @@ public class BatchBackupTaskExecutor implements CancellableBackupTaskExecutor {
 
             @Override
             public void onSuccess(@Nullable Backup backup) {
-                notifyAppBackedUp(config, Objects.requireNonNull(backup));
+                // backup is @Nullable by this listener's own contract — crashing on exactly the
+                // case the signature says can happen would stop the whole batch, not just this
+                // one item.
+                if (backup != null) {
+                    notifyAppBackedUp(config, backup);
+                }
                 nextTask();
             }
 

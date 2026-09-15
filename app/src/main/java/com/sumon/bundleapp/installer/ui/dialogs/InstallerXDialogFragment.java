@@ -225,7 +225,13 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PermissionsUtils.REQUEST_CODE_STORAGE_PERMISSIONS) {
-            boolean permissionsGranted = !(grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED);
+            boolean permissionsGranted = grantResults.length > 0;
+            for (int result : grantResults) {
+                if (result == PackageManager.PERMISSION_DENIED) {
+                    permissionsGranted = false;
+                    break;
+                }
+            }
 
             switch (mActionAfterGettingStoragePermissions) {
                 case PICK_WITH_INTERNAL_FILEPICKER:
