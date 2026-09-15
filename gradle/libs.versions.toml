@@ -4,6 +4,7 @@ documentfile = "1.1.0"
 flexbox = "3.0.0"
 glide = "5.0.9"
 gradle = "9.3.2"
+apksig = "9.3.2"
 gradleToolchainsFoojayResolverConvention = "1.0.0"
 gson = "2.14.0"
 leakcanaryAndroid = "2.14"
@@ -19,6 +20,7 @@ tooltips = "1.1.1"
 
 [libraries]
 aidl = { group = "dev.rikka.shizuku", name = "aidl", version.ref = "shizuku" }
+apksig = { group = "com.android.tools.build", name = "apksig", version.ref = "apksig" }
 api = { group = "dev.rikka.shizuku", name = "api", version.ref = "shizuku" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
