@@ -6,7 +6,8 @@ import android.os.Environment;
 
 import androidx.preference.PreferenceManager;
 
-import com.github.angads25.filepicker.model.DialogConfigs;
+import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
+import com.sumon.bundleapp.installer.signing.SigningSchemes;
 
 public class PreferencesHelper {
     private static PreferencesHelper sInstance;
@@ -52,7 +53,7 @@ public class PreferencesHelper {
     public int getFilePickerSortBy() {
         return mPrefs.getInt(
                 PreferencesKeys.FILE_PICKER_SORT_BY,
-                DialogConfigs.SORT_BY_NAME
+                InternalPickerRequest.SORT_BY_NAME
         );
     }
 
@@ -65,13 +66,23 @@ public class PreferencesHelper {
     public int getFilePickerSortOrder() {
         return mPrefs.getInt(
                 PreferencesKeys.FILE_PICKER_SORT_ORDER,
-                DialogConfigs.SORT_ORDER_NORMAL
+                InternalPickerRequest.SORT_ORDER_NORMAL
         );
     }
 
     public void setFilePickerSortOrder(int sortOrder) {
         mPrefs.edit()
                 .putInt(PreferencesKeys.FILE_PICKER_SORT_ORDER, sortOrder)
+                .apply();
+    }
+
+    public SigningSchemes getSigningSchemes() {
+        return new SigningSchemes(mPrefs.getInt(PreferencesKeys.SIGNING_SCHEMES, SigningSchemes.DEFAULT_SCHEMES));
+    }
+
+    public void setSigningSchemes(SigningSchemes schemes) {
+        mPrefs.edit()
+                .putInt(PreferencesKeys.SIGNING_SCHEMES, schemes.flags())
                 .apply();
     }
 

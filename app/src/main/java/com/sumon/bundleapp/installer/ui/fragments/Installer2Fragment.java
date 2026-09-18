@@ -27,7 +27,8 @@ import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.AppInstalledDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.DarkLightThemeSelectionDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ErrorLogDialogFragment2;
-import com.sumon.bundleapp.installer.ui.dialogs.FilePickerDialogFragment;
+import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
+import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallationConfirmationDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallerXDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ThemeSelectionDialogFragment;
@@ -39,8 +40,6 @@ import com.sumon.bundleapp.installer.utils.Theme;
 import com.sumon.bundleapp.installer.utils.Utils;
 import com.sumon.bundleapp.installer.utils.saf.SafUtils;
 import com.sumon.bundleapp.installer.viewmodels.InstallerViewModel;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
 import com.tomergoldst.tooltips.ToolTip;
 import com.tomergoldst.tooltips.ToolTipsManager;
 
@@ -50,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Installer2Fragment extends InstallerFragment implements FilePickerDialogFragment.OnFilesSelectedListener, InstallationConfirmationDialogFragment.ConfirmationListener, SaiPiSessionsAdapter.ActionDelegate {
+public class Installer2Fragment extends InstallerFragment implements OnInternalFilesSelectedListener, InstallationConfirmationDialogFragment.ConfirmationListener, SaiPiSessionsAdapter.ActionDelegate {
     private static final String TAG = "Installer2Fragment";
 
     private static final int REQUEST_CODE_GET_FILES = 337;
@@ -216,16 +215,19 @@ public class Installer2Fragment extends InstallerFragment implements FilePickerD
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this))
             return;
 
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.MULTI_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.offset = new File(mHelper.getHomeDirectory());
-        properties.extensions = new String[]{"apk", "zip", "apks", "xapk", "apkm"};
-        properties.sortBy = mHelper.getFilePickerSortBy();
-        properties.sortOrder = mHelper.getFilePickerSortOrder();
+        InternalPickerRequest request = new InternalPickerRequest(
+                null,
+                getString(R.string.installer_pick_apks),
+                InternalPickerRequest.SelectionMode.MULTI,
+                InternalPickerRequest.SelectionType.FILE,
+                Environment.getExternalStorageDirectory()
+        );
+        request.offset = new File(mHelper.getHomeDirectory());
+        request.extensions = new String[]{"apk", "zip", "apks", "xapk", "apkm"};
+        request.sortBy = mHelper.getFilePickerSortBy();
+        request.sortOrder = mHelper.getFilePickerSortOrder();
 
-        FilePickerDialogFragment.newInstance(null, getString(R.string.installer_pick_apks), properties).show(getChildFragmentManager(), "dialog_files_picker");
+        new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "dialog_files_picker");
     }
 
     private boolean pickFilesWithSaf() {

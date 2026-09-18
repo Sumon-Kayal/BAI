@@ -1,5 +1,7 @@
 package com.sumon.bundleapp.installer.platform;
 
+import androidx.fragment.app.DialogFragment;
+
 /**
  * Whether install-file picking should offer the internal file browser (rooted at
  * {@code Environment.getExternalStorageDirectory()}) as an option at all.
@@ -18,4 +20,16 @@ package com.sumon.bundleapp.installer.platform;
  */
 public interface PlatformFilePicker {
     boolean offersInternalPicker();
+
+    /**
+     * Builds the internal picker dialog for {@code request}. Only Legacy's implementation
+     * actually depends on the vendored file-picker library; the caller must check
+     * {@link #offersInternalPicker()} first — Modern's implementation is never meant to be
+     * called and throws.
+     * <p>
+     * The returned fragment's host (parent fragment, or activity if there is none) must
+     * implement {@link OnInternalFilesSelectedListener}.
+     */
+    DialogFragment createInternalPicker(InternalPickerRequest request);
 }
+

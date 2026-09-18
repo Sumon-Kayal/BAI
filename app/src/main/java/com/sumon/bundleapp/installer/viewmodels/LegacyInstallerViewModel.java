@@ -11,7 +11,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.sumon.bundleapp.installer.installer.ApkSourceBuilder;
+import com.sumon.bundleapp.installer.model.apksource.ApkSourceBuilder;
 import com.sumon.bundleapp.installer.installer.PackageInstallerProvider;
 import com.sumon.bundleapp.installer.installer.SAIPackageInstaller;
 import com.sumon.bundleapp.installer.model.apksource.ApkSource;

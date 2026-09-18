@@ -27,4 +27,5 @@ public class PreferencesKeys {
     public static final String BACKUP_SETTINGS = "backup_settings";
     public static final String BACKUP_APK_EXPORT = "single_apk_export";
     public static final String ENABLE_APK_ACTION_VIEW = "enable_apk_action_view";
+    public static final String SIGNING_SCHEMES = "signing_schemes";
     }

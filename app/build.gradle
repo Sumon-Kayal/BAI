@@ -95,27 +95,65 @@ android {
     }
 }
 
-// Phase 3 (BAI-ROADMAP-AND-TODO.md): output naming, e.g. BAI-legacy-debug-armeabi-v7a.apk instead
-// of AGP's default app-legacy-armeabi_v7a-debug.apk.
+// Phase 3 (BAI-ROADMAP-AND-TODO.md): keep AGP 9.3-compatible APK naming.
+// AGP 9.3 exposes onVariants(selector().all()), but VariantOutput.outputFileName was
+// only added later. Let AGP create the split APKs normally, then rename the finished
+// files in a finalizer task. This keeps the existing ABI split configuration unchanged.
 //
-// CORRECTED: the previous version of this block used android.applicationVariants.all, which this
-// project's actual CI run (logs_94305503106, "Analyze (java)" / Build (Gradle), 2026-09-14) showed
-// fails outright on AGP 9.3.2 — "Could not get unknown property 'applicationVariants'" — because
-// AGP 9 removed that API entirely rather than just deprecating it. Confirmed against Android's own
-// "Build multiple APKs" and "Gradle tips and recipes" docs, which show this exact
-// androidComponents.onVariants + FilterConfiguration replacement for AGP 9. This is now based on
-// verified current documentation rather than the "stayed stable across the most AGP versions"
-// guess the old comment made — but still unverified by an actual local build, since this sandbox
-// has no Android SDK/Gradle network access. Confirm it resolves on your end.
+// The finalizer is wired up inside onVariants() using tasks.matching(...).configureEach(),
+// not tasks.named() — assemble<Variant> is not guaranteed to already be registered when
+// onVariants() runs, and a direct tasks.named() lookup here intermittently failed with
+// "Task with name 'assembleLegacyDebug' not found". tasks.matching().configureEach() waits
+// for the task to appear instead of requiring it to exist already, and covers every
+// flavor/build-type combination automatically instead of a hardcoded variant list.
 androidComponents {
-    onVariants { variant ->
-        variant.outputs.forEach { output ->
-            def abi = output.filters.find { it.filterType == com.android.build.api.variant.FilterConfiguration.FilterType.ABI }?.identifier
-            def parts = ["BAI", variant.flavorName, variant.buildType]
-            if (abi != null) {
-                parts.add(abi)
+    onVariants(selector().all()) { variant ->
+        def variantName = variant.name
+        def capitalizedVariant = variantName.capitalize()
+        def renameTask = tasks.register("rename${capitalizedVariant}Apks") {
+            dependsOn("package${capitalizedVariant}")
+
+            doLast {
+                def flavor = variantName.toLowerCase().startsWith("legacy") ? "legacy" : "modern"
+                def buildType = variantName.toLowerCase().endsWith("debug") ? "debug" : "release"
+                def apkDir = file("$buildDir/outputs/apk/${flavor}/${buildType}")
+                if (!apkDir.exists()) {
+                    throw new GradleException("APK output directory does not exist: ${apkDir}")
+                }
+
+                def abiPattern = ~/.*-(armeabi-v7a|armeabi_v7a|arm64-v8a|arm64_v8a|x86_64|x86).*\.apk/
+                def abiNames = [
+                    "armeabi_v7a": "armeabi-v7a",
+                    "arm64_v8a": "arm64-v8a"
+                ]
+
+                def apks = apkDir.listFiles()?.findAll { it.isFile() && it.name.endsWith(".apk") } ?: []
+                if (apks.isEmpty()) {
+                    throw new GradleException("No APKs found in ${apkDir}")
+                }
+
+                apks.each { apk ->
+                    def matcher = (apk.name =~ abiPattern)
+                    if (!matcher.matches()) {
+                        throw new GradleException("Could not determine ABI from APK filename: ${apk.name}")
+                    }
+
+                    def abi = abiNames.get(matcher[0][1], matcher[0][1])
+                    def target = new File(apkDir, "BAI-${flavor}-${buildType}-${abi}.apk")
+                    if (apk != target) {
+                        if (target.exists()) {
+                            target.delete()
+                        }
+                        if (!apk.renameTo(target)) {
+                            throw new GradleException("Failed to rename ${apk} to ${target}")
+                        }
+                    }
+                }
             }
-            output.outputFileName.set(parts.join("-") + ".apk")
+        }
+
+        tasks.matching { it.name == "assemble${capitalizedVariant}" }.configureEach {
+            finalizedBy(renameTask)
         }
     }
 }
@@ -134,11 +172,18 @@ dependencies {
     // Memory leak detection (debug builds only)
     debugImplementation libs.leakcanary.android
 
-    // Local JAR/AAR dependencies
+    // Local JAR/AAR dependencies (filepicker-release.aar excluded — see below, it's legacy-only)
     implementation fileTree(
             dir: 'libs',
-            include: ['*.jar', '*.aar']
+            include: ['*.jar', '*.aar'],
+            exclude: ['filepicker-release.aar']
     )
+
+    // FilePicker library (com.github.angads25.filepicker): only Legacy's PlatformFilePicker
+    // implementation offers/uses the internal picker UI — Modern relies solely on the system
+    // SAF picker and never touches this library. See BAI-ROADMAP-AND-TODO.md, FilePicker
+    // architecture, and platform/PlatformFilePicker.java.
+    legacyImplementation files('libs/filepicker-release.aar')
 
     // AndroidX
     implementation libs.appcompat
@@ -170,6 +215,9 @@ dependencies {
     implementation libs.provider
     implementation libs.shared
     implementation libs.aidl
+
+    // apksig: used by signing/SaiApkSigner.java for signature-scheme-aware APK (re-)signing
+    implementation libs.apksig
 
     // flexfilter: vendored at com/aefyr/flexfilter/
     // pseudoapksigner: vendored at com/aefyr/pseudoapksigner/
