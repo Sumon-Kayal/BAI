@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sumon.bundleapp.installer.adapters.SaiPiSessionsAdapter;
-import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.AppInstalledDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.DarkLightThemeSelectionDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ErrorLogDialogFragment2;
@@ -126,7 +124,7 @@ public class Installer2Fragment extends InstallerFragment implements OnInternalF
         findViewById(R.id.ib_help).setOnClickListener((v) -> AlertsUtils.showAlert(this, R.string.help, R.string.installer_help));
 
         Button installButtton = findViewById(R.id.button_install);
-        boolean offersInternalPicker = new DeviceGenerationFilePicker().offersInternalPicker();
+        boolean offersInternalPicker = PlatformFilePicker.getInstance().offersInternalPicker();
         installButtton.setOnClickListener((v) -> {
             if (mHelper.isInstallerXEnabled())
                 openInstallerXDialog(null);

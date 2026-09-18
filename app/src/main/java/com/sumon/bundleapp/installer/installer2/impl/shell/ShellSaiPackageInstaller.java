@@ -36,6 +36,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import androidx.core.content.ContextCompat;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -152,17 +154,14 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
                     // definite -S value.
                     File stagedApk = stageApkToCache(apkSource);
                     try {
-                        ensureCommandSucceeded(getShell().exec(new Shell.Command("pm", "install-write", "-S",
-                                String.valueOf(stagedApk.length()), String.valueOf(androidSessionId), splitName),
-                                IOUtils.buffer(new FileInputStream(stagedApk))));
+                        writeApk(androidSessionId, splitName, stagedApk.length(),
+                                new BufferedInputStream(new FileInputStream(stagedApk)));
                     } finally {
                         //noinspection ResultOfMethodCallIgnored
                         stagedApk.delete();
                     }
                 } else {
-                    ensureCommandSucceeded(getShell().exec(new Shell.Command("pm", "install-write", "-S",
-                            String.valueOf(apkLength), String.valueOf(androidSessionId), splitName),
-                            apkSource.openApkInputStream()));
+                    writeApk(androidSessionId, splitName, apkLength, apkSource.openApkInputStream());
                 }
             }
 
@@ -181,10 +180,10 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
             }
 
             // pm reports neither success details nor the installed package, so the exit code
-            // decides the outcome and the resolved meta supplies the name.
+            // decides the outcome and the resolved meta supplies the name. No further fallback
+            // if the broadcast didn't tell us either — SaiPiSessionParams only carries an
+            // ApkSource, which has no package-name accessor to fall back to.
             String installedPackage = mBroadcastPackageName.getAndSet(null);
-            if (installedPackage == null)
-                installedPackage = params.packageName();
 
             SaiPiSessionState.Builder success = new SaiPiSessionState.Builder(sessionId, SaiPiSessionStatus.INSTALLATION_SUCCEED)
                     .appTempName(appTempName);
@@ -224,6 +223,14 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
     private void ensureCommandSucceeded(Shell.Result result) {
         if (!result.isSuccessful())
             throw new RuntimeException(result.out);
+    }
+
+    private void writeApk(int sessionId, String splitName, long apkLength, InputStream inputStream) {
+        ensureCommandSucceeded(getShell().exec(
+                new Shell.Command("pm", "install-write", "-S", String.valueOf(apkLength),
+                        String.valueOf(sessionId), splitName),
+                inputStream
+        ));
     }
 
     private String getSessionInfo(ApkSource apkSource) {
@@ -336,7 +343,7 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
             throw new IOException("Unable to create a staging file in the cache directory");
 
         try (InputStream in = apkSource.openApkInputStream();
-             OutputStream out = IOUtils.buffer(new FileOutputStream(staged))) {
+             OutputStream out = new BufferedOutputStream(new FileOutputStream(staged))) {
             IOUtils.copyStream(in, out);
         }
         return staged;

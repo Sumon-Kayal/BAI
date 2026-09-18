@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sumon.bundleapp.installer.adapters.SplitApkSourceMetaAdapter;
 import com.sumon.bundleapp.installer.installerx.resolver.urimess.UriHostFactory;
-import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.base.BaseBottomSheetDialogFragment;
 import com.sumon.bundleapp.installer.utils.AlertsUtils;
 import com.sumon.bundleapp.installer.utils.PermissionsUtils;
@@ -135,7 +133,7 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
         });
 
         View internalPickerButton = view.findViewById(R.id.button_installerx_fp_internal);
-        if (new DeviceGenerationFilePicker().offersInternalPicker()) {
+        if (PlatformFilePicker.getInstance().offersInternalPicker()) {
             internalPickerButton.setOnClickListener(v -> checkPermissionsAndPickFiles());
         } else {
             // SAF is the only picking method that actually works on this generation
