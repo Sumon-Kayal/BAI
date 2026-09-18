@@ -9,8 +9,6 @@ import androidx.preference.PreferenceManager;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.signing.SigningSchemes;
 
-import java.io.File;
-
 public class PreferencesHelper {
     private static PreferencesHelper sInstance;
 
@@ -76,21 +74,6 @@ public class PreferencesHelper {
         mPrefs.edit()
                 .putInt(PreferencesKeys.FILE_PICKER_SORT_ORDER, sortOrder)
                 .apply();
-    }
-
-    public InternalPickerRequest createApkPickerRequest(String title, String... extensions) {
-        InternalPickerRequest request = new InternalPickerRequest(
-                null,
-                title,
-                InternalPickerRequest.SelectionMode.MULTI,
-                InternalPickerRequest.SelectionType.FILE,
-                Environment.getExternalStorageDirectory()
-        );
-        request.offset = new File(getHomeDirectory());
-        request.extensions = extensions;
-        request.sortBy = getFilePickerSortBy();
-        request.sortOrder = getFilePickerSortOrder();
-        return request;
     }
 
     public SigningSchemes getSigningSchemes() {

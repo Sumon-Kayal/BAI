@@ -31,7 +31,6 @@ import com.sumon.bundleapp.installer.viewmodels.InstallerXDialogViewModel;
 import com.sumon.bundleapp.installer.viewmodels.factory.InstallerXDialogViewModelFactory;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
-import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -194,13 +193,19 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
         }
 
 
-        InternalPickerRequest request = mHelper.createApkPickerRequest(
+        InternalPickerRequest request = new InternalPickerRequest(
+                null,
                 getString(R.string.installer_pick_apks),
-                "zip", "apks", "xapk", "apk", "apkm"
+                InternalPickerRequest.SelectionMode.MULTI,
+                InternalPickerRequest.SelectionType.FILE,
+                Environment.getExternalStorageDirectory()
         );
+        request.offset = new File(mHelper.getHomeDirectory());
+        request.extensions = new String[]{"zip", "apks", "xapk", "apk", "apkm"};
+        request.sortBy = mHelper.getFilePickerSortBy();
+        request.sortOrder = mHelper.getFilePickerSortOrder();
 
-        PlatformFilePicker.getInstance().createInternalPicker(request)
-                .show(getChildFragmentManager(), "dialog_files_picker");
+        new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "dialog_files_picker");
     }
 
     private void pickFilesWithSaf() {

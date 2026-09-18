@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
-import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 import com.sumon.bundleapp.installer.utils.AlertsUtils;
 import com.sumon.bundleapp.installer.utils.PermissionsUtils;
 import com.sumon.bundleapp.installer.utils.Utils;
@@ -66,7 +66,7 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
                 Environment.getExternalStorageDirectory()
         );
 
-        return PlatformFilePicker.getInstance().createInternalPicker(request);
+        return new DeviceGenerationFilePicker().createInternalPicker(request);
     }
 
     @Override
@@ -76,8 +76,8 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
                 // This list isn't generation-filtered (see BAI-ROADMAP-AND-TODO.md, FilePicker
                 // architecture) — Modern still shows the internal-picker choice, so fall back to
                 // SAF here instead of calling the picker it doesn't offer.
-                if (PlatformFilePicker.getInstance().offersInternalPicker())
-                    openInternalPicker();
+                if (new DeviceGenerationFilePicker().offersInternalPicker())
+                    openFilePicker(createInternalDirPicker());
                 else
                     pickDirWithSaf();
                 break;
@@ -99,7 +99,7 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
         startActivityForResult(Intent.createChooser(intent, getString(R.string.installer_pick_apks)), REQUEST_CODE_SELECT_BACKUP_DIR);
     }
 
-    private void openInternalPicker() {
+    private void openFilePicker(DialogFragment filePicker) {
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this)) {
             mPendingInternalPick = true;
             return;

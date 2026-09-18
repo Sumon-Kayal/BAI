@@ -24,9 +24,9 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
 import com.sumon.bundleapp.installer.shell.SuShell;
+import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
-import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 import com.sumon.bundleapp.installer.ui.activities.AboutActivity;
 import com.sumon.bundleapp.installer.ui.activities.ApkActionViewProxyActivity;
 import com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity;
@@ -215,7 +215,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
         });
 
         mSignatureSchemesPref = findPreference("signature_schemes");
-        updateSignatureSchemesSummary(mHelper.getSigningSchemes());
+        updateSignatureSchemesSummary();
 
         mSignatureSchemesPref.setOnPreferenceClickListener((p) -> {
             new SignatureSchemesDialogFragment().show(getChildFragmentManager(), "signature_schemes");
@@ -367,7 +367,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
         );
     }
 
-    private void updateSignatureSchemesSummary(SigningSchemes schemes) {
+    private void updateSignatureSchemesSummary() {
+        SigningSchemes schemes = mHelper.getSigningSchemes();
         List<String> enabled = new ArrayList<>();
 
         if (schemes.has(SigningSchemes.SCHEME_V1))
@@ -387,7 +388,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
 
     @Override
     public void onSchemesChanged(SigningSchemes schemes) {
-        updateSignatureSchemesSummary(schemes);
+        updateSignatureSchemesSummary();
     }
 
     private void updateThemeSummary() {
@@ -468,13 +469,17 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
                 )
         );
 
-        DialogFragment picker = PlatformFilePicker.getInstance().createInternalPicker(request);
+        if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
+                || PermissionsUtils.checkAndRequestStoragePermissions(this)) {
+
+            new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "file_picker");
 
         if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
                 || PermissionsUtils.checkAndRequestStoragePermissions(this)) {
             openFilePicker(picker);
         } else {
-            mPendingFilePicker = picker;
+            mPendingFilePicker = new DeviceGenerationFilePicker().createInternalPicker(request);
+
             // checkAndRequestStoragePermissions(this) above has already
             // requested the permission when needed. Keep the picker pending.
         }

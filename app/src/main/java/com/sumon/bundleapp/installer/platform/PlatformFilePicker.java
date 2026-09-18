@@ -35,11 +35,5 @@ public interface PlatformFilePicker {
      * implement {@link OnInternalFilesSelectedListener}.
      */
     DialogFragment createInternalPicker(InternalPickerRequest request);
-
-    class Holder {
-        private static final PlatformFilePicker INSTANCE = new DeviceGenerationFilePicker();
-
-        private Holder() {
-        }
-    }
 }
+

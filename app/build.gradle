@@ -107,12 +107,6 @@ android {
 // for the task to appear instead of requiring it to exist already, and covers every
 // flavor/build-type combination automatically instead of a hardcoded variant list.
 androidComponents {
-    def abiPattern = ~/.*-(armeabi-v7a|armeabi_v7a|arm64-v8a|arm64_v8a|x86_64|x86).*\.apk/
-    def abiNames = [
-            "armeabi_v7a": "armeabi-v7a",
-            "arm64_v8a"  : "arm64-v8a"
-    ]
-
     onVariants(selector().all()) { variant ->
         def variantName = variant.name
         def capitalizedVariant = variantName.capitalize()
@@ -120,13 +114,18 @@ androidComponents {
             dependsOn("package${capitalizedVariant}")
 
             doLast {
-                def normalizedVariantName = variantName.toLowerCase()
-                def flavor = normalizedVariantName.startsWith("legacy") ? "legacy" : "modern"
-                def buildType = normalizedVariantName.endsWith("debug") ? "debug" : "release"
+                def flavor = variantName.toLowerCase().startsWith("legacy") ? "legacy" : "modern"
+                def buildType = variantName.toLowerCase().endsWith("debug") ? "debug" : "release"
                 def apkDir = file("$buildDir/outputs/apk/${flavor}/${buildType}")
                 if (!apkDir.exists()) {
                     throw new GradleException("APK output directory does not exist: ${apkDir}")
                 }
+
+                def abiPattern = ~/.*-(armeabi-v7a|armeabi_v7a|arm64-v8a|arm64_v8a|x86_64|x86).*\.apk/
+                def abiNames = [
+                    "armeabi_v7a": "armeabi-v7a",
+                    "arm64_v8a": "arm64-v8a"
+                ]
 
                 def apks = apkDir.listFiles()?.findAll { it.isFile() && it.name.endsWith(".apk") } ?: []
                 if (apks.isEmpty()) {
@@ -139,8 +138,7 @@ androidComponents {
                         throw new GradleException("Could not determine ABI from APK filename: ${apk.name}")
                     }
 
-                    def rawAbi = matcher[0][1]
-                    def abi = abiNames.getOrDefault(rawAbi, rawAbi)
+                    def abi = abiNames.get(matcher[0][1], matcher[0][1])
                     def target = new File(apkDir, "BAI-${flavor}-${buildType}-${abi}.apk")
                     if (apk != target) {
                         if (target.exists()) {

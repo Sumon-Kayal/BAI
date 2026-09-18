@@ -19,9 +19,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sumon.bundleapp.installer.ui.activities.MainActivity;
 import com.sumon.bundleapp.installer.ui.activities.PreferencesActivity;
+import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
-import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.AppInstalledDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ErrorLogDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallationConfirmationDialogFragment;
@@ -122,13 +122,19 @@ public class LegacyInstallerFragment extends InstallerFragment implements OnInte
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this))
             return;
 
-        InternalPickerRequest request = mHelper.createApkPickerRequest(
+        InternalPickerRequest request = new InternalPickerRequest(
+                null,
                 getString(R.string.installer_pick_apks),
-                "apk", "zip", "apks"
+                InternalPickerRequest.SelectionMode.MULTI,
+                InternalPickerRequest.SelectionType.FILE,
+                Environment.getExternalStorageDirectory()
         );
+        request.offset = new File(mHelper.getHomeDirectory());
+        request.extensions = new String[]{"apk", "zip", "apks"};
+        request.sortBy = mHelper.getFilePickerSortBy();
+        request.sortOrder = mHelper.getFilePickerSortOrder();
 
-        PlatformFilePicker.getInstance().createInternalPicker(request)
-                .show(getChildFragmentManager(), "dialog_files_picker");
+        new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "dialog_files_picker");
     }
 
     private boolean pickFilesWithSaf() {

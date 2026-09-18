@@ -27,7 +27,6 @@ import com.sumon.bundleapp.installer.ui.dialogs.DarkLightThemeSelectionDialogFra
 import com.sumon.bundleapp.installer.ui.dialogs.ErrorLogDialogFragment2;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
-import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallationConfirmationDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallerXDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ThemeSelectionDialogFragment;
@@ -214,13 +213,19 @@ public class Installer2Fragment extends InstallerFragment implements OnInternalF
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this))
             return;
 
-        InternalPickerRequest request = mHelper.createApkPickerRequest(
+        InternalPickerRequest request = new InternalPickerRequest(
+                null,
                 getString(R.string.installer_pick_apks),
-                "apk", "zip", "apks", "xapk", "apkm"
+                InternalPickerRequest.SelectionMode.MULTI,
+                InternalPickerRequest.SelectionType.FILE,
+                Environment.getExternalStorageDirectory()
         );
+        request.offset = new File(mHelper.getHomeDirectory());
+        request.extensions = new String[]{"apk", "zip", "apks", "xapk", "apkm"};
+        request.sortBy = mHelper.getFilePickerSortBy();
+        request.sortOrder = mHelper.getFilePickerSortOrder();
 
-        PlatformFilePicker.getInstance().createInternalPicker(request)
-                .show(getChildFragmentManager(), "dialog_files_picker");
+        new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "dialog_files_picker");
     }
 
     private boolean pickFilesWithSaf() {
