@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +22,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sumon.bundleapp.installer.adapters.SaiPiSessionsAdapter;
-import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.AppInstalledDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.DarkLightThemeSelectionDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ErrorLogDialogFragment2;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
+import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallationConfirmationDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.InstallerXDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ThemeSelectionDialogFragment;
@@ -126,7 +125,7 @@ public class Installer2Fragment extends InstallerFragment implements OnInternalF
         findViewById(R.id.ib_help).setOnClickListener((v) -> AlertsUtils.showAlert(this, R.string.help, R.string.installer_help));
 
         Button installButtton = findViewById(R.id.button_install);
-        boolean offersInternalPicker = new DeviceGenerationFilePicker().offersInternalPicker();
+        boolean offersInternalPicker = PlatformFilePicker.getInstance().offersInternalPicker();
         installButtton.setOnClickListener((v) -> {
             if (mHelper.isInstallerXEnabled())
                 openInstallerXDialog(null);
@@ -215,19 +214,13 @@ public class Installer2Fragment extends InstallerFragment implements OnInternalF
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this))
             return;
 
-        InternalPickerRequest request = new InternalPickerRequest(
-                null,
+        InternalPickerRequest request = mHelper.createApkPickerRequest(
                 getString(R.string.installer_pick_apks),
-                InternalPickerRequest.SelectionMode.MULTI,
-                InternalPickerRequest.SelectionType.FILE,
-                Environment.getExternalStorageDirectory()
+                "apk", "zip", "apks", "xapk", "apkm"
         );
-        request.offset = new File(mHelper.getHomeDirectory());
-        request.extensions = new String[]{"apk", "zip", "apks", "xapk", "apkm"};
-        request.sortBy = mHelper.getFilePickerSortBy();
-        request.sortOrder = mHelper.getFilePickerSortOrder();
 
-        new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "dialog_files_picker");
+        PlatformFilePicker.getInstance().createInternalPicker(request)
+                .show(getChildFragmentManager(), "dialog_files_picker");
     }
 
     private boolean pickFilesWithSaf() {

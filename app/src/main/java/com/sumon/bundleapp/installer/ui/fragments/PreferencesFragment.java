@@ -24,9 +24,9 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
 import com.sumon.bundleapp.installer.shell.SuShell;
-import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
+import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 import com.sumon.bundleapp.installer.ui.activities.AboutActivity;
 import com.sumon.bundleapp.installer.ui.activities.ApkActionViewProxyActivity;
 import com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity;
@@ -166,7 +166,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
         mFilePickerSortPref = findPreference("file_picker_sort");
         updateFilePickerSortSummary();
 
-        if (!new DeviceGenerationFilePicker().offersInternalPicker()) {
+        if (!PlatformFilePicker.getInstance().offersInternalPicker()) {
             // Both settings only affect the internal file browser, which Modern doesn't offer —
             // see BAI-PHASE4-STORAGE-SAF.md. Showing them would just be two dead-end rows.
             mHomeDirPref.setVisible(false);
@@ -215,7 +215,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
         });
 
         mSignatureSchemesPref = findPreference("signature_schemes");
-        updateSignatureSchemesSummary();
+        updateSignatureSchemesSummary(mHelper.getSigningSchemes());
 
         mSignatureSchemesPref.setOnPreferenceClickListener((p) -> {
             new SignatureSchemesDialogFragment().show(getChildFragmentManager(), "signature_schemes");
@@ -367,8 +367,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
         );
     }
 
-    private void updateSignatureSchemesSummary() {
-        SigningSchemes schemes = mHelper.getSigningSchemes();
+    private void updateSignatureSchemesSummary(SigningSchemes schemes) {
         List<String> enabled = new ArrayList<>();
 
         if (schemes.has(SigningSchemes.SCHEME_V1))
@@ -388,7 +387,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
 
     @Override
     public void onSchemesChanged(SigningSchemes schemes) {
-        updateSignatureSchemesSummary();
+        updateSignatureSchemesSummary(schemes);
     }
 
     private void updateThemeSummary() {
@@ -469,23 +468,17 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
                 )
         );
 
+        DialogFragment picker = PlatformFilePicker.getInstance().createInternalPicker(request);
+
         if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
                 || PermissionsUtils.checkAndRequestStoragePermissions(this)) {
-
-            new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "file_picker");
-
+            openFilePicker(picker);
         } else {
-            mPendingFilePicker = new DeviceGenerationFilePicker().createInternalPicker(request);
-
+            mPendingFilePicker = picker;
             // checkAndRequestStoragePermissions(this) above has already
             // requested the permission when needed. Keep the picker pending.
-
         }
     }
-
-
-
-
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
@@ -508,11 +501,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
                         R.string.permissions_required_storage
                 );
 
-            } else {
-                if (mPendingFilePicker != null) {
-                    openFilePicker(mPendingFilePicker);
-                    mPendingFilePicker = null;
-                }
+            } else if (mPendingFilePicker != null) {
+                openFilePicker(mPendingFilePicker);
+                mPendingFilePicker = null;
             }
         }
     }
@@ -541,13 +532,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
             String tag,
             List<File> files) {
 
-        switch (tag) {
-            case "home":
-                mHelper.setHomeDirectory(
-                        files.get(0).getAbsolutePath()
-                );
-                updateHomeDirPrefSummary();
-                break;
+        if ("home".equals(tag)) {
+            mHelper.setHomeDirectory(files.get(0).getAbsolutePath());
+            updateHomeDirPrefSummary();
         }
     }
 

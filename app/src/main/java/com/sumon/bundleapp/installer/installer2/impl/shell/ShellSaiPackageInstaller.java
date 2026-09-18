@@ -154,17 +154,14 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
                     // definite -S value.
                     File stagedApk = stageApkToCache(apkSource);
                     try {
-                        ensureCommandSucceeded(getShell().exec(new Shell.Command("pm", "install-write", "-S",
-                                String.valueOf(stagedApk.length()), String.valueOf(androidSessionId), splitName),
-                                new BufferedInputStream(new FileInputStream(stagedApk))));
+                        writeApk(androidSessionId, splitName, stagedApk.length(),
+                                new BufferedInputStream(new FileInputStream(stagedApk)));
                     } finally {
                         //noinspection ResultOfMethodCallIgnored
                         stagedApk.delete();
                     }
                 } else {
-                    ensureCommandSucceeded(getShell().exec(new Shell.Command("pm", "install-write", "-S",
-                            String.valueOf(apkLength), String.valueOf(androidSessionId), splitName),
-                            apkSource.openApkInputStream()));
+                    writeApk(androidSessionId, splitName, apkLength, apkSource.openApkInputStream());
                 }
             }
 
@@ -226,6 +223,14 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
     private void ensureCommandSucceeded(Shell.Result result) {
         if (!result.isSuccessful())
             throw new RuntimeException(result.out);
+    }
+
+    private void writeApk(int sessionId, String splitName, long apkLength, InputStream inputStream) {
+        ensureCommandSucceeded(getShell().exec(
+                new Shell.Command("pm", "install-write", "-S", String.valueOf(apkLength),
+                        String.valueOf(sessionId), splitName),
+                inputStream
+        ));
     }
 
     private String getSessionInfo(ApkSource apkSource) {

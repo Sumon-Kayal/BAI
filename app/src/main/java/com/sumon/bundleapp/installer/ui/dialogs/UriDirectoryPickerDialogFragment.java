@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
 import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
 import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
+import com.sumon.bundleapp.installer.platform.PlatformFilePicker;
 import com.sumon.bundleapp.installer.utils.AlertsUtils;
 import com.sumon.bundleapp.installer.utils.PermissionsUtils;
 import com.sumon.bundleapp.installer.utils.Utils;
@@ -66,7 +66,7 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
                 Environment.getExternalStorageDirectory()
         );
 
-        return new DeviceGenerationFilePicker().createInternalPicker(request);
+        return PlatformFilePicker.getInstance().createInternalPicker(request);
     }
 
     @Override
@@ -76,8 +76,8 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
                 // This list isn't generation-filtered (see BAI-ROADMAP-AND-TODO.md, FilePicker
                 // architecture) — Modern still shows the internal-picker choice, so fall back to
                 // SAF here instead of calling the picker it doesn't offer.
-                if (new DeviceGenerationFilePicker().offersInternalPicker())
-                    openFilePicker(createInternalDirPicker());
+                if (PlatformFilePicker.getInstance().offersInternalPicker())
+                    openInternalPicker();
                 else
                     pickDirWithSaf();
                 break;
@@ -99,12 +99,14 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
         startActivityForResult(Intent.createChooser(intent, getString(R.string.installer_pick_apks)), REQUEST_CODE_SELECT_BACKUP_DIR);
     }
 
-    private void openFilePicker(DialogFragment filePicker) {
+    private void openInternalPicker() {
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this)) {
             mPendingInternalPick = true;
             return;
         }
-        filePicker.show(getChildFragmentManager(), null);
+
+        mPendingInternalPick = false;
+        createInternalDirPicker().show(getChildFragmentManager(), null);
     }
 
     @Override
@@ -122,12 +124,8 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
 
             if (!permissionsGranted)
                 AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
-            else {
-                if (mPendingInternalPick) {
-                    mPendingInternalPick = false;
-                    openFilePicker(createInternalDirPicker());
-                }
-            }
+            else if (mPendingInternalPick)
+                openInternalPicker();
         }
     }
 
@@ -157,14 +155,11 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
 
     @Override
     public void onFilesSelected(String tag, List<File> files) {
-        switch (tag) {
-            case "backup_dir":
-                onDirectoryPicked(new Uri.Builder()
-                        .scheme("file")
-                        .path(files.get(0).getAbsolutePath())
-                        .build());
-                break;
-        }
+        if ("backup_dir".equals(tag))
+            onDirectoryPicked(new Uri.Builder()
+                    .scheme("file")
+                    .path(files.get(0).getAbsolutePath())
+                    .build());
     }
 
     public interface OnDirectoryPickedListener {
