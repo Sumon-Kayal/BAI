@@ -6,6 +6,30 @@ This changelog documents BAI's divergence from the upstream SAI `master` branch,
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project follows [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+Splits BAI into two platform generations built from one codebase, and finishes wiring in APK signing-key management. See `BAI-ROADMAP-AND-TODO.md` and `BAI-v4_7-roadmap.md` for the full architecture and phase-by-phase status.
+
+### Added
+
+- **Platform split**: `flavorDimensions = ["platform"]` with `legacy` (Android 6–10, API 23–29) and `modern` (Android 11–16, API 30–36) product flavors, each still producing all four ABI-specific APKs — eight APKs total from one build. Same `applicationId` for both; a physical device only ever qualifies for one generation's SDK range.
+- **`platform/` package**: shared interfaces (`PlatformPermissions`, `PlatformFilePicker`) with one implementation per generation in `src/legacy/java` and `src/modern/java`, resolved at compile time via Gradle's flavor source sets rather than runtime `SDK_INT` branching.
+- **Generation-appropriate file picking**: Legacy keeps the internal file browser (backed by the vendored `com.github.angads25.filepicker`, now scoped to `legacyImplementation` and moved to `src/legacy/java` — Modern never compiles or ships it); Modern uses the system SAF picker exclusively, since Legacy's storage-permission model doesn't grant real access on API 30+.
+- **APK signing-key management UI**: `SigningKeyDialogFragment` and `SignatureSchemesDialogFragment`, wired into Preferences, backed by `signing/SigningKey`, `SigningKeyManager`, and `SigningSchemes` (V1/V2/V3 scheme selection, with V3 correctly greyed out below API 28). `PreferencesHelper.getSigningSchemes()`/`setSigningSchemes()` persist the selection.
+- **ZIP-read fallback**: `model/apksource/FallbackZipApkSource` retries with random-access `ZipFile` reading if the normal streaming read throws `ZipException`, for archives streaming can't handle. All APK-source call sites (backup storage, the Legacy/Modern/InstallerX installer view models) now go through this instead of the plain non-fallback reader.
+- **Output naming**: `BAI-<flavor>-<buildtype>-<abi>.apk`, applied via `androidComponents.onVariants` + a finalizer rename task, matching what this generation of AGP (9.3.x) actually supports.
+
+### Fixed
+
+- A `PendingIntent` in the rootless installer used `FLAG_MUTABLE` on a bare implicit intent with no explicit package — restored to `FLAG_IMMUTABLE` with the package set, avoiding a real crash risk on Android 12+.
+- Two permission-result handlers checked only `grantResults[0]`, so a denied second permission (of the two storage permissions requested together) read as fully granted.
+- The backup-folder SAF picker never requested `FLAG_GRANT_PERSISTABLE_URI_PERMISSION`, so `takePersistableUriPermission()` threw immediately after a successful folder pick.
+- An error path in the rootless confirmation-intent wrapper could relaunch the exact intent that had just failed, in a loop, instead of finishing cleanly.
+- Several null-pointer risks in the backup service and batch-backup executor, where a task already removed from tracking, or a listener's own `@Nullable` parameter, wasn't guarded before use.
+- A stale-first-layout-pass bug in the coolbar view, where children were measured against last frame's height instead of the height just computed.
+- A locale-default `toLowerCase()` in backup search that could mismatch on non-Latin default locales (e.g. Turkish).
+
+
 ## [4.6.0] - 2026-08-30
 
 BAI 4.6.0 is based on SAI `master` (versionCode 60, versionName "4.5") and establishes BAI as an independently maintained, independently branded fork, modernizes the build for current Android tooling, and removes every Google Play–specific code path.

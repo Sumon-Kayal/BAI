@@ -10,12 +10,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -23,11 +25,17 @@ import androidx.preference.SwitchPreference;
 
 import com.sumon.bundleapp.installer.shell.SuShell;
 import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
+import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
+import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
 import com.sumon.bundleapp.installer.ui.activities.AboutActivity;
 import com.sumon.bundleapp.installer.ui.activities.ApkActionViewProxyActivity;
 import com.sumon.bundleapp.installer.ui.activities.BackupSettingsActivity;
+import com.sumon.bundleapp.installer.signing.SigningKey;
+import com.sumon.bundleapp.installer.signing.SigningKeyManager;
+import com.sumon.bundleapp.installer.signing.SigningSchemes;
 import com.sumon.bundleapp.installer.ui.dialogs.DarkLightThemeSelectionDialogFragment;
-import com.sumon.bundleapp.installer.ui.dialogs.FilePickerDialogFragment;
+import com.sumon.bundleapp.installer.ui.dialogs.SignatureSchemesDialogFragment;
+import com.sumon.bundleapp.installer.ui.dialogs.SigningKeyDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.SimpleAlertDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.SingleChoiceListDialogFragment;
 import com.sumon.bundleapp.installer.ui.dialogs.ThemeSelectionDialogFragment;
@@ -39,10 +47,9 @@ import com.sumon.bundleapp.installer.utils.PreferencesKeys;
 import com.sumon.bundleapp.installer.utils.PreferencesValues;
 import com.sumon.bundleapp.installer.utils.Theme;
 import com.sumon.bundleapp.installer.utils.Utils;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -51,7 +58,7 @@ import java.util.concurrent.Executors;
 
 import rikka.shizuku.Shizuku;
 
-public class PreferencesFragment extends PreferenceFragmentCompat implements FilePickerDialogFragment.OnFilesSelectedListener, SingleChoiceListDialogFragment.OnItemSelectedListener, BaseBottomSheetDialogFragment.OnDismissListener, SharedPreferences.OnSharedPreferenceChangeListener, DarkLightThemeSelectionDialogFragment.OnDarkLightThemesChosenListener, Shizuku.OnRequestPermissionResultListener {
+public class PreferencesFragment extends PreferenceFragmentCompat implements OnInternalFilesSelectedListener, SingleChoiceListDialogFragment.OnItemSelectedListener, BaseBottomSheetDialogFragment.OnDismissListener, SharedPreferences.OnSharedPreferenceChangeListener, DarkLightThemeSelectionDialogFragment.OnDarkLightThemesChosenListener, SigningKeyDialogFragment.OnSigningKeyChangedListener, SignatureSchemesDialogFragment.OnSchemesChangedListener, Shizuku.OnRequestPermissionResultListener {
 
     private PreferencesHelper mHelper;
     private PackageManager mPm;
@@ -61,6 +68,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     private Preference mInstallerPref;
     private Preference mThemePref;
     private Preference mAppLanguagePref;
+    private Preference mSigningKeyPref;
+    private Preference mSignatureSchemesPref;
 
     // Order must match R.array.app_language_names exactly. Empty string means
     // "System default" (clears the app-level locale override).
@@ -72,7 +81,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     private SwitchPreference mAutoThemeSwitch;
     private Preference mAutoThemePicker;
 
-    private FilePickerDialogFragment mPendingFilePicker;
+    private DialogFragment mPendingFilePicker;
 
     private final ExecutorService mBackgroundExecutor = Executors.newCachedThreadPool();
     private Boolean mShizukuAvailableCache = null;
@@ -194,6 +203,22 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
 
         findPreference(PreferencesKeys.BACKUP_SETTINGS).setOnPreferenceClickListener(p -> {
             startActivity(new Intent(requireContext(), BackupSettingsActivity.class));
+            return true;
+        });
+
+        mSigningKeyPref = findPreference("signing_key");
+        updateSigningKeySummary();
+
+        mSigningKeyPref.setOnPreferenceClickListener((p) -> {
+            new SigningKeyDialogFragment().show(getChildFragmentManager(), "signing_key");
+            return true;
+        });
+
+        mSignatureSchemesPref = findPreference("signature_schemes");
+        updateSignatureSchemesSummary();
+
+        mSignatureSchemesPref.setOnPreferenceClickListener((p) -> {
+            new SignatureSchemesDialogFragment().show(getChildFragmentManager(), "signature_schemes");
             return true;
         });
 
@@ -328,6 +353,44 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
         );
     }
 
+    private void updateSigningKeySummary() {
+        SigningKey key;
+
+        try {
+            key = SigningKeyManager.getInstance().get();
+        } catch (Exception e) {
+            key = null;
+        }
+
+        mSigningKeyPref.setSummary(
+                key != null ? getString(R.string.signing_key_updated) : getString(R.string.signing_key_none)
+        );
+    }
+
+    private void updateSignatureSchemesSummary() {
+        SigningSchemes schemes = mHelper.getSigningSchemes();
+        List<String> enabled = new ArrayList<>();
+
+        if (schemes.has(SigningSchemes.SCHEME_V1))
+            enabled.add(getString(R.string.signing_schemes_v1));
+        if (schemes.has(SigningSchemes.SCHEME_V2))
+            enabled.add(getString(R.string.signing_schemes_v2));
+        if (schemes.has(SigningSchemes.SCHEME_V3))
+            enabled.add(getString(R.string.signing_schemes_v3));
+
+        mSignatureSchemesPref.setSummary(TextUtils.join(", ", enabled));
+    }
+
+    @Override
+    public void onSigningKeyChanged() {
+        updateSigningKeySummary();
+    }
+
+    @Override
+    public void onSchemesChanged(SigningSchemes schemes) {
+        updateSignatureSchemesSummary();
+    }
+
     private void updateThemeSummary() {
         mThemePref.setSummary(
                 Theme.getInstance(requireContext())
@@ -394,39 +457,25 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     }
 
     private void selectHomeDir() {
+        InternalPickerRequest request = new InternalPickerRequest(
+                "home",
+                getString(R.string.settings_main_home_directory),
+                InternalPickerRequest.SelectionMode.SINGLE,
+                InternalPickerRequest.SelectionType.DIRECTORY,
+                new File(
+                        mHelper.getHomeDirectory() != null
+                                ? mHelper.getHomeDirectory()
+                                : Environment.getExternalStorageDirectory().getAbsolutePath()
+                )
+        );
+
         if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
                 || PermissionsUtils.checkAndRequestStoragePermissions(this)) {
 
-            DialogProperties properties = new DialogProperties();
-            properties.selection_mode = DialogConfigs.SINGLE_MODE;
-            properties.selection_type = DialogConfigs.DIR_SELECT;
-            properties.root = new File(
-                    mHelper.getHomeDirectory() != null
-                            ? mHelper.getHomeDirectory()
-                            : Environment.getExternalStorageDirectory().getAbsolutePath()
-            );
-
-            FilePickerDialogFragment.newInstance(
-                    "home",
-                    getString(R.string.settings_main_home_directory),
-                    properties
-            ).show(getChildFragmentManager(), "file_picker");
+            new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "file_picker");
 
         } else {
-            DialogProperties properties = new DialogProperties();
-            properties.selection_mode = DialogConfigs.SINGLE_MODE;
-            properties.selection_type = DialogConfigs.DIR_SELECT;
-            properties.root = new File(
-                    mHelper.getHomeDirectory() != null
-                            ? mHelper.getHomeDirectory()
-                            : Environment.getExternalStorageDirectory().getAbsolutePath()
-            );
-
-            mPendingFilePicker = FilePickerDialogFragment.newInstance(
-                    "home",
-                    getString(R.string.settings_main_home_directory),
-                    properties
-            );
+            mPendingFilePicker = new DeviceGenerationFilePicker().createInternalPicker(request);
 
             // checkAndRequestStoragePermissions(this) above has already
             // requested the permission when needed. Keep the picker pending.
@@ -529,37 +578,37 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
                 switch (selectedItemIndex) {
                     case 0:
                         mHelper.setFilePickerSortBy(
-                                DialogConfigs.SORT_BY_NAME
+                                InternalPickerRequest.SORT_BY_NAME
                         );
                         mHelper.setFilePickerSortOrder(
-                                DialogConfigs.SORT_ORDER_NORMAL
+                                InternalPickerRequest.SORT_ORDER_NORMAL
                         );
                         break;
 
                     case 1:
                         mHelper.setFilePickerSortBy(
-                                DialogConfigs.SORT_BY_NAME
+                                InternalPickerRequest.SORT_BY_NAME
                         );
                         mHelper.setFilePickerSortOrder(
-                                DialogConfigs.SORT_ORDER_REVERSE
+                                InternalPickerRequest.SORT_ORDER_REVERSE
                         );
                         break;
 
                     case 2:
                         mHelper.setFilePickerSortBy(
-                                1
+                                InternalPickerRequest.SORT_BY_LAST_MODIFIED
                         );
                         mHelper.setFilePickerSortOrder(
-                                DialogConfigs.SORT_ORDER_NORMAL
+                                InternalPickerRequest.SORT_ORDER_NORMAL
                         );
                         break;
 
                     case 3:
                         mHelper.setFilePickerSortBy(
-                                1
+                                InternalPickerRequest.SORT_BY_LAST_MODIFIED
                         );
                         mHelper.setFilePickerSortOrder(
-                                DialogConfigs.SORT_ORDER_REVERSE
+                                InternalPickerRequest.SORT_ORDER_REVERSE
                         );
                         break;
                 }
@@ -647,7 +696,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Fil
     }
 
     private void openFilePicker(
-            FilePickerDialogFragment fragment) {
+            DialogFragment fragment) {
         fragment.show(
                 getChildFragmentManager(),
                 "file_picker"

@@ -12,18 +12,20 @@ import android.os.Environment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
+import com.sumon.bundleapp.installer.platform.DeviceGenerationFilePicker;
+import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
+import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
 import com.sumon.bundleapp.installer.utils.AlertsUtils;
 import com.sumon.bundleapp.installer.utils.PermissionsUtils;
 import com.sumon.bundleapp.installer.utils.Utils;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
 
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
-public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFragment implements FilePickerDialogFragment.OnFilesSelectedListener {
+public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFragment implements OnInternalFilesSelectedListener {
     private static final int REQUEST_CODE_SELECT_BACKUP_DIR = 1334;
     private static final String STATE_PENDING_INTERNAL_PICK = "pending_internal_pick";
 
@@ -55,36 +57,49 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
         outState.putBoolean(STATE_PENDING_INTERNAL_PICK, mPendingInternalPick);
     }
 
-    private FilePickerDialogFragment createInternalDirPicker() {
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.SINGLE_MODE;
-        properties.selection_type = DialogConfigs.DIR_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
+    private DialogFragment createInternalDirPicker() {
+        InternalPickerRequest request = new InternalPickerRequest(
+                "backup_dir",
+                getString(R.string.settings_main_pick_dir),
+                InternalPickerRequest.SelectionMode.SINGLE,
+                InternalPickerRequest.SelectionType.DIRECTORY,
+                Environment.getExternalStorageDirectory()
+        );
 
-        return FilePickerDialogFragment.newInstance("backup_dir", getString(R.string.settings_main_pick_dir), properties);
+        return new DeviceGenerationFilePicker().createInternalPicker(request);
     }
 
     @Override
     protected void deliverSelectionResult(String tag, int selectedItemIndex) {
         switch (selectedItemIndex) {
             case 0:
-                openFilePicker(createInternalDirPicker());
+                // This list isn't generation-filtered (see BAI-ROADMAP-AND-TODO.md, FilePicker
+                // architecture) — Modern still shows the internal-picker choice, so fall back to
+                // SAF here instead of calling the picker it doesn't offer.
+                if (new DeviceGenerationFilePicker().offersInternalPicker())
+                    openFilePicker(createInternalDirPicker());
+                else
+                    pickDirWithSaf();
                 break;
             case 1:
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                // Requesting the grant flags up front, not just at takePersistableUriPermission
-                // time below — without FLAG_GRANT_PERSISTABLE_URI_PERMISSION here specifically,
-                // that later call throws SecurityException even though the user just picked a
-                // folder successfully.
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.installer_pick_apks)), REQUEST_CODE_SELECT_BACKUP_DIR);
+                pickDirWithSaf();
                 break;
         }
     }
 
-    private void openFilePicker(FilePickerDialogFragment filePicker) {
+    private void pickDirWithSaf() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        // Requesting the grant flags up front, not just at takePersistableUriPermission
+        // time below — without FLAG_GRANT_PERSISTABLE_URI_PERMISSION here specifically,
+        // that later call throws SecurityException even though the user just picked a
+        // folder successfully.
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.installer_pick_apks)), REQUEST_CODE_SELECT_BACKUP_DIR);
+    }
+
+    private void openFilePicker(DialogFragment filePicker) {
         if (!PermissionsUtils.checkAndRequestStoragePermissions(this)) {
             mPendingInternalPick = true;
             return;

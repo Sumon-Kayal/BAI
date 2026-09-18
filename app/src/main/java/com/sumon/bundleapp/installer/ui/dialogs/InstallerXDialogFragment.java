@@ -31,15 +31,15 @@ import com.sumon.bundleapp.installer.utils.PreferencesHelper;
 import com.sumon.bundleapp.installer.view.ViewSwitcherLayout;
 import com.sumon.bundleapp.installer.viewmodels.InstallerXDialogViewModel;
 import com.sumon.bundleapp.installer.viewmodels.factory.InstallerXDialogViewModelFactory;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
+import com.sumon.bundleapp.installer.platform.InternalPickerRequest;
+import com.sumon.bundleapp.installer.platform.OnInternalFilesSelectedListener;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment implements FilePickerDialogFragment.OnFilesSelectedListener, SimpleAlertDialogFragment.OnDismissListener {
+public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment implements OnInternalFilesSelectedListener, SimpleAlertDialogFragment.OnDismissListener {
     private static final int REQUEST_CODE_GET_FILES = 337;
 
     private static final String ARG_APK_SOURCE_URI = "apk_source_uri";
@@ -195,16 +195,19 @@ public class InstallerXDialogFragment extends BaseBottomSheetDialogFragment impl
         }
 
 
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.MULTI_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.offset = new File(mHelper.getHomeDirectory());
-        properties.extensions = new String[]{"zip", "apks", "xapk", "apk", "apkm"};
-        properties.sortBy = mHelper.getFilePickerSortBy();
-        properties.sortOrder = mHelper.getFilePickerSortOrder();
+        InternalPickerRequest request = new InternalPickerRequest(
+                null,
+                getString(R.string.installer_pick_apks),
+                InternalPickerRequest.SelectionMode.MULTI,
+                InternalPickerRequest.SelectionType.FILE,
+                Environment.getExternalStorageDirectory()
+        );
+        request.offset = new File(mHelper.getHomeDirectory());
+        request.extensions = new String[]{"zip", "apks", "xapk", "apk", "apkm"};
+        request.sortBy = mHelper.getFilePickerSortBy();
+        request.sortOrder = mHelper.getFilePickerSortOrder();
 
-        FilePickerDialogFragment.newInstance(null, getString(R.string.installer_pick_apks), properties).show(getChildFragmentManager(), "dialog_files_picker");
+        new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "dialog_files_picker");
     }
 
     private void pickFilesWithSaf() {

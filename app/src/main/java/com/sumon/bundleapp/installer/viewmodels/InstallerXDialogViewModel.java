@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.sumon.bundleapp.installer.adapters.selection.Selection;
 import com.sumon.bundleapp.installer.adapters.selection.SimpleKeyStorage;
-import com.sumon.bundleapp.installer.installer.ApkSourceBuilder;
+import com.sumon.bundleapp.installer.model.apksource.ApkSourceBuilder;
 import com.sumon.bundleapp.installer.installer2.base.model.SaiPiSessionParams;
 import com.sumon.bundleapp.installer.installer2.impl.FlexSaiPackageInstaller;
 import com.sumon.bundleapp.installer.installerx.common.SplitApkSourceMeta;

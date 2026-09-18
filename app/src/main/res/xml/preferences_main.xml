@@ -88,6 +88,18 @@
             android:title="@string/settings_main_sign_apks"
             android:summary="@string/settings_main_sign_apks_summary" />
 
+        <Preference
+            android:icon="@drawable/ic_pref_signature"
+            android:key="signing_key"
+            android:title="@string/settings_main_signing_key"
+            android:dependency="sign_apks" />
+
+        <Preference
+            android:icon="@drawable/ic_pref_signature_schemes"
+            android:key="signature_schemes"
+            android:title="@string/settings_main_signature_schemes"
+            android:dependency="sign_apks" />
+
         <SwitchPreference
             android:icon="@drawable/ic_pref_unarchive"
             android:key="extract_archives"
