@@ -125,7 +125,7 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
             if (!permissionsGranted)
                 AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
             else if (mPendingInternalPick)
-                openInternalPicker();
+                openFilePicker(createInternalDirPicker());
         }
     }
 

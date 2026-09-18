@@ -468,17 +468,13 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
                                 : Environment.getExternalStorageDirectory().getAbsolutePath()
                 )
         );
-
-        if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
-                || PermissionsUtils.checkAndRequestStoragePermissions(this)) {
-
-            new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "file_picker");
+        DialogFragment picker = new DeviceGenerationFilePicker().createInternalPicker(request);
 
         if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
                 || PermissionsUtils.checkAndRequestStoragePermissions(this)) {
             openFilePicker(picker);
         } else {
-            mPendingFilePicker = new DeviceGenerationFilePicker().createInternalPicker(request);
+            mPendingFilePicker = picker;
 
             // checkAndRequestStoragePermissions(this) above has already
             // requested the permission when needed. Keep the picker pending.
