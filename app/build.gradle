@@ -26,7 +26,7 @@ android {
         minSdk 23
         targetSdk 36
         versionCode 61
-        versionName "4.6"
+        versionName "4.7"
 
         buildConfigField "int", "DEFAULT_THEME", "6"
         buildConfigField "int", "DEFAULT_DARK_THEME", "11"
