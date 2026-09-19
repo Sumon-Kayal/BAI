@@ -104,9 +104,7 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
             mPendingInternalPick = true;
             return;
         }
-
-        mPendingInternalPick = false;
-        createInternalDirPicker().show(getChildFragmentManager(), null);
+        filePicker.show(getChildFragmentManager(), null);
     }
 
     @Override
@@ -124,8 +122,12 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
 
             if (!permissionsGranted)
                 AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
-            else if (mPendingInternalPick)
-                openFilePicker(createInternalDirPicker());
+            else {
+                if (mPendingInternalPick) {
+                    mPendingInternalPick = false;
+                    openFilePicker(createInternalDirPicker());
+                }
+            }
         }
     }
 
@@ -155,11 +157,14 @@ public class UriDirectoryPickerDialogFragment extends SingleChoiceListDialogFrag
 
     @Override
     public void onFilesSelected(String tag, List<File> files) {
-        if ("backup_dir".equals(tag))
-            onDirectoryPicked(new Uri.Builder()
-                    .scheme("file")
-                    .path(files.get(0).getAbsolutePath())
-                    .build());
+        switch (tag) {
+            case "backup_dir":
+                onDirectoryPicked(new Uri.Builder()
+                        .scheme("file")
+                        .path(files.get(0).getAbsolutePath())
+                        .build());
+                break;
+        }
     }
 
     public interface OnDirectoryPickedListener {

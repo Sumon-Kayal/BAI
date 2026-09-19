@@ -19,10 +19,6 @@ import androidx.fragment.app.DialogFragment;
  * runtime detection, one implementation per generation.
  */
 public interface PlatformFilePicker {
-    static PlatformFilePicker getInstance() {
-        return Holder.INSTANCE;
-    }
-
     boolean offersInternalPicker();
 
     /**

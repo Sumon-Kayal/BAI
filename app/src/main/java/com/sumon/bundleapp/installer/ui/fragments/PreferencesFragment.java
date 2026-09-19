@@ -166,7 +166,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
         mFilePickerSortPref = findPreference("file_picker_sort");
         updateFilePickerSortSummary();
 
-        if (!PlatformFilePicker.getInstance().offersInternalPicker()) {
+        if (!new DeviceGenerationFilePicker().offersInternalPicker()) {
             // Both settings only affect the internal file browser, which Modern doesn't offer —
             // see BAI-PHASE4-STORAGE-SAF.md. Showing them would just be two dead-end rows.
             mHomeDirPref.setVisible(false);
@@ -468,18 +468,24 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
                                 : Environment.getExternalStorageDirectory().getAbsolutePath()
                 )
         );
-        DialogFragment picker = new DeviceGenerationFilePicker().createInternalPicker(request);
 
         if (!Utils.apiIsAtLeast(Build.VERSION_CODES.M)
                 || PermissionsUtils.checkAndRequestStoragePermissions(this)) {
-            openFilePicker(picker);
+
+            new DeviceGenerationFilePicker().createInternalPicker(request).show(getChildFragmentManager(), "file_picker");
+
         } else {
-            mPendingFilePicker = picker;
+            mPendingFilePicker = new DeviceGenerationFilePicker().createInternalPicker(request);
 
             // checkAndRequestStoragePermissions(this) above has already
             // requested the permission when needed. Keep the picker pending.
+
         }
     }
+
+
+
+
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
@@ -502,9 +508,11 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
                         R.string.permissions_required_storage
                 );
 
-            } else if (mPendingFilePicker != null) {
-                openFilePicker(mPendingFilePicker);
-                mPendingFilePicker = null;
+            } else {
+                if (mPendingFilePicker != null) {
+                    openFilePicker(mPendingFilePicker);
+                    mPendingFilePicker = null;
+                }
             }
         }
     }
@@ -533,9 +541,13 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements OnI
             String tag,
             List<File> files) {
 
-        if ("home".equals(tag)) {
-            mHelper.setHomeDirectory(files.get(0).getAbsolutePath());
-            updateHomeDirPrefSummary();
+        switch (tag) {
+            case "home":
+                mHelper.setHomeDirectory(
+                        files.get(0).getAbsolutePath()
+                );
+                updateHomeDirPrefSummary();
+                break;
         }
     }
 

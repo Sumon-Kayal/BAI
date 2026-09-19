@@ -81,13 +81,13 @@ public class ShizukuShell implements Shell {
         StringBuilder stdOutSb = new StringBuilder();
         StringBuilder stdErrSb = new StringBuilder();
 
-        try (InputStream inputStream = inputPipe) {
+        try {
             ShizukuRemoteProcess process = newRemoteProcess(new String[]{"sh", "-c", command.toString()});
 
             Thread stdOutD = IOUtils.writeStreamToStringBuilder(stdOutSb, process.getInputStream());
             Thread stdErrD = IOUtils.writeStreamToStringBuilder(stdErrSb, process.getErrorStream());
 
-            try (OutputStream outputStream = process.getOutputStream()) {
+            try (OutputStream outputStream = process.getOutputStream(); InputStream inputStream = inputPipe) {
                 IOUtils.copyStream(inputStream, outputStream);
             } catch (Exception e) {
                 stdOutD.interrupt();

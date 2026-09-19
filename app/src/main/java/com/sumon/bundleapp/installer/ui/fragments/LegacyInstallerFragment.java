@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -89,7 +90,7 @@ public class LegacyInstallerFragment extends InstallerFragment implements OnInte
         findViewById(R.id.ib_toggle_theme).setOnClickListener((v -> ThemeSelectionDialogFragment.newInstance(requireContext()).show(getChildFragmentManager(), "theme_selection_dialog")));
         mButtonSettings.setOnClickListener((v) -> PreferencesActivity.open(requireContext(), PreferencesFragment.class, getString(R.string.settings_title)));
 
-        boolean offersInternalPicker = PlatformFilePicker.getInstance().offersInternalPicker();
+        boolean offersInternalPicker = new DeviceGenerationFilePicker().offersInternalPicker();
         mButton.setOnClickListener((v) -> {
             if (offersInternalPicker)
                 checkPermissionsAndPickFiles();

@@ -60,7 +60,7 @@ public class SuShell implements Shell {
         StringBuilder stdOutSb = new StringBuilder();
         StringBuilder stdErrSb = new StringBuilder();
 
-        try (InputStream inputStream = inputPipe) {
+        try {
             Command.Builder suCommand = new Command.Builder("su", "-c", command.toString());
 
             Process process = Runtime.getRuntime().exec(suCommand.build().toStringArray());
@@ -69,8 +69,8 @@ public class SuShell implements Shell {
             Thread stdOutD = IOUtils.writeStreamToStringBuilder(stdOutSb, process.getInputStream());
             Thread stdErrD = IOUtils.writeStreamToStringBuilder(stdErrSb, process.getErrorStream());
 
-            if (inputStream != null) {
-                try (OutputStream outputStream = process.getOutputStream()) {
+            if (inputPipe != null) {
+                try (OutputStream outputStream = process.getOutputStream(); InputStream inputStream = inputPipe) {
                     IOUtils.copyStream(inputStream, outputStream);
                 } catch (Exception e) {
                     stdOutD.interrupt();
