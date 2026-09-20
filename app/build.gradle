@@ -219,6 +219,12 @@ dependencies {
     // apksig: used by signing/SaiApkSigner.java for signature-scheme-aware APK (re-)signing
     implementation libs.apksig
 
+    // flexfilter (com.aefyr.flexfilter): the real library, ported from SAIR's libs/flexfilter —
+    // BAI previously vendored a hand-simplified copy directly in app/src/main that used
+    // Serializable + an emptied-out view-holder factory instead of the real Parcelable-based
+    // config classes and RecyclerView adapters, which is why the backup filter dialog crashed.
+    implementation project(':libs:flexfilter')
+
     // flexfilter: vendored at com/aefyr/flexfilter/
     // pseudoapksigner: vendored at com/aefyr/pseudoapksigner/
 }

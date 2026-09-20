@@ -181,10 +181,11 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
             }
 
             // pm reports neither success details nor the installed package, so the exit code
-            // decides the outcome. The broadcast is the only source for the package name on
-            // this (shell) install path — there's no session metadata to fall back to if it
-            // doesn't arrive in time, so the session just goes without a resolved name/icon.
+            // decides the outcome. The broadcast is the primary source; if it hasn't arrived
+            // yet, fall back to the package name already known from parsing the archive.
             String installedPackage = mBroadcastPackageName.getAndSet(null);
+            if (installedPackage == null)
+                installedPackage = params.packageName();
 
             SaiPiSessionState.Builder success = new SaiPiSessionState.Builder(sessionId, SaiPiSessionStatus.INSTALLATION_SUCCEED)
                     .appTempName(appTempName);
