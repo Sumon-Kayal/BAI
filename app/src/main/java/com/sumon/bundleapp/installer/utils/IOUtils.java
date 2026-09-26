@@ -164,5 +164,20 @@ public class IOUtils {
         }
     }
 
+    /**
+     * Wraps a stream in a buffered variant for efficient small-chunk reads, unless it's
+     * already buffered.
+     */
+    public static InputStream buffer(InputStream in) {
+        return (in instanceof java.io.BufferedInputStream) ? in : new java.io.BufferedInputStream(in);
+    }
+
+    /**
+     * Wraps a stream in a buffered variant for efficient small-chunk writes, unless it's
+     * already buffered.
+     */
+    public static OutputStream buffer(OutputStream out) {
+        return (out instanceof java.io.BufferedOutputStream) ? out : new java.io.BufferedOutputStream(out);
+    }
 
 }

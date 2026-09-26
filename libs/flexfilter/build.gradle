@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'com.aefyr.flexfilter'
+    compileSdk 37
+
+    defaultConfig {
+        minSdk 23
+    }
+
+    buildFeatures {
+        buildConfig false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+dependencies {
+    implementation libs.androidx.annotation
+    implementation libs.lifecycle.viewmodel
+    implementation libs.lifecycle.livedata
+    implementation libs.recyclerview
+    implementation libs.flexbox
+    // BaseBottomSheetDialogFragment extends BottomSheetDialogFragment, which is exposed on
+    // this module's own public API, so material needs to be api(), not implementation().
+    api libs.material
+}

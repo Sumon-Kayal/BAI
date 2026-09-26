@@ -181,7 +181,8 @@ public abstract class ShellSaiPackageInstaller extends BaseSaiPackageInstaller {
             }
 
             // pm reports neither success details nor the installed package, so the exit code
-            // decides the outcome and the resolved meta supplies the name.
+            // decides the outcome. The broadcast is the primary source; if it hasn't arrived
+            // yet, fall back to the package name already known from parsing the archive.
             String installedPackage = mBroadcastPackageName.getAndSet(null);
             if (installedPackage == null)
                 installedPackage = params.packageName();

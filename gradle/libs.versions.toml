@@ -1,5 +1,6 @@
 [versions]
 appcompat = "1.8.0"
+androidxAnnotation = "1.10.0"
 documentfile = "1.1.0"
 flexbox = "3.0.0"
 glide = "5.0.9"
@@ -21,6 +22,7 @@ tooltips = "1.1.1"
 [libraries]
 aidl = { group = "dev.rikka.shizuku", name = "aidl", version.ref = "shizuku" }
 apksig = { group = "com.android.tools.build", name = "apksig", version.ref = "apksig" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotation" }
 api = { group = "dev.rikka.shizuku", name = "api", version.ref = "shizuku" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
@@ -32,6 +34,8 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanaryAndroid" }
 lifecycle-common-java8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycleCommonJava8" }
 lifecycle-extensions1 = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "lifecycleExtensions" }
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycleCommonJava8" }
+lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "lifecycleCommonJava8" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 provider = { group = "dev.rikka.shizuku", name = "provider", version.ref = "shizuku" }
