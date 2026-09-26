@@ -46,7 +46,6 @@ public class SingleChoiceFilterConfigOption implements Parcelable {
     protected SingleChoiceFilterConfigOption(Parcel in) {
         mId = in.readString();
         mName = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
-        mSelected = in.readByte() != 0;
     }
 
     public static final Creator<SingleChoiceFilterConfigOption> CREATOR = new Creator<>() {
@@ -70,7 +69,6 @@ public class SingleChoiceFilterConfigOption implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mId);
         TextUtils.writeToParcel(mName, dest, flags);
-        dest.writeByte((byte) (mSelected ? 1 : 0));
     }
 
     @Override

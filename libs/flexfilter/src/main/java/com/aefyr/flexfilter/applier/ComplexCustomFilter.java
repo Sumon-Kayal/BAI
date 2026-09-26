@@ -24,10 +24,7 @@ public class ComplexCustomFilter<T> {
 
         if (mFilterConfig != null) {
             for (FilterConfig filterConfig : mFilterConfig.filters()) {
-                CustomFilter<T> customFilter = mFilterFactory.createCustomFilter(filterConfig);
-                if (customFilter != null) {
-                    customFilters.add(customFilter);
-                }
+                customFilters.add(mFilterFactory.createCustomFilter(filterConfig));
             }
         }
 

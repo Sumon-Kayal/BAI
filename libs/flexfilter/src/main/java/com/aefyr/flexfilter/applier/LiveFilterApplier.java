@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -89,8 +88,7 @@ public class LiveFilterApplier<T> {
                     try {
                         args.filteredList = mApplier.apply(args.filter, args.listToFilter);
                     } catch (Exception e) {
-                        Log.e("LiveFilterApplier", "Failed to apply filters", e);
-                        args.filteredList = args.listToFilter;
+                        throw new RuntimeException(e);
                     } finally {
                         message = mResultHandler.obtainMessage(what);
                         message.obj = args;
