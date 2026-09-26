@@ -244,7 +244,15 @@ public class Installer2Fragment extends InstallerFragment implements OnInternalF
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PermissionsUtils.REQUEST_CODE_STORAGE_PERMISSIONS) {
-            if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)
+            boolean permissionsGranted = grantResults.length > 0;
+            for (int result : grantResults) {
+                if (result == PackageManager.PERMISSION_DENIED) {
+                    permissionsGranted = false;
+                    break;
+                }
+            }
+
+            if (!permissionsGranted)
                 AlertsUtils.showAlert(this, R.string.error, R.string.permissions_required_storage);
             else
                 checkPermissionsAndPickFiles();
