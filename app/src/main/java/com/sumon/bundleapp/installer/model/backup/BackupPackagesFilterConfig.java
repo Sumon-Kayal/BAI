@@ -92,7 +92,7 @@ public class BackupPackagesFilterConfig {
     public BackupPackagesFilterConfig(ComplexFilterConfig config) {
         for (FilterConfig filterConfig : config.filters()) {
             if (filterConfig instanceof SingleChoiceFilterConfig) {
-                switch (filterConfig.id()) {
+                switch (((SingleChoiceFilterConfig) filterConfig).id()) {
                     case FILTER_SPLIT:
                         mSplitApkFilter = SimpleFilterMode.from(((SingleChoiceFilterConfig) filterConfig).getSelectedOption());
                         break;

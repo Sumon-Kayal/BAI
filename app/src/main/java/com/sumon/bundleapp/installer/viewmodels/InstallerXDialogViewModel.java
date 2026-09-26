@@ -141,7 +141,7 @@ public class InstallerXDialogViewModel extends ViewModel {
                         .setReadZipViaZipFileEnabled(mPrefsHelper.shouldUseZipFileApi())
                         .setSigningEnabled(mPrefsHelper.shouldSignApks());
 
-                install(apkSourceBuilder.build());
+                install(apkSourceBuilder.build(), null);
             }
         }
     }

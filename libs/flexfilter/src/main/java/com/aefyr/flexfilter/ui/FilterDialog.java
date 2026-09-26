@@ -75,18 +75,11 @@ public class FilterDialog extends BaseBottomSheetDialogFragment {
 
         getNegativeButton().setOnClickListener(v -> dismiss());
         getPositiveButton().setOnClickListener(v -> {
-            try {
-                OnApplyConfigListener listener;
-                if (getParentFragment() != null)
-                    listener = (OnApplyConfigListener) getParentFragment();
-                else
-                    listener = (OnApplyConfigListener) getActivity();
-
-                if (listener != null)
-                    listener.onApplyConfig(mViewModel.getConfig());
-            } catch (Exception e) {
+            Object host = getParentFragment() != null ? getParentFragment() : getActivity();
+            if (!(host instanceof OnApplyConfigListener)) {
                 throw new IllegalStateException("Activity/Fragment that uses FilterDialog must implement FilterDialog.OnApplyConfigListener");
             }
+            ((OnApplyConfigListener) host).onApplyConfig(mViewModel.getConfig());
             dismiss();
         });
 

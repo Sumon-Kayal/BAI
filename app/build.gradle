@@ -225,6 +225,5 @@ dependencies {
     // config classes and RecyclerView adapters, which is why the backup filter dialog crashed.
     implementation project(':libs:flexfilter')
 
-    // flexfilter: vendored at com/aefyr/flexfilter/
     // pseudoapksigner: vendored at com/aefyr/pseudoapksigner/
 }
